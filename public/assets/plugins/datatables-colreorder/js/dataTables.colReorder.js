@@ -315,7 +315,7 @@ $.fn.dataTableExt.oApi.fnColReorder = function ( oSettings, iFrom, iTo, drop, in
 		}
 	}
 
-	/* Reposition the header elements in the header layout array */
+	/* Reposition the header elements in the header layouts array */
 	for ( i=0, iLen=oSettings.aoHeader.length ; i<iLen ; i++ )
 	{
 		fnArraySwitch( oSettings.aoHeader[i], iFrom, iTo );

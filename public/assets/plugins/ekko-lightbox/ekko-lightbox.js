@@ -344,7 +344,7 @@ var Lightbox = (function ($) {
 				return string && string.indexOf('instagram') > 0 ? string : false;
 			}
 
-			// layout private methods
+			// layouts private methods
 		}, {
 			key: '_toggleLoading',
 			value: function _toggleLoading(show) {

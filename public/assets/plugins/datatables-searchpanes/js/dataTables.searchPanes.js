@@ -228,7 +228,7 @@
             });
         };
         /**
-         * Adjusts the layout of the top row when the screen is resized
+         * Adjusts the layouts of the top row when the screen is resized
          */
         SearchPane.prototype.adjustTopRow = function () {
             var subContainers = this.dom.container.find('.' + this.classes.subRowsContainer.replace(/\s+/g, '.'));
@@ -388,9 +388,9 @@
             this.dom.container.hide();
         };
         /**
-         * Resizes the pane based on the layout that is passed in
+         * Resizes the pane based on the layouts that is passed in
          *
-         * @param layout the layout to be applied to this pane
+         * @param layout the layouts to be applied to this pane
          */
         SearchPane.prototype.resize = function (layout) {
             this.c.layout = layout;
@@ -2141,7 +2141,7 @@
                 var widerIndexes = highestmod !== 0 ? dispIndex.slice(dispIndex.length - highestmod, dispIndex.length) : [];
                 for (var _b = 0, _c = this.s.panes; _b < _c.length; _b++) {
                     var pane = _c[_b];
-                    // Resize the pane with the new layout
+                    // Resize the pane with the new layouts
                     if (pane.s.displayed) {
                         var layout = 'columns-' + (!widerIndexes.includes(pane.s.index) ? highest : highestmod);
                         pane.resize(layout);
@@ -2689,7 +2689,7 @@
                 pane.rebuildPane(undefined, Object.keys(this.s.serverData).length > 0 ? this.s.serverData : undefined);
                 this.dom.panes.append(pane.dom.container);
             }
-            // If the layout is set to auto then the panes need to be resized to their best fit
+            // If the layouts is set to auto then the panes need to be resized to their best fit
             if (this.c.layout === 'auto') {
                 this.resizePanes();
             }
@@ -3162,7 +3162,7 @@
             cFeature: 'P',
             fnInit: _init
         });
-        // DataTables 2 layout feature
+        // DataTables 2 layouts feature
         if (dataTable.ext.features) {
             dataTable.ext.features.register('searchPanes', _init);
         }
