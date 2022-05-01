@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AttendanceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 Route::middleware('auth')->group(function () {
     Route::get('/admin', function () {return view('Admin.index');});
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/gym_manager', function () {return view('GymManager.index');});
     Route::get('/city_manager', function () {return view('CityManager.index');});
 });
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

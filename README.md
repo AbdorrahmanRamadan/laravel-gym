@@ -4,7 +4,7 @@
 
 ### >composer install
 
-###  >cp .\.env.example .env
+###  >cp .env.example .env
 ### (then create empty database and add the database name in .env file )
 
 
