@@ -39,7 +39,6 @@ class TrainingPackageController extends Controller
 
     public function update(UpdateTrainingPackageRequest $request,$packageId)
     {
-        $data = $request->all();
         TrainingPackage::where('id',$packageId)
             ->update([
                 'name'=>$request['name'],
