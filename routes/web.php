@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TrainingPackageController;
+use App\Http\Controllers\TrainingSessionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,4 +30,11 @@ Route::get('/packages/{package}', [TrainingPackageController::class, 'show'])->n
 Route::get('/packages/{package}/edit', [TrainingPackageController::class, 'edit'])->name('Admin.TrainingPackages.edit');
 Route::put('/packages/{package}', [TrainingPackageController::class, 'update'])->name('Admin.TrainingPackages.update');
 Route::delete('/packages/{package}', [TrainingPackageController::class, 'destroy'])->name('Admin.TrainingPackages.destroy');
+Route::get('/sessions', [TrainingSessionController::class, 'index'])->name('Admin.TrainingSessions.index');
+Route::get('/sessions/create', [TrainingSessionController::class, 'create'])->name('Admin.TrainingSessions.create');
+Route::post('/sessions', [TrainingSessionController::class, 'store'])->name('Admin.TrainingSessions.store');
+Route::get('/sessions/{session}', [TrainingSessionController::class, 'show'])->name('Admin.TrainingSessions.show');
+Route::get('/sessions/{session}/edit', [TrainingSessionController::class, 'edit'])->name('Admin.TrainingSessions.edit');
+Route::put('/sessions/{session}', [TrainingSessionController::class, 'update'])->name('Admin.TrainingSessions.update');
+Route::delete('/sessions/{session}', [TrainingSessionController::class, 'destroy'])->name('Admin.TrainingSessions.destroy');
 
