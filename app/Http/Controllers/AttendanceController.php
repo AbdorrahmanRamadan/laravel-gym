@@ -10,8 +10,7 @@ class AttendanceController extends Controller
     //
     public function index()
     {
-        $attendance = Attendance::paginate(10);
-
+        $attendance = Attendance::with('user', 'training_session')->get();
         return view('Admin.Attendance.index', [
             'attendance' => $attendance,
         ]);

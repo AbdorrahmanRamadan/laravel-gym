@@ -1,3 +1,7 @@
+<?php
+
+use Carbon\Carbon;
+?>
 @extends('layouts.admin')
 @section('page_content')
 <section class="content">
@@ -6,42 +10,36 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">DataTable with minimal features & hover style</h3>
+                <h3 class="card-title">Attendance for trainee</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="example2" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
+                    <th>Trainee Name</th>
+                    <th>Session Name</th>
+                    <th>Attending Date</th>
+                    <th>Attending Day</th>
+                    <th>Attending Time</th>
+
                   </tr>
                   </thead>
                   <tbody>
-                  @foreach ( $attendance as $attend)
+                  @foreach ( $attendance as  $attend)
                   <tr>
-                    <td></td>
-                    <td>Internet
-                      Explorer 4.0
-                    </td>
-                    <td>Win 95+</td>
-                    <td> 4</td>
-                    <td>X</td>
-                  </tr>
+                    <td>{{$attend->user->name}}</td>
+                    <td>{{$attend->training_session->name}}</td>
+                    <td> {{Carbon::parse($attend->attendance_time)->format('m/d')}} </td>
+                    <td> {{Carbon::parse($attend->attendance_time)->format('D')}} </td>
+                    <td> {{Carbon::parse($attend->attendance_time)->format('H:i:s')}} </td>
 
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Rendering engine</th>
-                    <th>Browser</th>
-                    <th>Platform(s)</th>
-                    <th>Engine version</th>
-                    <th>CSS grade</th>
+
+
                   </tr>
-                  </tfoot>
+                    @endforeach
+                  </tbody>
+
                 </table>
               </div>
               <!-- /.card-body -->
@@ -90,7 +88,6 @@
 <!-- AdminLTE App -->
 <script src="assets/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="assets/dist/js/demo.js"></script>
 <!-- Page specific script -->
 <script>
   $(function () {
