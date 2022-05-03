@@ -23,5 +23,9 @@ class GymController extends Controller
         })->editColumn('city_id', function($gym){
             return $gym->user->name;
         })->rawColumns(['action'])->toJson();
-    }    
+    }
+    public function create(){
+        return view("Admin.gyms.create");
+    }
+    
 }
