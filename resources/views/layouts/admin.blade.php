@@ -60,7 +60,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('Admin.gyms') }}" class="nav-link">
                             <p>
                                 Gyms
                             </p>
@@ -105,7 +105,7 @@
             </nav>
         </div>
     </aside>
-    <div class="content-wrapper">
+    <div class="content-wrapper p-4">
         @yield('page_content')
     </div>
 @endsection

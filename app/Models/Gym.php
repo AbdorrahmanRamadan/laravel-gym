@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Gym extends Model
 {
     use HasFactory;
+    public function user()
+    {
+       return $this->belongsTo(User::class, 'created_by');
+    }
 }
