@@ -4,6 +4,8 @@ use App\Http\Controllers\TrainingPackageController;
 use App\Http\Controllers\TrainingSessionController;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\TraineeController; 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,12 +19,19 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/admin', function () {return view('Admin.index');});
     Route::get('/gym_manager', function () {return view('GymManager.index');});
-    Route::get('/city_manager', function () {return view('CityManager.index');});
+    Route::get('/city_manager', function () {return view('CityManager.index');}); 
 });
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});
+
+
+Route::get('/trainees', [TraineeController::class, 'index'])->name('Admin.Trainees.index');
+Route::get('/trainees/create/', [TraineeController::class, 'create'])->name('Admin.Trainees.create');
+Route::post('/trainees', [TraineeController::class, 'store'])->name('Admin.Trainees.store');
+Route::delete('/trainees/{trainee}',[TraineeController::class, 'destroy'])->name('Admin.Trainees.destroy');
+
 Route::get('/packages', [TrainingPackageController::class, 'index'])->name('Admin.TrainingPackages.index');
 Route::get('/packages/create', [TrainingPackageController::class, 'create'])->name('Admin.TrainingPackages.create');
 Route::post('/packages', [TrainingPackageController::class, 'store'])->name('Admin.TrainingPackages.store');
@@ -37,4 +46,5 @@ Route::get('/sessions/{session}', [TrainingSessionController::class, 'show'])->n
 Route::get('/sessions/{session}/edit', [TrainingSessionController::class, 'edit'])->name('Admin.TrainingSessions.edit');
 Route::put('/sessions/{session}', [TrainingSessionController::class, 'update'])->name('Admin.TrainingSessions.update');
 Route::delete('/sessions/{session}', [TrainingSessionController::class, 'destroy'])->name('Admin.TrainingSessions.destroy');
+
 
