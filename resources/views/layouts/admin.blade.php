@@ -45,13 +45,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('Admin.Trainees.index') }}" class="nav-link">
                             <p>
                                 Trainees
                             </p>
                         </a>
                     </li>
-
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <p>
