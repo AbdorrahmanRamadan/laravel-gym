@@ -21,7 +21,13 @@ class GymController extends Controller
     {
         $gyms = Gym::query();
         return datatables()->eloquent($gyms)->addIndexColumn()->addColumn('action', function($gym){
-            return '<a href="#" class="edit btn btn-primary btn-sm me-2">Edit</a><a href="#" class="edit btn btn-danger btn-sm">Delete</a>';
+            return '<a href="'.route('Admin.gyms.edit', $gym->id).'" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Admin.gyms.destroy',  $gym->id ).'" method="POST">
+            '.csrf_field().'
+            '.method_field("DELETE").'
+            <button type="submit" class="btn btn-danger btn-sm me-2"
+                onclick="return confirm(\'Are You Sure Want to Delete?\')"
+            ">Delete</a>
+            </form>';
         })->editColumn('created_at', function($gym){
             return Carbon::parse($gym->created_at)->toDateString();
         })->editColumn('city_id', function($gym){
@@ -49,6 +55,41 @@ class GymController extends Controller
         ]);
         
        return redirect('/Admin/gyms')->with('status', 'Gym is inserted successfully');
+    }
+    public function edit($gymId){
+        $gymInfo = Gym::find($gymId);
+        $cities = City::all();
+        return view('Admin.gyms.edit', [
+            'gym' => $gymInfo,
+            'cities'=>$cities
+        ]);
+    }
+   
+    public function update(StoreGymRequest $request, $gymId)
+    {
+        $gymInfo = request()->all();
+        $oldImage = Gym::find($gymId)->cover_image;
+        $coverImage = $request->file('cover-image');
+        $name = $coverImage->getClientOriginalName();
+        unlink(storage_path('app/public/gymImages/'.$oldImage));
+        $path = Storage::putFileAs(
+            'public/gymImages', $coverImage, $name
+        );
+        Gym::where('id', $gymId)->update([
+            'name'=>$gymInfo['name'],
+            'cover_image'=>$name,
+            'created_by'=>Auth::id(),
+            'city_id'=>$gymInfo['city']
+        ]);
+        return redirect('/Admin/gyms')->with('status', 'Gym Data is updated successfully');
+    }
+    
+    public function destroy($gymId)
+    {
+        $gym = Gym::find($gymId);
+        $gym->delete();
+        Storage::delete('public/gymImages/'.$gym->cover_image);
+        return redirect('/Admin/gyms')->with('status', 'Gym is deleted successfully');
     }
     
 }

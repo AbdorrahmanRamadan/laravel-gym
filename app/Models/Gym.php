@@ -19,4 +19,8 @@ class Gym extends Model
     {
        return $this->belongsTo(User::class, 'created_by');
     }
+    public function city()
+    {
+       return $this->belongsTo(City::class, 'city_id');
+    }
 }

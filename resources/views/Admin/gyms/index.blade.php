@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th class="gym-id">ID</th>
-                <th class="city-name">Name</th>
+                <th class="gym-name">Name</th>
                 <th class="created-at">Created At</th>
                 <th class="cover-image">Cover Image</th>
                 <th class="city-manager no-sort">City Manager Name</th>

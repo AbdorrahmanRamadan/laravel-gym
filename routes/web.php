@@ -27,6 +27,10 @@ Route::get('/Admin/gyms-dt', [GymController::class, 'getGyms'])->name('Admin.gym
 Route::get('/Admin/gyms/create', [GymController::class, 'create'])->name('Admin.gyms.create');
 Route::post('Admin/gyms', [GymController::class, 'store'])->name('Admin.gyms.store');
 Route::post('Admin/gyms', [GymController::class, 'store'])->name('Admin.gyms.store');
+Route::delete('/Admin/gyms/{gym}', [GymController::class, 'destroy'])->name('Admin.gyms.destroy');
+Route::get('/Admin/gyms/edit/{gym}', [GymController::class, 'edit'])->name('Admin.gyms.edit');
+Route::put('/Admin/gyms/{gym}', [GymController::class, 'update'])->name('Admin.gyms.update');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});
 Route::get('/packages', [TrainingPackageController::class, 'index'])->name('Admin.TrainingPackages.index');
