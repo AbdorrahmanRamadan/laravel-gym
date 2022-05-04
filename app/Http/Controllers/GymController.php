@@ -19,7 +19,7 @@ class GymController extends Controller
     public function getGyms()
 
     {
-        $gyms = Gym::query();
+        $gyms =  Gym::with('user')->select('gyms.*');
         return datatables()->eloquent($gyms)->addIndexColumn()->addColumn('action', function($gym){
             return '<a href="'.route('Admin.gyms.edit', $gym->id).'" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Admin.gyms.destroy',  $gym->id ).'" method="POST">
             '.csrf_field().'
@@ -30,9 +30,9 @@ class GymController extends Controller
             </form>';
         })->editColumn('created_at', function($gym){
             return Carbon::parse($gym->created_at)->toDateString();
-        })->editColumn('city_id', function($gym){
+        })->editColumn('created_by', function($gym){
             return $gym->user->name;
-        })->rawColumns(['action'])->toJson();
+        })->rawColumns(['action', 'created_by'])->toJson();
     }
     public function create(){
         $cities = City::all();

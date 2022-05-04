@@ -39,7 +39,7 @@
                         return `<img src="{{asset('storage/gymImages/${data}')}}" class="w-50">`;
                     }
                 },
-                { data: 'city_id', name: 'city_id' },
+                { data: 'user.name', name:'user.name',  orderable: true, searchable: true},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
