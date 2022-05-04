@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityManagerController;
 use App\Http\Controllers\CityController;
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/trainees/{trainee}',[TraineeController::class, 'destroy'])->name('Admin.Trainees.destroy');
 
     Route::get('/packages', [TrainingPackageController::class, 'index'])->name('Admin.TrainingPackages.index');
+    Route::get('/packages-dt', [TrainingPackageController::class, 'getTrainingPackages'])->name('Admin.TrainingPackages.getTrainingPackages');
     Route::get('/packages/create', [TrainingPackageController::class, 'create'])->name('Admin.TrainingPackages.create');
     Route::post('/packages', [TrainingPackageController::class, 'store'])->name('Admin.TrainingPackages.store');
     Route::get('/packages/{package}/edit', [TrainingPackageController::class, 'edit'])->name('Admin.TrainingPackages.edit');
@@ -53,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/packages/{package}', [TrainingPackageController::class, 'destroy'])->name('Admin.TrainingPackages.destroy');
 
     Route::get('/sessions', [TrainingSessionController::class, 'index'])->name('Admin.TrainingSessions.index');
+    Route::get('/sessions-dt', [TrainingSessionController::class, 'getTrainingSessions'])->name('Admin.TrainingSessions.getTrainingSessions');
     Route::get('/sessions/create', [TrainingSessionController::class, 'create'])->name('Admin.TrainingSessions.create');
     Route::post('/sessions', [TrainingSessionController::class, 'store'])->name('Admin.TrainingSessions.store');
     Route::get('/sessions/{session}/edit', [TrainingSessionController::class, 'edit'])->name('Admin.TrainingSessions.edit');
