@@ -13,3 +13,6 @@
 ### >php artisan migrate
 
 ### >php artisan db:seed
+
+##Please dont forget to run 
+### php artisan storag:link
