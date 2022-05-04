@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\TrainingPackageController;
 use App\Http\Controllers\TrainingSessionController;
+use App\Http\Controllers\GymController;
+use App\Models\GymManager;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityManagerController;
 use App\Http\Controllers\CityController;
@@ -70,6 +72,14 @@ Route::middleware('auth')->group(function () {
 
 
 Auth::routes();
+Route::get('Admin/gyms', [GymController::class, 'index'])->name('Admin.gyms');
+Route::get('/Admin/gyms-dt', [GymController::class, 'getGyms'])->name('Admin.gyms.index');
+Route::get('/Admin/gyms/create', [GymController::class, 'create'])->name('Admin.gyms.create');
+Route::post('Admin/gyms', [GymController::class, 'store'])->name('Admin.gyms.store');
+Route::post('Admin/gyms', [GymController::class, 'store'])->name('Admin.gyms.store');
+Route::delete('/Admin/gyms/{gym}', [GymController::class, 'destroy'])->name('Admin.gyms.destroy');
+Route::get('/Admin/gyms/edit/{gym}', [GymController::class, 'edit'])->name('Admin.gyms.edit');
+Route::put('/Admin/gyms/{gym}', [GymController::class, 'update'])->name('Admin.gyms.update');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});

@@ -183,7 +183,6 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
 
-
         /*
          * Package Service Providers...
          */
