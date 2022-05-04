@@ -96,19 +96,12 @@ class CityManagerController extends Controller
     public function edit($city_manager_id)
     {
 
-        // $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
-        // $cities = City::all();
-        // $users=User::all();
-        // return view('CityManager.edit', [
-        //     'cityManager'=>$cityManager,
-        //     'cities'=>$cities,
-        //     'users'=>$users
-        // ]);
+        $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
 
-        // $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
-        // $cities =City::all();
+        $cities =City::all();
+        $users=User::all();
 
-        // return view('CityManager.edit',['cityManager'=>$cityManager,'cities'=>$cities,'users'=>$users]);
+        return view('CityManager.edit',['cityManager'=>$cityManager,'cities'=>$cities,'users'=>$users]);
     }
 
     /**
@@ -120,22 +113,28 @@ class CityManagerController extends Controller
      */
     public function update(Request $request, $city_manager_id)
     {
-        // $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
-        // //$cityManager = request()->all();
+     $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
+           $data=$request->all();
+           $imgName = $cityManager->avatar_image;
 
-        // if ($request->hasFile('avatar_image')){
-        //     $file = $request->file('avatar_image');
-        //     $imageName = $file->getClientOriginalName();
-        //     $path = Storage::putFileAs('public/images', $request->file('avatar_image'), $imageName);
-        //     $cityManager->avatar_image=$imageName;
-        // }
+           if ($request->hasFile('avatar_image')) {
 
+               if ($imgName != null) {
+                   unlink(public_path('/public/images'.$imgName));
+               }
+               $img = $request->file('avatar_image');
+               $extension = $img->getClientOriginalExtension();
+               $imgName = "cityManager-" . uniqid() . ".$extension";
+               $img->move(public_path("/public/images"), $imgName);
+           }
 
-        // $cityManager->city_manager_id=request('city_manager');
-        // $cityManager->city_id=request('city_name');
-        // $cityManager->national_id=request('national_id');
-        // $cityManager->save();
-        // return redirect(route('citiesManagers.index'))->with('success','Updated Successfully');
+        CityManager::where('city_manager_id', $city_manager_id)->update([
+            'city_manager_id' => $data['city_manager'],
+            'city_id' =>$data['city_name'] ,
+            'national_id' => $data['national_id'],
+            'avatar_image'=>$imgName
+        ]);
+         return redirect(route('citiesManagers.index'))->with('success','Updated Successfully');
     }
 
     /**

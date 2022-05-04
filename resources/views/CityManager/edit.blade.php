@@ -53,7 +53,8 @@
             <div class="mb-3">
                 <div class="col-md-8 form-control" style="height: 85px;">
                     <img   id="original" src="{{asset('/storage/images/'.$cityManager->avatar_image)}}" height="60" width="60">
-                    <input type="file" name="image" value="{{ $cityManager->avatar_image }}" />
+                    <input type="file" name="avatar_image" value="{{ $cityManager->avatar_image }}" />
+                    <input type="hidden" name="image" value="{{ $cityManager->avatar_image }}"/>
             </div>
 
 

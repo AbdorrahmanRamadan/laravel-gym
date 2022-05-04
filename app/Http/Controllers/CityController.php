@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
  //use DataTables;
  use Yajra\DataTables\DataTables;
 //use Yajra\DataTables\Facades\DataTables;
+use Exception;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Session;
 
 
 class CityController extends Controller
@@ -116,9 +119,18 @@ class CityController extends Controller
      */
      public function destroy($id)
     {
-        $city =City::findOrFail($id);
-        $city->delete();
-        return redirect(route('cities.index'))->with('success','Deleted Successfully');
+        try{
+            $city =City::findOrFail($id);
+            $city->delete();
+            return redirect(route('cities.index'))->with('success','Deleted Successfully');
+        }
+        catch(\Throwable $e){
+
+            return redirect(route('cities.index'))->with('danger','This City Cannot be Deleted');
+
+
+    }
+
     }
 
 
