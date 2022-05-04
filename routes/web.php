@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityManagerController;
@@ -9,9 +10,9 @@ use App\Http\Controllers\TrainingPackageController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\TraineeController;
-
 use App\Http\Controllers\CoachController;
-
+use Illuminate\Support\Facades\Notification;
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,8 +23,13 @@ use App\Http\Controllers\CoachController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware('auth')->group(function () {
-    Route::get('/admin', function () {return view('Admin.index');});
+Auth::routes(['verify'=>true]);
+Route::middleware(['auth','verified'])->group(function () {
+
+    Route::get('/admin', function () {
+        Notification::send(User::all(),new \App\Notifications\Welcome());
+        return view('Admin.index');
+    });
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/attendance-dt', [AttendanceController::class, 'getAttendance'])->name('Admin.Attendance.getAttendance');
 
@@ -82,7 +88,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Auth::routes();
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});
