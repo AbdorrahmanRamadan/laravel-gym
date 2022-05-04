@@ -6,10 +6,7 @@
             <a href="{{ route('Admin.Trainees.create') }}" class="mt-4 btn btn-success">Create New Trainee</a>
 
 
-    <div class="text-center">
-            <a href="{{ route('Admin.Trainees.create') }}" class="mt-4 btn btn-success">Create/Add New Trainee</a>
 
-        </div>
         <table class="table mt-4">
             <thead>
               <tr>
@@ -29,7 +26,7 @@
 
 
             <tbody>
-            @foreach ( $trainees as $trainee)  
+            @foreach ( $trainees as $trainee)
               <tr>
                 <td>{{ $trainee->trainee_id }}</td>
                 <td>{{ $trainee->user->name }}</td>
@@ -52,17 +49,7 @@
             </tbody>
           </table>
 
-            <tbody>
 
-          
-              <tr>
-                <td>{{ $users->name }}</td>
-                <td>{{ $users->email }}</td>
-              </tr>
-            
-
-            </tbody>
-          </table>
 
 
 
