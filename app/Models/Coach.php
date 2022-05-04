@@ -5,22 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Trainee extends Model
+class Coach extends Model
 {
     use HasFactory;
 
     public $timestamps = false; //error update_at
 
     protected $fillable = [
-        'trainee_id',
-        'birth_date',
-        'gender',
-        'remaining_sessions',
-        'avatar_image',
+        'coach_id',
+        'national_id',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class,'trainee_id');
+        return $this->belongsTo(User::class,'coach_id');
     }
 }

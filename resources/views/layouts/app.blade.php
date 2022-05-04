@@ -4,6 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Laravel-Gym</title>
+
+
+
+
     <title>@yield('title')</title>
     <script src="{{ asset('resources/js/app.js') }}" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -18,8 +23,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
     <link href="{{ asset('resources/css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
+
+    @if (Session::has('danger'))
+    <div class="alert alert-danger" role="alert">
+      {{ Session::get('danger') }}
+      </div>
+    @endif
+
+
+ @if (Session::has('success'))
+    <div class="alert alert-success" role="alert">
+      {{ Session::get('success') }}
+      </div>
+    @endif
+
+
+
+
 <div class="wrapper">
     <div id="app">
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -186,7 +210,7 @@
             </div>
         </ul>
     </nav>
-
+ranches
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -216,5 +240,44 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     @stack('script')
+    <script>
+        $(function() {
+            $('#cities').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('cities-list') }}",
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'name', name: 'name' },
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
+
+        });
+
+
+        $(function() {
+            $('#citiesManagers').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('cities-Managers-list') }}",
+                columns: [
+                    { data: 'city_manager_id', name: 'city_manager_id' },
+                    { data: 'national_id', name: 'national_id' },
+                    { data: 'city_id', name: 'city_id' },
+                    { data: 'avatar_image', name: 'avatar_image' , orderable: false, searchable: false,
+                        render: function( data, type, full, meta ) {
+                            return `<img src="{{asset('storage/images/${data}')}}" class="w-50">`;
+                        }
+                    },
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
+
+        });
+
+
+    </script>
+
 </body>
 </html>
