@@ -1,19 +1,13 @@
 @extends('layouts.admin')
 
 @section('page_content')
-
     <div class="text-center">
             <a href="{{ route('Admin.Trainees.create') }}" class="mt-4 btn btn-success">Create New Trainee</a>
-
-
-
-        <table class="table mt-4">
+        </div>
+        <table class="table mt-4" id="admin-trainee">
             <thead>
               <tr>
-
                 <th scope="col">#</th>
-
-
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Birth Date</th>
@@ -24,33 +18,33 @@
               </tr>
             </thead>
 
-
             <tbody>
-            @foreach ( $trainees as $trainee)
-              <tr>
-                <td>{{ $trainee->trainee_id }}</td>
-                <td>{{ $trainee->user->name }}</td>
-                <td>{{ $trainee->user->email }}</td>
-                <td>{{ $trainee->birth_date }}</td>
-                <td>{{ $trainee->gender }}</td>
-                <td>{{ $trainee->remaining_sessions }}</td>
-                <td> <img src="{{ asset('storage/trainees_images/'.$trainee->avatar_image) }}" class="mr-2" width="100px" height="100px" ></td>
-
-                <!-- ajax delete!!! -->
-                <td>
-                    <form style="display: inline" method="POST" action="{{ route('Admin.Trainees.destroy', ['trainee'=> $trainee['trainee_id']]) }}">
-                    @method('DELETE')
-                    @csrf
-                    <button type="submit" onclick="return confirm('Are you sure you want to delete this trainee?');" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
-              </tr>
-            @endforeach
             </tbody>
           </table>
-
-
-
-
-
 @endsection
+@push('script')
+<script>
+    $(function() {
+        $('#admin-trainee').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('Admin.Trainees.getTrainees') }}",
+            columns: [
+                { data: 'user.id', name: 'user.id' },
+                { data: 'user.name', name: 'user.name' ,orderable: true, searchable: true},
+                { data: 'user.email', name: 'user.email' ,orderable: true, searchable: true},
+                { data: 'birth_date', name: 'birth_date' },
+                { data: 'gender', name: 'gender'},
+                { data: 'remaining_sessions', name: 'remaining_sessions' },
+                { data: 'avatar_image', name: 'avatar_image' , orderable: false, searchable: false,
+                    render: function( data, type, full, meta ) {
+                        return `<img src="{{asset('storage/trainees_images/${data}')}}" class="w-50">`;
+                    }
+                },
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+
+            ]
+        });
+    });
+    </script>
+@endpush

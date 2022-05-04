@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/coaches/{coach}',[CoachController::class, 'destroy'])->name('Admin.Coaches.destroy');
 
     Route::get('/trainees', [TraineeController::class, 'index'])->name('Admin.Trainees.index');
+    Route::get('/trainees-dt', [TraineeController::class, 'getTrainees'])->name('Admin.Trainees.getTrainees');
     Route::get('/trainees/create/', [TraineeController::class, 'create'])->name('Admin.Trainees.create');
     Route::post('/trainees', [TraineeController::class, 'store'])->name('Admin.Trainees.store');
     Route::delete('/trainees/{trainee}',[TraineeController::class, 'destroy'])->name('Admin.Trainees.destroy');

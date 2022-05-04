@@ -14,11 +14,24 @@ class TraineeController extends Controller
 {
     public function index()
     {
-        //User::where('role','=', 'trainee'])->all(); //only who has trainee role not in database
+        return view('Admin.Trainees.index');
+    }
 
-        $trainees = Trainee::all();   
-        
-        return view('Admin.Trainees.index',['trainees'=>$trainees]);
+    public function getTrainees(){
+        $trainees = Trainee::with('user')->select('trainees.*');
+        return datatables()->eloquent($trainees)->addIndexColumn()->addColumn('action', function($trainee){
+            return '<form class="d-inline" action="'.route('Admin.Trainees.destroy',  $trainee->trainee_id ).'" method="POST">
+            '.csrf_field().'
+            '.method_field("DELETE").'
+            <button type="submit" class="btn btn-danger btn-sm me-2"
+                onclick="return confirm(\'Are You Sure Want to Delete?\')"
+            ">Delete</a>
+            </form>';
+        })->editColumn('trainee_id', function($trainee){
+            return $trainee->user->name;
+        })->editColumn('trainee_id', function($trainee){
+            return $trainee->user->email;
+        })->rawColumns(['action'])->toJson();
     }
 
     public function create()
@@ -27,7 +40,7 @@ class TraineeController extends Controller
     }
 
     public function store(StoreTraineeRequest $request)
-    {   
+    {
         $submitted_data = request()->all();
 
         $User=User::create([
@@ -44,7 +57,7 @@ class TraineeController extends Controller
             $destination_path='public/trainees_images';
             $path=$request->file('avatar_image')->storeAs($destination_path,$image_name);
         }
-        
+
         Trainee::create([
             'trainee_id'=> $User['id'],
             'birth_date'=>$submitted_data['birth_date'],
@@ -64,7 +77,7 @@ class TraineeController extends Controller
         Trainee::where('trainee_id',$trainee_id)->delete();
 
         User::find($trainee_id)->delete();
-        
+
         return to_route('Admin.Trainees.index');
     }
 
