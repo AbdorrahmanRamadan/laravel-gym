@@ -107,22 +107,5 @@
     <div class="content-wrapper p-4">
         @yield('page_content')
     </div>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-        $(function() {
-            $('.data-table').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('cities.index') }}",
-                columns: [
-                    { data: 'id', name: 'id' },
-                    { data: 'name', name: 'name' },
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
-                ]
-            });
-
-        });
-    </script>
+    
 @endsection
