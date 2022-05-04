@@ -45,4 +45,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function cityManagers(){
+        return $this->hasMany(CityManager::class);
+    }
+
+    public function city(){
+        return $this->hasMany(City::class);
+    }
 }
