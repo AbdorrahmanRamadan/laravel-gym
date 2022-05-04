@@ -23,3 +23,27 @@
     </table> 
 </div>
 @endsection
+@push('script')
+<script>
+    $(function() {
+        $('#admin-gyms').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('Admin.gyms.index') }}",
+            columns: [
+                { data: 'id', name: 'id' },
+                { data: 'name', name: 'name' },
+                { data: 'created_at', name: 'created_at' },
+                { data: 'cover_image', name: 'cover_image' , orderable: false, searchable: false,
+                    render: function( data, type, full, meta ) {
+                        return `<img src="{{asset('storage/gymImages/${data}')}}" class="w-50">`;
+                    }
+                },
+                { data: 'city_id', name: 'city_id' },
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
+        });
+        
+    });
+    </script>
+@endpush
