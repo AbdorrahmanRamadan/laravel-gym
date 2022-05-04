@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Gym;
+use App\Models\City;
 use Illuminate\Http\Request;
 use App\DataTables\GymDataTable;
+use App\Http\Requests\StoreGymRequest;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Carbon;
+use Auth;
+use Illuminate\Support\Facades\Storage;
 class GymController extends Controller
 {
     public function index(){
@@ -25,7 +29,26 @@ class GymController extends Controller
         })->rawColumns(['action'])->toJson();
     }
     public function create(){
-        return view("Admin.gyms.create");
+        $cities = City::all();
+        return view("Admin.gyms.create",[
+            'cities'=>$cities
+        ]);
+    }
+    public function store(StoreGymRequest $request){
+        $gymInfo = request()->all();
+        $coverImage = $request->file('cover-image');
+        $name = $coverImage->getClientOriginalName();
+        $path = Storage::putFileAs(
+            'public/gymImages', $coverImage, $name
+        );
+        Gym::create([
+            'name'=>$gymInfo['name'],
+            'cover_image'=>$name,
+            'created_by'=>Auth::id(),
+            'city_id'=>$gymInfo['city'],
+        ]);
+        
+       return redirect('/Admin/gyms')->with('status', 'Gym is inserted successfully');
     }
     
 }

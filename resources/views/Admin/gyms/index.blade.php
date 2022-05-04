@@ -3,7 +3,7 @@
 
 <div class="row header">
     <h2 class="col-10">All Gyms</h2>
-    <a href="#" class="btn btn-success col-2">Create New Gym</a>
+    <a href="{{route('Admin.gyms.create')}}" class="btn btn-success col-2">Create New Gym</a>
 </div>
 <div class="mt-4 gyms-content">
     <table id="admin-gyms" class="table table-striped" style="width:100%">
