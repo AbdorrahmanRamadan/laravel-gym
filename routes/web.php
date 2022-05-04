@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\CoachController; 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,3 +23,10 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});
+
+Route::get('/coaches', [CoachController::class, 'index'])->name('Admin.Coaches.index');
+Route::get('/coaches/create/', [CoachController::class, 'create'])->name('Admin.Coaches.create');
+Route::post('/coaches', [CoachController::class, 'store'])->name('Admin.Coaches.store');
+Route::get('/coaches/{coach}/edit',[CoachController::class, 'edit'])->name('Admin.Coaches.edit');
+Route::put('/coaches/{coach}',[CoachController::class, 'update'])->name('Admin.Coaches.update');
+Route::delete('/coaches/{coach}',[CoachController::class, 'destroy'])->name('Admin.Coaches.destroy');
