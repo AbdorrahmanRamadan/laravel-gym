@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class TrainingPackage extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'price',
+        'number_of_sessions',
+    ];
 }

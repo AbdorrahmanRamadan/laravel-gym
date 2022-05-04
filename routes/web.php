@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\TrainingPackageController;
+use App\Http\Controllers\TrainingSessionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityManagerController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\TraineeController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -16,10 +20,9 @@ use App\Http\Controllers\CityController;
 */
 Route::middleware('auth')->group(function () {
     Route::get('/admin', function () {return view('Admin.index');});
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/gym_manager', function () {return view('GymManager.index');});
-    //Route::get('/city_manager', function () {return view('CityManager.index');});
 });
-// add city routes with middleware auth
 
 Route::group([ 'middleware' => 'auth'],function(){
     Route::get('cities', [CityController::class, 'index'])->name('cities.index');
@@ -32,7 +35,6 @@ Route::group([ 'middleware' => 'auth'],function(){
 });
 
 
-// add city managers routes with middleware auth
 Route::group([ 'middleware' => 'auth'],function(){
     Route::get('citiesManagers', [CityManagerController::class, 'index'])->name('citiesManagers.index');
     Route::get('cities-Managers-list', [CityManagerController::class, 'getCitiesManagers'])->name('cities-Managers-list');
@@ -43,7 +45,33 @@ Route::group([ 'middleware' => 'auth'],function(){
     Route::put('/citiesManager/{cityManager}/update', [CityManagerController::class, 'update'])->name('citiesManagers.update');
 });
 
+    Route::get('/city_manager', function () {return view('CityManager.index');}); 
+});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});
+
+
+Route::get('/trainees', [TraineeController::class, 'index'])->name('Admin.Trainees.index');
+Route::get('/trainees/create/', [TraineeController::class, 'create'])->name('Admin.Trainees.create');
+Route::post('/trainees', [TraineeController::class, 'store'])->name('Admin.Trainees.store');
+Route::delete('/trainees/{trainee}',[TraineeController::class, 'destroy'])->name('Admin.Trainees.destroy');
+
+Route::get('/packages', [TrainingPackageController::class, 'index'])->name('Admin.TrainingPackages.index');
+Route::get('/packages/create', [TrainingPackageController::class, 'create'])->name('Admin.TrainingPackages.create');
+Route::post('/packages', [TrainingPackageController::class, 'store'])->name('Admin.TrainingPackages.store');
+Route::get('/packages/{package}', [TrainingPackageController::class, 'show'])->name('Admin.TrainingPackages.show');
+Route::get('/packages/{package}/edit', [TrainingPackageController::class, 'edit'])->name('Admin.TrainingPackages.edit');
+Route::put('/packages/{package}', [TrainingPackageController::class, 'update'])->name('Admin.TrainingPackages.update');
+Route::delete('/packages/{package}', [TrainingPackageController::class, 'destroy'])->name('Admin.TrainingPackages.destroy');
+Route::get('/sessions', [TrainingSessionController::class, 'index'])->name('Admin.TrainingSessions.index');
+Route::get('/sessions/create', [TrainingSessionController::class, 'create'])->name('Admin.TrainingSessions.create');
+Route::post('/sessions', [TrainingSessionController::class, 'store'])->name('Admin.TrainingSessions.store');
+Route::get('/sessions/{session}', [TrainingSessionController::class, 'show'])->name('Admin.TrainingSessions.show');
+Route::get('/sessions/{session}/edit', [TrainingSessionController::class, 'edit'])->name('Admin.TrainingSessions.edit');
+Route::put('/sessions/{session}', [TrainingSessionController::class, 'update'])->name('Admin.TrainingSessions.update');
+Route::delete('/sessions/{session}', [TrainingSessionController::class, 'destroy'])->name('Admin.TrainingSessions.destroy');
+
+
