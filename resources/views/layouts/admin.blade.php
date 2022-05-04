@@ -73,7 +73,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('Admin.Coaches.index') }}" class="nav-link">
                             <p>
                                 Coaches
                             </p>
