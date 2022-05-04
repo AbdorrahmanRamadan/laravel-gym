@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityManagerController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\TraineeController; 
+use App\Http\Controllers\TraineeController;
 
-use App\Http\Controllers\CoachController; 
+use App\Http\Controllers\CoachController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +23,7 @@ use App\Http\Controllers\CoachController;
 Route::middleware('auth')->group(function () {
     Route::get('/admin', function () {return view('Admin.index');});
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-    Route::get('/gym_manager', function () {return view('GymManager.index');
-                                            
+
     Route::get('cities', [CityController::class, 'index'])->name('cities.index');
     Route::get('cities-list', [CityController::class, 'getCities'])->name('cities-list');
     Route::get('/cities/create/', [CityController::class, 'create'])->name('cities.create');
@@ -32,7 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cities/{city}/edit', [CityController::class, 'edit'])->name('cities.edit');
     Route::put('/cities/update/{city}', [CityController::class, 'update'])->name('cities.update');
     Route::delete('/cities/{city}', [CityController::class, 'destroy'])->name('cities.destroy');
-  
+
     Route::get('/coaches', [CoachController::class, 'index'])->name('Admin.Coaches.index');
     Route::get('/coaches/create/', [CoachController::class, 'create'])->name('Admin.Coaches.create');
     Route::post('/coaches', [CoachController::class, 'store'])->name('Admin.Coaches.store');
@@ -51,14 +50,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/packages/{package}/edit', [TrainingPackageController::class, 'edit'])->name('Admin.TrainingPackages.edit');
     Route::put('/packages/{package}', [TrainingPackageController::class, 'update'])->name('Admin.TrainingPackages.update');
     Route::delete('/packages/{package}', [TrainingPackageController::class, 'destroy'])->name('Admin.TrainingPackages.destroy');
-  
+
     Route::get('/sessions', [TrainingSessionController::class, 'index'])->name('Admin.TrainingSessions.index');
     Route::get('/sessions/create', [TrainingSessionController::class, 'create'])->name('Admin.TrainingSessions.create');
     Route::post('/sessions', [TrainingSessionController::class, 'store'])->name('Admin.TrainingSessions.store');
     Route::get('/sessions/{session}/edit', [TrainingSessionController::class, 'edit'])->name('Admin.TrainingSessions.edit');
     Route::put('/sessions/{session}', [TrainingSessionController::class, 'update'])->name('Admin.TrainingSessions.update');
     Route::delete('/sessions/{session}', [TrainingSessionController::class, 'destroy'])->name('Admin.TrainingSessions.destroy');
-  
+
     Route::get('citiesManagers', [CityManagerController::class, 'index'])->name('citiesManagers.index');
     Route::get('cities-Managers-list', [CityManagerController::class, 'getCitiesManagers'])->name('cities-Managers-list');
     Route::get('/citiesManager/create/', [CityManagerController::class, 'create'])->name('citiesManagers.create');
@@ -69,10 +68,8 @@ Route::middleware('auth')->group(function () {
 
 });
 
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});
-
-
-
