@@ -45,13 +45,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('Admin.Trainees.index') }}" class="nav-link">
                             <p>
                                 Trainees
                             </p>
                         </a>
                     </li>
-
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <p>
@@ -67,7 +66,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('Admin.TrainingPackages.index') }}" class="nav-link">
                             <p>
                                 Training Packages
                             </p>
@@ -81,7 +80,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('attendance.index') }}" class="nav-link">
                             <p>
                                 Attendance
                             </p>
@@ -108,4 +107,22 @@
     <div class="content-wrapper">
         @yield('page_content')
     </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+    <script>
+        $(function() {
+            $('.data-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('cities.index') }}",
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'name', name: 'name' },
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
+
+        });
+    </script>
 @endsection
