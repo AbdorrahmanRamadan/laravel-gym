@@ -14,7 +14,7 @@ use Carbon\Carbon;
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
+                <table id="attendance" class="table table-bordered table-hover">
                   <thead>
                   <tr>
                     <th>Trainee Name</th>
@@ -25,20 +25,7 @@ use Carbon\Carbon;
 
                   </tr>
                   </thead>
-                  <tbody>
-                  @foreach ( $attendance as  $attend)
-                  <tr>
-                    <td>{{$attend->user->name}}</td>
-                    <td>{{$attend->training_session->name}}</td>
-                    <td> {{Carbon::parse($attend->attendance_time)->format('m/d')}} </td>
-                    <td> {{Carbon::parse($attend->attendance_time)->format('D')}} </td>
-                    <td> {{Carbon::parse($attend->attendance_time)->format('H:i:s')}} </td>
 
-
-
-                  </tr>
-                    @endforeach
-                  </tbody>
 
                 </table>
               </div>
@@ -56,50 +43,30 @@ use Carbon\Carbon;
       <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
 
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src="assets/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="assets/plugins/jszip/jszip.min.js"></script>
-<script src="assets/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="assets/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- AdminLTE App -->
-<script src="assets/dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<!-- Page specific script -->
-<script>
-  $(function () {
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
-</script>
 @endsection
+@push('script')
+    <script>
+        $(function() {
+            $('#attendance').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('Admin.Attendance.getAttendance') }}",
+                columns: [
+                    { data: 'user.name', name:'user.name',  orderable: true, searchable: true},
+                    { data: 'training_session.name', name:'training_session.name',  orderable: true, searchable: true},
+                    { data: 'attendance_date', name:'attendance_date',  orderable: true, searchable: true},
+                    { data: 'attendance_day', name:'attendance_day',  orderable: true, searchable: true},
+                    { data: 'attendance_time', name:'attendance_time',  orderable: true, searchable: true},
+
+
+
+
+                ]
+            });
+
+        });
+    </script>
+@endpush
