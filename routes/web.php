@@ -3,7 +3,7 @@
 use App\Http\Controllers\TrainingPackageController;
 use App\Http\Controllers\TrainingSessionController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\TraineeController; 
 
 /*
@@ -18,9 +18,11 @@ use App\Http\Controllers\TraineeController;
 */
 Route::middleware('auth')->group(function () {
     Route::get('/admin', function () {return view('Admin.index');});
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/gym_manager', function () {return view('GymManager.index');});
     Route::get('/city_manager', function () {return view('CityManager.index');}); 
 });
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
