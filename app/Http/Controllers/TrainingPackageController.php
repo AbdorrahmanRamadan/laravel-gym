@@ -6,13 +6,28 @@ use App\Http\Requests\StoreTrainingPackageRequest;
 use App\Http\Requests\UpdateTrainingPackageRequest;
 use App\Models\TrainingPackage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class TrainingPackageController extends Controller
 {
     public function index()
     {
-        $TrainingPackages = TrainingPackage::paginate(7);
-        return view('Admin.TrainingPackages.index',['TrainingPackages' =>$TrainingPackages]);
+        return view('Admin.TrainingPackages.index');
+    }
+
+    public function getTrainingPackages(){
+        $TrainingPackages = TrainingPackage::query();
+        return datatables()->eloquent($TrainingPackages)->addIndexColumn()->addColumn('action', function($TrainingPackage){
+            return '<a href="'.route('Admin.TrainingPackages.edit', $TrainingPackage->id).'" class="btn btn-primary">Edit</a><form class="d-inline" action="'.route('Admin.TrainingPackages.destroy',  $TrainingPackage->id ).'" method="POST">
+	            '.csrf_field().'
+	            '.method_field("DELETE").'
+	            <button type="submit" class="btn btn-danger"
+	                onclick="return confirm(\'Are You Sure Want to Delete?\')"
+	            ">Delete</a>
+	            </form>';
+        })->editColumn('price', function($TrainingPackage){
+            return $TrainingPackage->price/100;
+        })->rawColumns(['action'])->toJson();
     }
 
     public function create()

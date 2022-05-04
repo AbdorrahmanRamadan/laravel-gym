@@ -5,7 +5,7 @@
     <div class="text-center">
             <a href="{{ route('Admin.TrainingSessions.create') }}" class="mt-4 btn btn-success">Create A New Session</a>
         </div>
-        <table class="table mt-4">
+        <table class="table mt-4" id="sessions_table">
             <thead>
               <tr>
                 <th scope="col">Name</th>
@@ -16,25 +16,28 @@
               </tr>
             </thead>
             <tbody>
-            @foreach ( $TrainingSessions as $TrainingSession)
-              <tr>
-                  <td>{{$TrainingSession['name']}}</td>
-                  <td>{{$TrainingSession['start_at']}}</td>
-                  <td>{{$TrainingSession['end_at']}}</td>
-                  <td>{{$TrainingSession->gym->name}}</td>
-                  <td>
-                      <a class="btn btn-primary" href="{{ route('Admin.TrainingSessions.edit', ['session' => $TrainingSession['id']]) }}"> Edit </a>
-                      <form method="POST" action="{{route('Admin.TrainingSessions.destroy',['session'=>$TrainingSession['id']])}}" style="display: inline">
-                          @csrf
-                          @method('delete')
-                          <button class="btn btn-danger" type="submit" onclick="return confirm('you are about to delete this record \nif you are sure press ok')">Delete</button>
-                      </form>
-                  </td>
-              </tr>
-            @endforeach
+
 
             </tbody>
           </table>
 
 
 @endsection
+@push('script')
+    <script>
+        $(function() {
+            $('#sessions_table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('Admin.TrainingSessions.getTrainingSessions')}}",
+                columns: [
+                    { data: 'name', name: 'name' },
+                    { data: 'start_at', name: 'start_at' },
+                    { data: 'end_at', name: 'end_at' },
+                    { data: 'gym.name', name: 'gym.name' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
+        });
+    </script>
+@endpush

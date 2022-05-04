@@ -5,7 +5,7 @@
     <div class="text-center">
             <a href="{{ route('Admin.TrainingPackages.create') }}" class="mt-4 btn btn-success">Create A New Package</a>
         </div>
-        <table class="table mt-4">
+        <table class="table mt-4" id="packages_table">
             <thead>
               <tr>
                 <th scope="col">Name</th>
@@ -15,24 +15,25 @@
               </tr>
             </thead>
             <tbody>
-            @foreach ( $TrainingPackages as $TrainingPackage)
-              <tr>
-                  <td>{{$TrainingPackage['name']}}</td>
-                  <td>{{$TrainingPackage['price']/100}}</td>
-                  <td>{{$TrainingPackage['number_of_sessions']}}</td>
-                  <td>
-                      <a class="btn btn-primary" href="{{ route('Admin.TrainingPackages.edit', ['package' => $TrainingPackage['id']]) }}"> Edit </a>
-                      <form method="POST" action="{{route('Admin.TrainingPackages.destroy',['package'=>$TrainingPackage['id']])}}" style="display: inline">
-                          @csrf
-                          @method('delete')
-                          <button class="btn btn-danger" type="submit" onclick="return confirm('you are about to delete this record \nif you are sure press ok')">Delete</button>
-                      </form>
-                  </td>
-              </tr>
-            @endforeach
-
             </tbody>
           </table>
 
 
 @endsection
+@push('script')
+    <script>
+        $(function() {
+            $('#packages_table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('Admin.TrainingPackages.getTrainingPackages')}}",
+                columns: [
+                    { data: 'name', name: 'name' },
+                    { data: 'price', name: 'price' },
+                    { data: 'number_of_sessions', name: 'number_of_sessions' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
+        });
+    </script>
+@endpush

@@ -12,9 +12,23 @@ class TrainingSessionController extends Controller
 {
     public function index()
     {
-        $TrainingSessions = TrainingSession::all();
-        $gyms = Gym::all();
-        return view('Admin.TrainingSessions.index',['TrainingSessions' =>$TrainingSessions,'gyms' => $gyms]);
+        return view('Admin.TrainingSessions.index');
+    }
+
+    public function getTrainingSessions()
+    {
+        $TrainingSessions = TrainingSession::with('gym')->select('training_sessions.*');
+        return datatables()->eloquent($TrainingSessions)->addIndexColumn()->addColumn('action', function ($TrainingSession) {
+            return '<a href="' . route('Admin.TrainingSessions.edit', $TrainingSession->id) . '" class="btn btn-primary">Edit</a><form class="d-inline" action="' . route('Admin.TrainingSessions.destroy', $TrainingSession->id) . '" method="POST">
+	            ' . csrf_field() . '
+	            ' . method_field("DELETE") . '
+	            <button type="submit" class="btn btn-danger"
+	                onclick="return confirm(\'Are You Sure Want to Delete?\')"
+	            ">Delete</a>
+	            </form>';
+        })->editColumn('gym_id', function($TrainingSession){
+            return $TrainingSession->gym->name;
+            })->rawColumns(['action'])->toJson();
     }
 
     public function create()
