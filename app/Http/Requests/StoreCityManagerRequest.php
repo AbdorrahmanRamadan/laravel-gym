@@ -24,10 +24,10 @@ class StoreCityManagerRequest extends FormRequest
     public function rules()
     {
         return [
-            'national_id' => ['unique:city_managers','required','digits:16'],
+            'national_id' => ['unique:city_managers','required','digits:14'],
             'city_id' => ['unique:cities','exists:cities,id'],
             'city_manager_id'=>['unique:city_managers','exists:users,id'],
-            'avatar_image'=>['mimes:png,jpg']
+            'avatar_image'=>['image','mimes:png,jpg']
         ];
     }
 
@@ -35,7 +35,7 @@ class StoreCityManagerRequest extends FormRequest
     {
         return [
             'national_id.required' => 'National ID Field Is Required',
-            'national_id.digits' => 'ID Length is 16 Digits',
+            'national_id.digits' => 'ID Length is 14 Digits',
             'national_id.unique'=>'National ID Field Must Be Unique',
             'city_id.required'=>'City Field Is Required',
             'city_id.unique'=>'City Field Must Be Unique',

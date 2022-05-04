@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\City;
 use App\Models\User;
 use App\Http\Requests\StoreCityManagerRequest;
+use App\Http\Requests\UpdateCityManagerRequest;
 
 class CityManagerController extends Controller
 {
@@ -39,6 +40,7 @@ class CityManagerController extends Controller
             return $citiesManagers->cities->name;
         })->rawColumns(['action'])->toJson();
     }
+
 
     //<a href="'. route("citiesManagers.destroy", $citiesManagers->city_manager_id) .'" class="edit btn btn-danger btn-sm">Delete</a>
     /**
@@ -74,18 +76,7 @@ class CityManagerController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $cityManager =CityManager::findOrFail($id);
-        $cities =City::all();
-        return view('CityManager.index',compact(['cityManager','cities']));
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -111,45 +102,35 @@ class CityManagerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $city_manager_id)
+    public function update(UpdateCityManagerRequest $request, $city_manager_id)
     {
      $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
            $data=$request->all();
-           $imgName = $cityManager->avatar_image;
-
-           if ($request->hasFile('avatar_image')) {
-
-               if ($imgName != null) {
-                   unlink(public_path('/public/images'.$imgName));
-               }
-               $img = $request->file('avatar_image');
-               $extension = $img->getClientOriginalExtension();
-               $imgName = "cityManager-" . uniqid() . ".$extension";
-               $img->move(public_path("/public/images"), $imgName);
-           }
+         $imgName = $cityManager->avatar_image;
+        $coverImage = $request->file('avatar_image');
+        $name = $coverImage->getClientOriginalName();
+        unlink(storage_path('app/public/images/'.$imgName));
+        $path = Storage::putFileAs(
+            'public/images', $coverImage, $name
+        );
 
         CityManager::where('city_manager_id', $city_manager_id)->update([
             'city_manager_id' => $data['city_manager'],
             'city_id' =>$data['city_name'] ,
             'national_id' => $data['national_id'],
-            'avatar_image'=>$imgName
+            'avatar_image'=>$name
         ]);
          return redirect(route('citiesManagers.index'))->with('success','Updated Successfully');
     }
-
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($city_manager_id)
     {
-        //$cityManager =CityManager::findOrFail($id);
-        // $cityManager =CityManager::where('city_manager_id',$id)->first();
-        // $cityManager->delete();
-        // Storage::delete('images/'.$cityManager->avatar_image);
-
+        $cityManager =CityManager::where('city_manager_id',$city_manager_id)->delete();
         return redirect(route('citiesManagers.index'))->with('success','Deleted Successfully');
 
     }

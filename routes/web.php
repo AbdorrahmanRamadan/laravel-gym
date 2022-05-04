@@ -25,6 +25,7 @@ use App\Http\Controllers\CoachController;
 Route::middleware('auth')->group(function () {
     Route::get('/admin', function () {return view('Admin.index');});
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/attendance-dt', [AttendanceController::class, 'getAttendance'])->name('Admin.Attendance.getAttendance');
 
     Route::get('cities', [CityController::class, 'index'])->name('cities.index');
     Route::get('cities-list', [CityController::class, 'getCities'])->name('cities-list');

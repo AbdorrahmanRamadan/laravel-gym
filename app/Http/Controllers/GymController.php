@@ -9,7 +9,7 @@ use App\DataTables\GymDataTable;
 use App\Http\Requests\StoreGymRequest;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Carbon;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 class GymController extends Controller
 {
@@ -53,7 +53,7 @@ class GymController extends Controller
             'created_by'=>Auth::id(),
             'city_id'=>$gymInfo['city'],
         ]);
-        
+
        return redirect('/Admin/gyms')->with('status', 'Gym is inserted successfully');
     }
     public function edit($gymId){
@@ -64,7 +64,7 @@ class GymController extends Controller
             'cities'=>$cities
         ]);
     }
-   
+
     public function update(StoreGymRequest $request, $gymId)
     {
         $gymInfo = request()->all();
@@ -83,7 +83,7 @@ class GymController extends Controller
         ]);
         return redirect('/Admin/gyms')->with('status', 'Gym Data is updated successfully');
     }
-    
+
     public function destroy($gymId)
     {
         $gym = Gym::find($gymId);
@@ -91,5 +91,5 @@ class GymController extends Controller
         Storage::delete('public/gymImages/'.$gym->cover_image);
         return redirect('/Admin/gyms')->with('status', 'Gym is deleted successfully');
     }
-    
+
 }

@@ -18,9 +18,9 @@
             </tr>
         </thead>
         <tbody>
-           
+
         </tbody>
-    </table> 
+    </table>
 </div>
 @endsection
 @push('script')
@@ -43,7 +43,7 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
-        
+
     });
     </script>
 @endpush

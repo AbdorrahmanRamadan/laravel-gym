@@ -24,4 +24,31 @@
     </table>
 </div>
 @endsection
+@push('script')
+    <script>
+
+
+        $(function() {
+            $('#citiesManagers').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('cities-Managers-list') }}",
+                columns: [
+                    { data: 'city_manager_id', name: 'city_manager_id' },
+                    { data: 'national_id', name: 'national_id' },
+                    { data: 'city_id', name: 'city_id' },
+                    { data: 'avatar_image', name: 'avatar_image' , orderable: false, searchable: false,
+                        render: function( data, type, full, meta ) {
+                            return `<img src="{{asset('storage/images/${data}')}}" class="w-50">`;
+                        }
+                    },
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
+
+        });
+
+
+    </script>
+@endpush
 
