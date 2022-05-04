@@ -23,11 +23,11 @@ class CityManagerController extends Controller
     public function getCitiesManagers()
 
     {
-        $citiesManagers = CityManager::query();
-        return datatables()->eloquent($citiesManagers)->addIndexColumn()->addColumn('action', function($citiesManagers){
+        $cityManagers = CityManager::with('user','cities')->select('city_managers.*');;
+        return datatables()->eloquent($cityManagers)->addIndexColumn()->addColumn('action', function($cityManagers){
             return '
-            <a href="'. route("citiesManagers.edit", $citiesManagers->city_manager_id) .'"  class="edit btn btn-success btn-sm me-2">Edit</a>
-            <form class="d-inline" action="'.route('citiesManagers.destroy',  $citiesManagers->city_manager_id).'" method="POST">
+            <a href="'. route("citiesManagers.edit", $cityManagers->city_manager_id) .'"  class="edit btn btn-success btn-sm me-2">Edit</a>
+            <form class="d-inline" action="'.route('citiesManagers.destroy',  $cityManagers->city_manager_id).'" method="POST">
             '.csrf_field().'
             '.method_field("DELETE").'
             <button type="submit" class="btn btn-danger btn-sm me-2"
@@ -36,8 +36,8 @@ class CityManagerController extends Controller
             </form>';
 
 
-        })->editColumn('city_id', function($citiesManagers){
-            return $citiesManagers->cities->name;
+        })->editColumn('city_id', function($cityManagers){
+            return $cityManagers->cities->name;
         })->rawColumns(['action'])->toJson();
     }
 

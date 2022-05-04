@@ -34,15 +34,14 @@
                 serverSide: true,
                 ajax: "{{ route('cities-Managers-list') }}",
                 columns: [
-                    { data: 'city_manager_id', name: 'city_manager_id' },
-                    { data: 'national_id', name: 'national_id' },
-                    { data: 'city_id', name: 'city_id' },
+                    { data: 'city_manager_id', name: 'city_manager_id',orderable: true, searchable: true },
+                    { data: 'national_id', name: 'national_id',orderable: true, searchable: true },
+                    { data: 'cities.name', name: 'cities.name' },
                     { data: 'avatar_image', name: 'avatar_image' , orderable: false, searchable: false,
                         render: function( data, type, full, meta ) {
                             return `<img src="{{asset('storage/images/${data}')}}" class="w-50">`;
                         }
                     },
-                    {data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });
 
