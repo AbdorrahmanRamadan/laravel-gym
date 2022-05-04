@@ -1,9 +1,9 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('title') Training Packages @endsection
 @section('page_content')
 
     <div class="text-center">
-            <a href="{{ route('Admin.TrainingPackages.create') }}" class="mt-4 btn btn-success">Create A New Package</a>
+            <a href="{{ route('TrainingPackages.create') }}" class="mt-4 btn btn-success">Create A New Package</a>
         </div>
         <table class="table mt-4" id="packages_table">
             <thead>
@@ -26,7 +26,7 @@
             $('#packages_table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('Admin.TrainingPackages.getTrainingPackages')}}",
+                ajax: "{{ route('TrainingPackages.getTrainingPackages')}}",
                 columns: [
                     { data: 'name', name: 'name' },
                     { data: 'price', name: 'price' },

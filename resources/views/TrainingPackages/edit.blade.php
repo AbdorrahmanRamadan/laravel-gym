@@ -1,7 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('title') Edit Training Package @endsection
 @section('page_content')
-<form method="POST" action="{{ route('Admin.TrainingPackages.update',['package'=>$package['id']])}}" class="m-4">
+<form method="POST" action="{{ route('TrainingPackages.update',['package'=>$package['id']])}}" class="m-4">
             @csrf
             @method('PUT')
             <div class="mb-3">

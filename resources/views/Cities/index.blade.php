@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('page_content')
 
 
@@ -13,7 +13,7 @@
 <div class="row header">
     <h2 class="col-10">All Cities</h2>
     <br>
-    <a href="{{ route('cities.create') }}" style="margin-top: 10px;" class="btn btn-success col-1" name="create_record" id="create_record">Add City</a>
+    <a href="{{ route('Cities.create') }}" style="margin-top: 10px;" class="btn btn-success col-1" name="create_record" id="create_record">Add City</a>
 </div>
 <br>
 <div class="container">
@@ -22,7 +22,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th width="100px">Action</th>
+                <th width="200px">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -39,7 +39,7 @@ $(function () {
 var table = $('.data-table').DataTable({
 processing: true,
 serverSide: true,
-ajax: "{{ route('cities-list') }}",
+ajax: "{{ route('Cities.getCities') }}",
 columns: [
 {data: 'id', name: 'id'},
 {data: 'name', name: 'name'},

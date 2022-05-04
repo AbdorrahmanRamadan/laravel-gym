@@ -1,11 +1,11 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('page_content')
 
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">Edit Gym</h3>
     </div>
-    <form id="quickForm" method="POST" action="{{route('Admin.gyms.update', $gym->id)}}" enctype="multipart/form-data">
+    <form id="quickForm" method="POST" action="{{route('Gyms.update', $gym->id)}}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
         <div class="card-body">
@@ -27,7 +27,7 @@
             </div>
             <div class="form-group">
                 <label for="formFile" class="form-label">Gym Cover Image</label>
-                <input name="cover-image"  class="form-control" type="file" id="formFile">    
+                <input name="cover-image"  class="form-control" type="file" id="formFile">
             </div>
         </div>
         <div class="card-footer">

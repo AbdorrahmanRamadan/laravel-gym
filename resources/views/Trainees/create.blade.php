@@ -1,8 +1,8 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('page_content')
 
-<form method="POST" action="{{ route('Admin.Trainees.store')}}" class="m-4" enctype="multipart/form-data">
+<form method="POST" action="{{ route('Trainees.store')}}" class="m-4" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label">Name</label>

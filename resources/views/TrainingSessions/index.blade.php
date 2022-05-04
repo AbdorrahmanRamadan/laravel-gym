@@ -1,9 +1,9 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('title') Training Sessions @endsection
 @section('page_content')
 
     <div class="text-center">
-            <a href="{{ route('Admin.TrainingSessions.create') }}" class="mt-4 btn btn-success">Create A New Session</a>
+            <a href="{{ route('TrainingSessions.create') }}" class="mt-4 btn btn-success">Create A New Session</a>
         </div>
         <table class="table mt-4" id="sessions_table">
             <thead>
@@ -29,7 +29,7 @@
             $('#sessions_table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('Admin.TrainingSessions.getTrainingSessions')}}",
+                ajax: "{{ route('TrainingSessions.getTrainingSessions')}}",
                 columns: [
                     { data: 'name', name: 'name' },
                     { data: 'start_at', name: 'start_at' },

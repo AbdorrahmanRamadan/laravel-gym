@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('page_content')
 
 <div class="card card-primary">
@@ -8,7 +8,7 @@
     @error('image_extension')
         <div class="error">invalid</div>
     @enderror
-    <form id="quickForm" method="POST" action="{{route('Admin.gyms.store')}}" enctype="multipart/form-data">
+    <form id="quickForm" method="POST" action="{{route('Gyms.store')}}" enctype="multipart/form-data">
         @csrf
         <div class="card-body">
             <div class="form-group">
@@ -25,7 +25,7 @@
             </div>
             <div class="form-group">
                 <label for="formFile" class="form-label">Gym Cover Image</label>
-                <input name="cover-image" class="form-control" type="file" id="formFile">    
+                <input name="cover-image" class="form-control" type="file" id="formFile">
             </div>
         </div>
         <div class="card-footer">

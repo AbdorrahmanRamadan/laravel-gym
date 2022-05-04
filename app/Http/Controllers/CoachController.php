@@ -13,18 +13,18 @@ class CoachController extends Controller
 {
     public function index()
     {
-        $coaches = Coach::all();   
+        $coaches = Coach::all();
 
-        return view('Admin.Coaches.index',['coaches'=>$coaches]);
+        return view('Coaches.index',['coaches'=>$coaches]);
     }
 
     public function create()
     {
-        return view('Admin.Coaches.create');
+        return view('Coaches.create');
     }
 
     public function store(StoreCoachRequest $request)
-    {   
+    {
         $submitted_data = request()->all();
 
         $User=User::create([
@@ -39,20 +39,20 @@ class CoachController extends Controller
             'national_id'=> $submitted_data['national_id'],
         ]);
 
-        return to_route('Admin.Coaches.index');
+        return to_route('Coaches.index');
     }
 
     public function edit($coach_id)
     {
        $coach = Coach::where('coach_id', $coach_id)->first();
 
-       return view('Admin.Coaches.edit',['coach'=> $coach]);
+       return view('Coaches.edit',['coach'=> $coach]);
     }
 
     public function update(StoreCoachRequest $request, $coach_id)
     {
         $modified_data = request()->all();
-        
+
         Coach::where('coach_id', $coach_id)->update([
             'national_id'=>$modified_data['national_id'],
         ]);
@@ -62,8 +62,8 @@ class CoachController extends Controller
             'email'=>$modified_data['email'],
             'password'=>Hash::make($modified_data['password']),
         ]);
-            
-        return to_route('Admin.Coaches.index');
+
+        return to_route('Coaches.index');
     }
 
 
@@ -73,7 +73,7 @@ class CoachController extends Controller
 
         User::find($coach_id)->delete();
 
-        return to_route('Admin.Coaches.index');
+        return to_route('Coaches.index');
     }
 
 }

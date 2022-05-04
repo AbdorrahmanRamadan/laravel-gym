@@ -1,9 +1,9 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('page_content')
 
 <div class="row header">
     <h2 class="col-10">All Gyms</h2>
-    <a href="{{route('Admin.gyms.create')}}" class="btn btn-success col-2">Create New Gym</a>
+    <a href="{{route('Gyms.create')}}" class="btn btn-success col-2">Create New Gym</a>
 </div>
 <div class="mt-4 gyms-content">
     <table id="admin-gyms" class="table table-striped" style="width:100%">
@@ -29,7 +29,7 @@
         $('#admin-gyms').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('Admin.gyms.index') }}",
+            ajax: "{{ route('Gyms.getGyms') }}",
             columns: [
                 { data: 'id', name: 'id' },
                 { data: 'name', name: 'name' },

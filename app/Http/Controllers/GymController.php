@@ -14,14 +14,14 @@ use Illuminate\Support\Facades\Storage;
 class GymController extends Controller
 {
     public function index(){
-        return view("Admin.gyms.index");
+        return view("Gyms.index");
     }
     public function getGyms()
 
     {
         $gyms =  Gym::with('user')->select('gyms.*');
         return datatables()->eloquent($gyms)->addIndexColumn()->addColumn('action', function($gym){
-            return '<a href="'.route('Admin.gyms.edit', $gym->id).'" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Admin.gyms.destroy',  $gym->id ).'" method="POST">
+            return '<a href="'.route('Gyms.edit', $gym->id).'" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Gyms.destroy',  $gym->id ).'" method="POST">
             '.csrf_field().'
             '.method_field("DELETE").'
             <button type="submit" class="btn btn-danger btn-sm me-2"
@@ -36,7 +36,7 @@ class GymController extends Controller
     }
     public function create(){
         $cities = City::all();
-        return view("Admin.gyms.create",[
+        return view("Gyms.create",[
             'cities'=>$cities
         ]);
     }
@@ -54,12 +54,12 @@ class GymController extends Controller
             'city_id'=>$gymInfo['city'],
         ]);
 
-       return redirect('/Admin/gyms')->with('status', 'Gym is inserted successfully');
+       return redirect(route('Gyms.index'))->with('status', 'Gym is inserted successfully');
     }
     public function edit($gymId){
         $gymInfo = Gym::find($gymId);
         $cities = City::all();
-        return view('Admin.gyms.edit', [
+        return view('Gyms.edit', [
             'gym' => $gymInfo,
             'cities'=>$cities
         ]);
@@ -81,7 +81,7 @@ class GymController extends Controller
             'created_by'=>Auth::id(),
             'city_id'=>$gymInfo['city']
         ]);
-        return redirect('/Admin/gyms')->with('status', 'Gym Data is updated successfully');
+        return redirect(route('Gyms.index'))->with('status', 'Gym Data is updated successfully');
     }
 
     public function destroy($gymId)
@@ -89,7 +89,7 @@ class GymController extends Controller
         $gym = Gym::find($gymId);
         $gym->delete();
         Storage::delete('public/gymImages/'.$gym->cover_image);
-        return redirect('/Admin/gyms')->with('status', 'Gym is deleted successfully');
+        return redirect(route('Gyms.index'))->with('status', 'Gym is deleted successfully');
     }
 
 }

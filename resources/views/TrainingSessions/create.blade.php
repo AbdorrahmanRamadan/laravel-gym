@@ -1,7 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('title') Create A Training Session @endsection
 @section('page_content')
-<form method="POST" action="{{ route('Admin.TrainingSessions.store')}}" class="m-4">
+<form method="POST" action="{{ route('TrainingSessions.store')}}" class="m-4">
             @csrf
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Name</label>

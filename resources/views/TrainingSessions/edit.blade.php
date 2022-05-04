@@ -1,7 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('title') Edit Training Session @endsection
 @section('page_content')
-<form method="POST" action="{{ route('Admin.TrainingSessions.update',['session'=>$session['id']])}}" class="m-4">
+<form method="POST" action="{{ route('TrainingSessions.update',['session'=>$session['id']])}}" class="m-4">
             @csrf
             @method('PUT')
             <div class="mb-3">

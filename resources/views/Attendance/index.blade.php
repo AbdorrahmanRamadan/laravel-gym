@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 ?>
-@extends('layouts.admin')
+@extends('layouts.app')
 @section('page_content')
 <section class="content">
       <div class="container-fluid">
@@ -53,7 +53,7 @@ use Carbon\Carbon;
             $('#attendance').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('Admin.Attendance.getAttendance') }}",
+                ajax: "{{ route('Attendance.getAttendance') }}",
                 columns: [
                     { data: 'user.name', name:'user.name',  orderable: true, searchable: true},
                     { data: 'training_session.name', name:'training_session.name',  orderable: true, searchable: true},

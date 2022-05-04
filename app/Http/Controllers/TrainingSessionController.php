@@ -12,14 +12,15 @@ class TrainingSessionController extends Controller
 {
     public function index()
     {
-        return view('Admin.TrainingSessions.index');
+        return view('TrainingSessions.index');
     }
 
     public function getTrainingSessions()
     {
         $TrainingSessions = TrainingSession::with('gym')->select('training_sessions.*');
         return datatables()->eloquent($TrainingSessions)->addIndexColumn()->addColumn('action', function ($TrainingSession) {
-            return '<a href="' . route('Admin.TrainingSessions.edit', $TrainingSession->id) . '" class="btn btn-primary">Edit</a><form class="d-inline" action="' . route('Admin.TrainingSessions.destroy', $TrainingSession->id) . '" method="POST">
+            return '<a href="' . route('TrainingSessions.edit', $TrainingSession->id) . '" class="btn btn-primary">Edit</a><form class="d-inline" action="' .
+            route('TrainingSessions.destroy', $TrainingSession->id) . '" method="POST">
 	            ' . csrf_field() . '
 	            ' . method_field("DELETE") . '
 	            <button type="submit" class="btn btn-danger"
@@ -35,7 +36,7 @@ class TrainingSessionController extends Controller
     {
         $gyms = Gym::all();
 
-        return view('Admin.TrainingSessions.create',[
+        return view('TrainingSessions.create',[
             'gyms' => $gyms,
         ]);
     }
@@ -48,14 +49,14 @@ class TrainingSessionController extends Controller
             'end_at'=>$request['end_at'],
             'gym_id'=>$request['gym_id'],
         ]);
-        return to_route('Admin.TrainingSessions.index');
+        return to_route('TrainingSessions.index');
     }
     public function edit($SessionId)
     {
         $gyms = Gym::all();
         $session=TrainingSession::find($SessionId);
         $selectedGym=Gym::find($session['gym_id']);
-        return view('Admin.TrainingSessions.edit',[
+        return view('TrainingSessions.edit',[
             'session' => $session,
             'gyms' => $gyms,
             'selectedGym' => $selectedGym,
@@ -71,12 +72,12 @@ class TrainingSessionController extends Controller
                 'end_at'=>$request['end_at'],
                 'gym_id'=>$request['gym_id'],
             ]);
-        return to_route('Admin.TrainingSessions.index');
+        return to_route('TrainingSessions.index');
     }
 
     public function destroy($SessionId)
     {
         TrainingSession::find($SessionId)->delete();
-        return to_route('Admin.TrainingSessions.index');
+        return to_route('TrainingSessions.index');
     }
 }

@@ -1,8 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.app')
+
+
 @section('page_content')
-
-
-
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -12,13 +11,14 @@
         </ul>
     </div>
 @endif
-        <form method="POST" action="{{ route('cities.store') }}" style="border:2px;"  >
+        <form  method="POST" action="{{ route('Cities.update',$city->id) }}" >
             @csrf
+            @method('PUT')
             <div class="mb-3" style="margin-left: 380px; margin-top:87px;">
                 <label for="exampleFormControlInput1" class="form-label">City Name</label>
-                <input type="text" style="width: 45%" class="form-control" name="city_name" id="exampleFormControlInput1" placeholder="Enter City Name" value="{{ old('name') }}">
+                <input type="text" class="form-control"  style="width: 45%" id="exampleFormControlInput1" name="city_name" value="{{ $city->name }}">
             </div>
-          <button class="btn btn-success" style="margin-left:380px;">Create</button>
+          <button class="btn btn-success" style="margin-left:550px;">Edit</button>
         </form>
 @endsection
 
