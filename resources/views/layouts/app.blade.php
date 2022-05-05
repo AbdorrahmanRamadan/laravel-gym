@@ -187,15 +187,9 @@
         </ul>
     </nav>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+@guest
+@yield('page_content')
+@else
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <a href="#" class="brand-link">
@@ -328,6 +322,15 @@
         </div>
     </aside>
     <div class="content-wrapper p-4">
+    @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         @yield('page_content')
     </div>
     <aside class="control-sidebar control-sidebar-dark">
@@ -338,6 +341,8 @@
     </aside>
     </div>
 </div>
+
+
 <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
@@ -348,5 +353,6 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
 @stack('script')
+@endguest
 </body>
 </html>
