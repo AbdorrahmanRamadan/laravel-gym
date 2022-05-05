@@ -44,7 +44,7 @@ Route::post('/sanctum/token', function (Request $request) {
 Auth::routes(['verify'=>true]);
 
 Route::post('/trainees/login', [TraineeController::class, 'login'])->middleware('auth:sanctum');
-Route::post('/trainees/{id}/attend/{s_id}', [TraineeController::class, 'attend'])->middleware('auth:sanctum');
+Route::get('/trainees/{s_id}/attend', [TraineeController::class, 'attend'])->middleware('auth:sanctum');
 Route::get('/test', [TraineeController::class, 'index'])->name('Admin.Trainees.store')->middleware('auth:sanctum')
 ;
 

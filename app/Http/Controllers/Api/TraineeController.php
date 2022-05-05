@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\TrainingSession;
 use App\Models\Attendance;
+use Illuminate\Support\Facades\Auth;
 class TraineeController extends Controller implements MustVerifyEmail
 {
     public function index(){
@@ -55,12 +56,16 @@ class TraineeController extends Controller implements MustVerifyEmail
 
     }
 
-    public function attend($id,$s_id){
-      $trainee=Trainee::find($id);
+    public function attend($s_id){
+        $id=Auth::id();
+
+      $trainee=Trainee::where('trainee_id',$id)->first();
       $session=TrainingSession::find($s_id);
+
       $remaining_sessions=$trainee->remaining_sessions;
+
       if($remaining_sessions>0){
-          TrainingSession::where('id', $s_id)->update([
+          Trainee::where('trainee_id', $id)->update([
               'remaining_sessions' => $remaining_sessions -1,
           ]);
           Attendance::create([
@@ -68,8 +73,9 @@ class TraineeController extends Controller implements MustVerifyEmail
               'training_session_id'=>$s_id,
               'attendance_time'=>now(),
           ]);
+          return "suc";
       }
-
+return "fail";
 
 
     }
