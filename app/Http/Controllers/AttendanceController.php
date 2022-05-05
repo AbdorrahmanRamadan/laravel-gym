@@ -12,7 +12,7 @@ class AttendanceController extends Controller
     //
     public function index()
     {
-        return view('Admin.Attendance.index');
+        return view('Attendance.index');
 
     }
     public function getAttendance(){

@@ -26,11 +26,10 @@ class StoreCoachRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> ['required','min:3'], 
-            'email'=> ['required',Rule::unique('users', 'email')->ignore($this->user),'email'], 
+            'name'=> ['required','min:3'],
+            'email'=> ['required',Rule::unique('users', 'email')->ignore($this->user),'email'],
             'password'=> ['required','min:8'],
-            'password_confirmation' => 'required_with:password|same:password|min:8',
-            'national_id'=> ['required','min:14'], 
+            'national_id'=> ['required','min:14'],
         ];
     }
 }

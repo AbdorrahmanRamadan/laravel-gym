@@ -1,7 +1,8 @@
-@extends('layouts.admin')
+@extends('layouts.app')
+@section('title') Create A City Manager @endsection
 
 
-@section('content')
+@section('page_content')
 
 @if ($errors->any())
     <div class="alert alert-danger">

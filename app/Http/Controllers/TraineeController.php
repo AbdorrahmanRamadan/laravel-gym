@@ -14,13 +14,13 @@ class TraineeController extends Controller
 {
     public function index()
     {
-        return view('Admin.Trainees.index');
+        return view('Trainees.index');
     }
 
     public function getTrainees(){
         $trainees = Trainee::with('user')->select('trainees.*');
         return datatables()->eloquent($trainees)->addIndexColumn()->addColumn('action', function($trainee){
-            return '<form class="d-inline" action="'.route('Admin.Trainees.destroy',  $trainee->trainee_id ).'" method="POST">
+            return '<form class="d-inline" action="'.route('Trainees.destroy',  $trainee->trainee_id ).'" method="POST">
             '.csrf_field().'
             '.method_field("DELETE").'
             <button type="submit" class="btn btn-danger btn-sm me-2"
@@ -36,7 +36,7 @@ class TraineeController extends Controller
 
     public function create()
     {
-        return view('Admin.Trainees.create');
+        return view('Trainees.create');
     }
 
     public function store(StoreTraineeRequest $request)
@@ -66,7 +66,7 @@ class TraineeController extends Controller
             'avatar_image'=>$image_name,
         ]);
 
-        return to_route('Admin.Trainees.index');
+        return to_route('Trainees.index');
     }
 
     public function destroy($trainee_id)
@@ -78,7 +78,7 @@ class TraineeController extends Controller
 
         User::find($trainee_id)->delete();
 
-        return to_route('Admin.Trainees.index');
+        return to_route('Trainees.index');
     }
 
 }

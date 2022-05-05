@@ -12,14 +12,14 @@ class TrainingPackageController extends Controller
 {
     public function index()
     {
-        return view('Admin.TrainingPackages.index');
+        return view('TrainingPackages.index');
     }
 
     public function getTrainingPackages()
     {
         $TrainingPackages = TrainingPackage::query();
         return datatables()->eloquent($TrainingPackages)->addIndexColumn()->addColumn('action', function ($TrainingPackage) {
-            return '<a href="' . route('Admin.TrainingPackages.edit', $TrainingPackage->id) . '" class="btn btn-primary">Edit</a><form class="d-inline" action="' . route('Admin.TrainingPackages.destroy',  $TrainingPackage->id) . '" method="POST">
+            return '<a href="' . route('TrainingPackages.edit', $TrainingPackage->id) . '" class="btn btn-primary">Edit</a><form class="d-inline" action="' . route('TrainingPackages.destroy',  $TrainingPackage->id) . '" method="POST">
 	            ' . csrf_field() . '
 	            ' . method_field("DELETE") . '
 	            <button type="submit" class="btn btn-danger"
@@ -30,11 +30,11 @@ class TrainingPackageController extends Controller
             return $TrainingPackage->price / 100;
         })->rawColumns(['action'])->toJson();
     }
-    
+
 
     public function create()
     {
-        return view('Admin.TrainingPackages.create');
+        return view('TrainingPackages.create');
     }
 
     public function store(StoreTrainingPackageRequest  $request)
@@ -44,12 +44,12 @@ class TrainingPackageController extends Controller
             'price' => $request['price'] * 100,
             'number_of_sessions' => $request['number_of_sessions'],
         ]);
-        return to_route('Admin.TrainingPackages.index');
+        return to_route('TrainingPackages.index');
     }
     public function edit($packageId)
     {
         $package = TrainingPackage::find($packageId);
-        return view('Admin.TrainingPackages.edit', [
+        return view('TrainingPackages.edit', [
             'package' => $package,
         ]);
     }
@@ -62,12 +62,12 @@ class TrainingPackageController extends Controller
                 'price' => $request['price'] * 100,
                 'number_of_sessions' => $request['number_of_sessions'],
             ]);
-        return to_route('Admin.TrainingPackages.index');
+        return to_route('TrainingPackages.index');
     }
 
     public function destroy($packageId)
     {
         TrainingPackage::find($packageId)->delete();
-        return to_route('Admin.TrainingPackages.index');
+        return to_route('TrainingPackages.index');
     }
 }
