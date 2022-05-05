@@ -13,9 +13,9 @@ class CoachController extends Controller
 {
     public function index()
     {
-        $coaches = Coach::all();   
-
-        return view('Admin.Coaches.index',['coaches'=>$coaches]);
+        //$coaches = Coach::all();
+       // dd(Coach::where('coach_id', 2)->first()->training_sessions);
+        //return view('Admin.Coaches.index',['coaches'=>$coaches]);
     }
 
     public function create()
@@ -24,7 +24,7 @@ class CoachController extends Controller
     }
 
     public function store(StoreCoachRequest $request)
-    {   
+    {
         $submitted_data = request()->all();
 
         $User=User::create([
@@ -52,7 +52,7 @@ class CoachController extends Controller
     public function update(StoreCoachRequest $request, $coach_id)
     {
         $modified_data = request()->all();
-        
+
         Coach::where('coach_id', $coach_id)->update([
             'national_id'=>$modified_data['national_id'],
         ]);
@@ -62,7 +62,7 @@ class CoachController extends Controller
             'email'=>$modified_data['email'],
             'password'=>Hash::make($modified_data['password']),
         ]);
-            
+
         return to_route('Admin.Coaches.index');
     }
 
