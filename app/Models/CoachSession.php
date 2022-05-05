@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class CoachSession extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'coach_id',
+        'training_session_id',
+    ];
 }
