@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('coaches', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->unique();
             $table->bigInteger('national_id')->unique();
-            $table->foreign('coach_id')->references('id')->on('users');
+            $table->foreign('id')->references('id')->on('users');
         });
     }
 

@@ -1,9 +1,10 @@
 @extends('layouts.app')
-
+@section('title') Revenue
+@endsection
 @section('page_content')
-<h4 class="mb-2 mt-4">Total Revenue</h4>
-<div class="col-md-3">
-    <div class="card card-success">
+<h4 class="mb-2 mt-4">Revenue</h4>
+<div class="col-md-3 " >
+    <div class="card card-success" style="width: 450px;">
         <div class="card-header">
             <h3 class="card-title">Revenue:</h3>
             <div class="card-tools">
@@ -13,6 +14,8 @@
         </div>
         <div class="card-body">
         Revenue of GYM equals {{ $revenue }} $
+        <br>
+        And total number of Gyms {{$gyms}}
         </div>
     </div>
 </div>
