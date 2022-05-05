@@ -29,7 +29,7 @@ class StoreCoachRequest extends FormRequest
             'name'=> ['required','min:3'],
             'email'=> ['required',Rule::unique('users', 'email')->ignore($this->user),'email'],
             'password'=> ['required','min:8'],
-            'national_id'=> ['required','min:14'],
+            'national_id'=> ['required','digits:14'],
         ];
     }
 }

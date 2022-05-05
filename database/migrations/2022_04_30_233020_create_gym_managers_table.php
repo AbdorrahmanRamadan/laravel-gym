@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('gym_managers', function (Blueprint $table) {
-            $table->unsignedBigInteger('gym_manager_id')->unique();
+            $table->unsignedBigInteger('id')->unique();
             $table->bigInteger('national_id')->unique();
             $table->unsignedBigInteger('gym_id');
             $table->string('avatar_image');
