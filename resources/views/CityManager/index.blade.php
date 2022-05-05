@@ -16,6 +16,8 @@
                 <th class="gym-id">ID</th>
                 <th class="city-name">National ID</th>
                 <th class="created-at">City Name</th>
+                <th class="created-at">Manager Name</th>
+                <th class="created-at">Manager Email</th>
                 <th class="cover-image">Avatar</th>
                 <th class="actions no-sort">Action</th>
             </tr>
@@ -27,29 +29,33 @@
 </div>
 @endsection
 @push('script')
-    <script>
+<script>
 
 
-        $(function() {
-            $('#citiesManagers').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('cities-Managers-list') }}",
-                columns: [
-                    { data: 'city_manager_id', name: 'city_manager_id',orderable: true, searchable: true },
-                    { data: 'national_id', name: 'national_id',orderable: true, searchable: true },
-                    { data: 'cities.name', name: 'cities.name' },
-                    { data: 'avatar_image', name: 'avatar_image' , orderable: false, searchable: false,
-                        render: function( data, type, full, meta ) {
-                            return `<img src="{{asset('storage/images/${data}')}}" class="w-50">`;
-                        }
-                    },
-                ]
-            });
-
+    $(function() {
+        $('#citiesManagers').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{{ route('cities-Managers-list') }}",
+            columns: [
+                { data: 'city_manager_id', name: 'city_manager_id',orderable: true, searchable: true },
+                { data: 'national_id', name: 'national_id',orderable: true, searchable: true },
+                { data: 'city_id', name: 'city_id' },
+                { data: 'user.name', name: 'user.name' },
+                { data: 'user.email', name: 'user.email' },
+                { data: 'avatar_image', name: 'avatar_image' , orderable: false, searchable: false,
+                    render: function( data, type, full, meta ) {
+                        return `<img src="{{asset('storage/images/${data}')}}" class="w-50">`;
+                    }
+                },
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
         });
 
+    });
 
-    </script>
+
+</script>
+
 @endpush
 

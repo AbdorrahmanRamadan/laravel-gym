@@ -1,58 +1,65 @@
+
+
 @extends('layouts.app')
+@section('page_content')
 @section('title') Create A City Manager @endsection
 
-
-@section('page_content')
-
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Add City Manager</h3>
     </div>
-@endif
-        <form method="POST" action="{{ route('citiesManagers.store') }}"  enctype="multipart/form-data" style="width:560px;margin-left:384px;margin-top:87px;">
-            @csrf
+    @error('image_extension')
+        <div class="error">invalid</div>
+    @enderror
+    <form id="quickForm" method="POST" action="{{ route('citiesManagers.store') }}"  enctype="multipart/form-data" enctype="multipart/form-data">
+        @csrf
+        <div class="card-body">
 
-            <div class="mb-3">
-                <label for="exampleFormControlInput1" class="form-label">National ID</label>
-                <input type="text" class="form-control  " name="national_id" id="exampleFormControlInput1" placeholder="Enter National ID" value="{{ old('national_id') }}">
-
+            <div class="form-group">
+                <label for="exampleInputName">National ID</label>
+                <input name="national_id" type="text" class="form-control" id="exampleInputName" placeholder="Enter National ID" value="{{ old('national_id') }}">
             </div>
 
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">City Manager </label>
-                <select class="form-control" name="city_manager">
-                    @foreach ($cityManagers as $cityManager)
-                    <option value="{{ $cityManager->id }}">
-                        {{ $cityManager->name }}
-                    </option>
-                @endforeach
-                </select>
+            <div class="form-group">
+                <label for="exampleInputName"> Name</label>
+                <input name="name" type="text" class="form-control" id="exampleInputName" placeholder="Enter Name" value="{{ old('name') }}">
             </div>
 
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">City</label>
+            <div class="form-group">
+                <label for="exampleInputName">Email Address</label>
+                <input name="email" type="email" class="form-control" id="exampleInputName" placeholder="Text@example.com" value="{{ old('email') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputName">Password</label>
+                <input name="password" type="password" class="form-control" id="exampleInputName" placeholder="Enter Password" value="{{ old('password') }}">
+            </div>
+
+
+
+            <div class="form-group">
+                <label>Choose City </label>
                 <select class="form-control" name="city_name">
-                    @foreach ($cities as $city)
-                    <option value="{{ $city->id }}">
-                       {{ $city->name }}
-                    </option>
-                @endforeach
+                    @foreach($filtered as $city)
+                    <option value="{{ $city->id }} ">
+                        {{ $city->name }}
+                        </option>
+@endforeach
                 </select>
             </div>
 
-
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Upload Image</label>
-                <input type="file" class="form-control" name="avatar_image"  />
-
+            <div class="form-group">
+                <label for="formFile" class="form-label">City Manager Image</label>
+                <input name="avatar_image" class="form-control" type="file" id="formFile">
             </div>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </form>
+</div>
 
 
-          <button class="btn btn-success">Create</button>
-        </form>
 @endsection
+
 

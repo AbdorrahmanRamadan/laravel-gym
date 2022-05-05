@@ -23,7 +23,20 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
     <link href="{{ asset('resources/css/app.css') }}" rel="stylesheet">
 </head>
+
 <body class="hold-transition sidebar-mini">
+    @if (Session::has('danger'))
+<div class="alert alert-danger" role="alert">
+  {{ Session::get('danger') }}
+  </div>
+@endif
+
+
+@if (Session::has('success'))
+<div class="alert alert-success" role="alert">
+  {{ Session::get('success') }}
+  </div>
+@endif
 <div class="wrapper">
     <div id="app">
     <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -359,5 +372,9 @@
 
 @stack('script')
 @endguest
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+@stack('script')
 </body>
 </html>
