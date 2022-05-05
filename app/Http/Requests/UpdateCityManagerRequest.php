@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Models\User;
 
 class UpdateCityManagerRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class UpdateCityManagerRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+       return auth()->check();
     }
 
     /**
@@ -24,10 +26,11 @@ class UpdateCityManagerRequest extends FormRequest
     public function rules()
     {
         return [
-            'national_id' => ['digits:14'],
-            'city_id' => ['unique:cities','exists:cities,id'],
-            'city_manager_id'=>['unique:city_managers','exists:users,id'],
-            'avatar_image'=>['image','mimes:png,jpg']
+            // 'national_id' => ['digits:14'],
+            'city_id' => ['unique','exists:cities,id'],
+            'avatar_image'=>['image','mimes:png,jpg'],
+            // 'email'=>[ Rule::unique((new User)->getTable())->ignore(auth()->id())],
+            // 'password'=>['min:8','max:16']
         ];
     }
 
@@ -35,11 +38,16 @@ class UpdateCityManagerRequest extends FormRequest
     {
         return [
             'national_id.digits' => 'ID Length is 14 Digits',
-            'city_id.unique'=>'City Field Must Be Unique',
-            'city_manager_id.unique' => 'City Manager Must Be Unique',
             'avatar_image.mimes' => 'Only Allowed Extensions Are png,jpg',
             'city_id.exists'=>'The Selected City Not Found',
-            'city_manager_id.exists'=>'The Selected Manager Not Found',
+            'name.required' => 'Name Field Is Required',
+            'email.required' => 'Email Field Is Required',
+            'email.unique'=>'Email Field Must Be Unique',
+            'city_id.required' => 'City Field Is Unique',
+            'email.email'=>'Email Field Must Be a valid Email',
+            'password.required' => 'Password Field Is Required',
+            'password.min' => 'Minimum Password Field Is 8 characters',
+            'password.max' => 'Maximum Password Field Is 8 characters',
         ];
     }
 }
