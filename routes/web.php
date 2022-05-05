@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\GymManager;
+use App\Http\Controllers\GymManagerController;
 use App\Http\Controllers\TrainingPackageController;
 use App\Http\Controllers\TrainingSessionController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/city_manager', function () {return view('CityManager.index');});
 });
 Auth::routes();
+Route::get('admin/gym-managers', [GymManagerController::class, 'index'])->name('Admin.GymManagers');
+Route::get('/admin/gym-managers-dt', [GymManagerController::class, 'getGymManagers'])->name('Admin.GymManagers.index');
+Route::delete('/admin/gym-managers/{gymManagerId}', [GymManagerController::class, 'destroy'])->name('Admin.GymManagers.destroy');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});

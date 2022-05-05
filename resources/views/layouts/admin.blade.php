@@ -31,7 +31,7 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('Admin.GymManagers.index') }}" class="nav-link">
                             <p>
                                 Gym Managers
                             </p>
@@ -105,7 +105,7 @@
             </nav>
         </div>
     </aside>
-    <div class="content-wrapper">
+    <div class="content-wrapper p-4">
         @yield('page_content')
     </div>
 @endsection
