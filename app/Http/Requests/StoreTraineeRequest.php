@@ -26,9 +26,9 @@ class StoreTraineeRequest extends FormRequest
     {
         //validate and error messages
         return [
-            'name'=> ['required','min:3'], 
-            'email'=> ['required',Rule::unique('users', 'email')->ignore($this->user),'email'], 
-            'password'=> ['required','min:8'],
+            'name'=> ['required','min:3'],
+            'email'=> ['required',Rule::unique('users', 'email')->ignore($this->user),'email'],
+            'password'=> ['required','min:3'],
             'password_confirmation' => 'required_with:password|same:password|min:8',
             'birth_date'=> ['date'],
             'gender'=> 'in:Male,Female',
