@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTrainingSessionRequest;
-use App\Http\Requests\UpdateTrainingSessionRequest;
 use App\Models\Coach;
 use App\Models\CoachSession;
 use App\Models\Gym;
@@ -93,7 +92,7 @@ class TrainingSessionController extends Controller
         ]);
     }
 
-    public function update(UpdateTrainingSessionRequest $request,$SessionId)
+    public function update(StoreTrainingSessionRequest $request,$SessionId)
     {
         TrainingSession::where('id',$SessionId)
             ->update([
@@ -115,6 +114,7 @@ class TrainingSessionController extends Controller
 
     public function destroy($SessionId)
     {
+        CoachSession::where('training_session_id',$SessionId)->delete();
         TrainingSession::find($SessionId)->delete();
         return to_route('TrainingSessions.index');
     }
