@@ -35,7 +35,7 @@ class CoachController extends Controller
 
     public function create()
     {
-        return view('Coaches.create');
+        return view('Admin.Coaches.create');
     }
 
     public function store(StoreCoachRequest $request)
@@ -54,14 +54,14 @@ class CoachController extends Controller
             'national_id'=> $submitted_data['national_id'],
         ]);
 
-        return to_route('Coaches.index');
+        return to_route('Admin.Coaches.index');
     }
 
     public function edit($coach_id)
     {
        $coach = Coach::where('coach_id', $coach_id)->first();
 
-       return view('Coaches.edit',['coach'=> $coach]);
+       return view('Admin.Coaches.edit',['coach'=> $coach]);
     }
 
     public function update(StoreCoachRequest $request, $coach_id)
@@ -78,7 +78,7 @@ class CoachController extends Controller
             'password'=>Hash::make($modified_data['password']),
         ]);
 
-        return to_route('Coaches.index');
+        return to_route('Admin.Coaches.index');
     }
 
 
@@ -88,7 +88,7 @@ class CoachController extends Controller
 
         User::find($coach_id)->delete();
 
-        return to_route('Coaches.index');
+        return to_route('Admin.Coaches.index');
     }
 
 }
