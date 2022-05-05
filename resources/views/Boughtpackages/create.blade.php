@@ -58,11 +58,7 @@
                             </div>
                         </div>
 
-                        <div class='form-row row'>
-                            <div class='col-md-12 hide error form-group'>
-                                <div class='alert-danger alert'>Fix the errors before you begin.</div>
-                            </div>
-                        </div>
+                     
                         <div class="form-group">
                 <label>Choose Trainee</label>
                 <select class="form-control" name="trainee">
@@ -90,7 +86,7 @@
 
                         <div class="row">
                             <div class="col-xs-12">
-                                <button class="btn btn-danger btn-lg btn-block" type="submit">Pay Now (₹100)</button>
+                                <button class="btn btn-danger btn-lg btn-block" type="submit">Pay Now </button>
                             </div>
                         </div>
 

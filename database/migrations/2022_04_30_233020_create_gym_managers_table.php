@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('gym_id');
             $table->string('avatar_image');
             $table->timestamps();
-            $table->foreign('gym_manager_id')->references('id')->on('users');
+            $table->foreign('id')->references('id')->on('users');
             $table->foreign('gym_id')->references('id')->on('gyms');
         });
     }

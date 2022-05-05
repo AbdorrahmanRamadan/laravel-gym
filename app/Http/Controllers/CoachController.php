@@ -19,23 +19,23 @@ class CoachController extends Controller
     public function getCoaches(){
         $coaches = Coach::with('user')->select('coaches.*');
         return datatables()->eloquent($coaches)->addIndexColumn()->addColumn('action', function($coach){
-            return '<a href="'.route('Coaches.edit', $coach->coach_id).'" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Coaches.destroy',  $coach->coach_id ).'" method="POST">
+            return '<a href="'.route('Coaches.edit', $coach->id).'" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Coaches.destroy',  $coach->id ).'" method="POST">
             '.csrf_field().'
             '.method_field("DELETE").'
             <button type="submit" class="btn btn-danger btn-sm me-2"
                 onclick="return confirm(\'Are You Sure Want to Delete?\')"
             ">Delete</a>
             </form>';
-        })->editColumn('coach_id', function($coach){
+        })->editColumn('id', function($coach){
             return $coach->user->name;
-        })->editColumn('coach_id', function($coach){
+        })->editColumn('id', function($coach){
             return $coach->user->email;
         })->rawColumns(['action'])->toJson();
     }
 
     public function create()
     {
-        return view('Admin.Coaches.create');
+        return view('Coaches.create');
     }
 
     public function store(StoreCoachRequest $request)
@@ -50,25 +50,25 @@ class CoachController extends Controller
         ]);
 
         Coach::create([
-            'coach_id'=> $User['id'],
+            'id'=> $User['id'],
             'national_id'=> $submitted_data['national_id'],
         ]);
 
-        return to_route('Admin.Coaches.index');
+        return to_route('Coaches.index');
     }
 
     public function edit($coach_id)
     {
-       $coach = Coach::where('coach_id', $coach_id)->first();
+       $coach = Coach::where('id', $coach_id)->first();
 
-       return view('Admin.Coaches.edit',['coach'=> $coach]);
+       return view('Coaches.edit',['coach'=> $coach]);
     }
 
     public function update(StoreCoachRequest $request, $coach_id)
     {
         $modified_data = request()->all();
 
-        Coach::where('coach_id', $coach_id)->update([
+        Coach::where('id', $coach_id)->update([
             'national_id'=>$modified_data['national_id'],
         ]);
 
@@ -78,17 +78,17 @@ class CoachController extends Controller
             'password'=>Hash::make($modified_data['password']),
         ]);
 
-        return to_route('Admin.Coaches.index');
+        return to_route('Coaches.index');
     }
 
 
     public function destroy($coach_id)
     {
-        Coach::where('coach_id',$coach_id)->delete();
+        Coach::where('id',$coach_id)->delete();
 
         User::find($coach_id)->delete();
 
-        return to_route('Admin.Coaches.index');
+        return to_route('Coaches.index');
     }
 
 }

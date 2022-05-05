@@ -15,6 +15,7 @@ class RevenueController extends Controller
 {
     public function index(){
 
+
         $userRole = Auth::user()->roles->pluck('name')[0];
 
         if($userRole == 'admin'){
