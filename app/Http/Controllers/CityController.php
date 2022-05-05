@@ -7,8 +7,8 @@ use App\Models\City;
 use App\Models\User;
 use App\Notifications\Welcome;
 use Illuminate\Http\Request;
- //use DataTables;
- use Yajra\DataTables\DataTables;
+//use DataTables;
+use Yajra\DataTables\DataTables;
 //use Yajra\DataTables\Facades\DataTables;
 use Exception;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -22,27 +22,21 @@ class CityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){
-
-        $user=User::all();
-        $delay = now()->addSecond(40);
-        Notification::send($user, new Welcome(),$delay);
-        return view('Admin.cities.index');
-
+    public function index()
+    {
         return view('Cities.index');
     }
     public function getCities()
 
     {
-        //$cities = City::query();
-        $cities = City::select(['id', 'name','created_at', 'updated_at']);
+        $cities = City::select(['id', 'name', 'created_at', 'updated_at']);
 
-        return datatables()->eloquent($cities)->addIndexColumn()->addColumn('action', function($city){
+        return datatables()->eloquent($cities)->addIndexColumn()->addColumn('action', function ($city) {
             return '
-            <a href="'. route("Cities.edit", $city->id) .'" class="edit btn btn-success btn-sm me-2">Edit</a>
-            <form class="d-inline" action="'.route('Cities.destroy',  $city->id).'" method="POST">
-            '.csrf_field().'
-            '.method_field("DELETE").'
+            <a href="' . route("Cities.edit", $city->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a>
+            <form class="d-inline" action="' . route('Cities.destroy',  $city->id) . '" method="POST">
+            ' . csrf_field() . '
+            ' . method_field("DELETE") . '
             <button type="submit" class="btn btn-danger btn-sm me-2"
                 onclick="return confirm(\'Are You Sure Want to Delete?\')"
             ">Delete</a>
@@ -50,31 +44,20 @@ class CityController extends Controller
             ';
         })->rawColumns(['action'])->toJson();
     }
-    //<a href="'. route("cities.destroy" .'" class="edit btn btn-danger btn-sm me-2" id="deleteCityBtn" data-id="'.$city->id.'">Delete</a>
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view('Cities.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
         $city = new City();
-        $city->name=request('city_name');
+        $city->name = request('city_name');
         $city->save();
-        return redirect(route('Cities.index'))->with('success','Added Successfully');
-
+        return redirect(route('Cities.index'))->with('success', 'Added Successfully');
     }
 
     /**
@@ -85,8 +68,8 @@ class CityController extends Controller
      */
     public function show($id)
     {
-        $city=City::findorFail($id);
-        return view('Cities.show',compact('city'));
+        $city = City::findorFail($id);
+        return view('Cities.show', compact('city'));
     }
 
     /**
@@ -97,10 +80,10 @@ class CityController extends Controller
      */
     public function edit($id)
     {
-        $city =City::findOrFail($id);
+        $city = City::findOrFail($id);
 
 
-        return view('Cities.edit',compact('city'));
+        return view('Cities.edit', compact('city'));
     }
 
     /**
@@ -112,11 +95,10 @@ class CityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $city =City::findOrFail($id);
-        $city->name=request('city_name');
+        $city = City::findOrFail($id);
+        $city->name = request('city_name');
         $city->save();
-        return redirect(route('Cities.index'))->with('success','Updated Successfully');
-
+        return redirect(route('Cities.index'))->with('success', 'Updated Successfully');
     }
 
     /**
@@ -125,21 +107,15 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-     public function destroy($id)
+    public function destroy($id)
     {
-        try{
-            $city =City::findOrFail($id);
+        try {
+            $city = City::findOrFail($id);
             $city->delete();
-            return redirect(route('Cities.index'))->with('success','Deleted Successfully');
+            return redirect(route('Cities.index'))->with('success', 'Deleted Successfully');
+        } catch (\Throwable $e) {
+
+            return redirect(route('Cities.index'))->with('danger', 'This City Cannot be Deleted');
         }
-        catch(\Throwable $e){
-
-            return redirect(route('Cities.index'))->with('danger','This City Cannot be Deleted');
-
-
     }
-
-    }
-
-
 }

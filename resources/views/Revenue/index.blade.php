@@ -15,7 +15,6 @@
         <div class="card-body">
         Revenue of GYM equals {{ $revenue }} $
         <br>
-        And total number of Gyms {{$gyms}}
         </div>
     </div>
 </div>
