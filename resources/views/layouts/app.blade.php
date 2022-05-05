@@ -4,8 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>@yield('title')</title>
     <script src="{{ asset('resources/js/app.js') }}" defer></script>
+    @yield('strip')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -187,7 +191,142 @@
         </ul>
     </nav>
 
-        @if ($errors->any())
+@guest
+@yield('page_content')
+@else
+
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="#" class="brand-link">
+
+            <span class="brand-text font-weight-light">Laravel gym</span>
+        </a>
+        <div class="sidebar">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="{{ asset('assets/dist/img/profile-placeholder.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                </div>
+                @role('admin')
+                <div class="info">
+                    <a  class="d-block">Admin</a>
+                </div>
+                @endrole
+                @role('city_manager')
+                <div class="info">
+                    <a  class="d-block">City Manager</a>
+                </div>
+                @endrole
+                @role('gym_manager')
+                <div class="info">
+                    <a  class="d-block">Gym Manager</a>
+                </div>
+                @endrole
+            </div>
+
+            <div class="form-inline">
+                <div class="input-group" data-widget="sidebar-search">
+                    <input class="form-control form-control-sidebar" type="search" placeholder="Search"
+                           aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-sidebar">
+                            <i class="fas fa-search fa-fw"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    @role('admin')
+                    <li class="nav-item">
+                        <a href="{{ route('citiesManagers.index') }}" class="nav-link">
+                            <p>
+                                City Managers
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('Cities.index') }}" class="nav-link">
+                            <p>
+                                Cities
+                            </p>
+                        </a>
+                    </li>
+                    @endrole
+                    @hasanyrole('city_manager|admin')
+                     <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <p>
+                                Gym Managers
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('Gyms.index') }}" class="nav-link">
+                            <p>
+                                Gyms
+                            </p>
+                        </a>
+                    </li>
+                    @endrole
+                    <li class="nav-item">
+                        <a href="{{ route('Trainees.index') }}" class="nav-link">
+                            <p>
+                                Trainees
+                            </p>
+                        </a>
+                    </li>
+
+                    @role('admin')
+                    <li class="nav-item">
+                        <a href="{{ route('TrainingPackages.index') }}" class="nav-link">
+                            <p>
+                                Training Packages
+                            </p>
+                        </a>
+                    </li>
+                    @endrole
+                    <li class="nav-item">
+                        <a href="{{ route('TrainingSessions.index') }}" class="nav-link">
+                            <p>
+                                Training Sessions
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('Coaches.index') }}" class="nav-link">
+                            <p>
+                                Coaches
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('Attendance.index') }}" class="nav-link">
+                            <p>
+                                Attendance
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('Boughtpackages.index')}}" class="nav-link">
+                            <p>
+                                Buy packages for users
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <p>
+                                Revenue
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <div class="content-wrapper p-4">
+    @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
                     @foreach ($errors->all() as $error)
@@ -196,9 +335,8 @@
                 </ul>
             </div>
         @endif
-
-    @yield('content')
-
+        @yield('page_content')
+    </div>
     <aside class="control-sidebar control-sidebar-dark">
         <div class="p-3">
             <h5>Title</h5>
@@ -207,6 +345,8 @@
     </aside>
     </div>
 </div>
+
+
 <script src="{{ asset('assets/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/dist/js/adminlte.min.js') }}"></script>
@@ -216,6 +356,8 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
 @stack('script')
+@endguest
 </body>
 </html>

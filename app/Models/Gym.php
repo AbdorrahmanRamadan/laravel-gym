@@ -13,7 +13,7 @@ class Gym extends Model
         'name',
         'cover_image',
         'created_by'
-        
+
     ];
     public function user()
     {
@@ -23,4 +23,9 @@ class Gym extends Model
     {
        return $this->belongsTo(City::class, 'city_id');
     }
+    public function bought_package()
+    {
+        return $this->hasMany(BoughtPackage::class);
+    }
+
 }

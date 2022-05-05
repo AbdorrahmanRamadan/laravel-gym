@@ -23,10 +23,13 @@ class CityController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+
         $user=User::all();
         $delay = now()->addSecond(40);
         Notification::send($user, new Welcome(),$delay);
         return view('Admin.cities.index');
+
+        return view('Cities.index');
     }
     public function getCities()
 
@@ -36,8 +39,8 @@ class CityController extends Controller
 
         return datatables()->eloquent($cities)->addIndexColumn()->addColumn('action', function($city){
             return '
-            <a href="'. route("cities.edit", $city->id) .'" class="edit btn btn-success btn-sm me-2">Edit</a>
-            <form class="d-inline" action="'.route('cities.destroy',  $city->id).'" method="POST">
+            <a href="'. route("Cities.edit", $city->id) .'" class="edit btn btn-success btn-sm me-2">Edit</a>
+            <form class="d-inline" action="'.route('Cities.destroy',  $city->id).'" method="POST">
             '.csrf_field().'
             '.method_field("DELETE").'
             <button type="submit" class="btn btn-danger btn-sm me-2"
@@ -56,7 +59,7 @@ class CityController extends Controller
      */
     public function create()
     {
-        return view('Admin.cities.create');
+        return view('Cities.create');
     }
 
     /**
@@ -70,7 +73,7 @@ class CityController extends Controller
         $city = new City();
         $city->name=request('city_name');
         $city->save();
-        return redirect(route('cities.index'))->with('success','Added Successfully');
+        return redirect(route('Cities.index'))->with('success','Added Successfully');
 
     }
 
@@ -83,7 +86,7 @@ class CityController extends Controller
     public function show($id)
     {
         $city=City::findorFail($id);
-        return view('Admin.cities.show',compact('city'));
+        return view('Cities.show',compact('city'));
     }
 
     /**
@@ -97,7 +100,7 @@ class CityController extends Controller
         $city =City::findOrFail($id);
 
 
-        return view('Admin.cities.edit',compact('city'));
+        return view('Cities.edit',compact('city'));
     }
 
     /**
@@ -112,7 +115,7 @@ class CityController extends Controller
         $city =City::findOrFail($id);
         $city->name=request('city_name');
         $city->save();
-        return redirect(route('cities.index'))->with('success','Updated Successfully');
+        return redirect(route('Cities.index'))->with('success','Updated Successfully');
 
     }
 
@@ -127,11 +130,11 @@ class CityController extends Controller
         try{
             $city =City::findOrFail($id);
             $city->delete();
-            return redirect(route('cities.index'))->with('success','Deleted Successfully');
+            return redirect(route('Cities.index'))->with('success','Deleted Successfully');
         }
         catch(\Throwable $e){
 
-            return redirect(route('cities.index'))->with('danger','This City Cannot be Deleted');
+            return redirect(route('Cities.index'))->with('danger','This City Cannot be Deleted');
 
 
     }

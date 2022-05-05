@@ -1,4 +1,6 @@
-@extends('layouts.admin')
+@extends('layouts.app')
+@section('title')City Managers @endsection
+
 @section('page_content')
 
 <div class="row header">
