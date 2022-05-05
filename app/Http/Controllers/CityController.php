@@ -14,6 +14,7 @@ use Exception;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Notification;
+use App\Http\Requests\CityStoreRequest;
 
 class CityController extends Controller
 {
@@ -51,8 +52,8 @@ class CityController extends Controller
         return view('Cities.create');
     }
 
-   
-    public function store(Request $request)
+
+    public function store(CityStoreRequest $request)
     {
         $city = new City();
         $city->name = request('city_name');
@@ -115,7 +116,7 @@ class CityController extends Controller
             return redirect(route('Cities.index'))->with('success', 'Deleted Successfully');
         } catch (\Throwable $e) {
 
-            return redirect(route('Cities.index'))->with('danger', 'This City Cannot be Deleted');
+            return redirect(route('Cities.index'))->with('danger', 'This City Cannot Be Deleted It Assigned To City Manager ');
         }
     }
 }
