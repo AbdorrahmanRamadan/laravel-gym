@@ -49,32 +49,18 @@ class CityManagerController extends Controller
         })->rawColumns(['action'])->toJson();
     }
 
-
-    //<a href="'. route("citiesManagers.destroy", $citiesManagers->city_manager_id) .'" class="edit btn btn-danger btn-sm">Delete</a>
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
 
        $citiesID=DB::table('city_managers')->select('city_id')->get()->pluck('city_id');
         $filtered=DB::table('cities')->select('id','name')->whereNotIn('id',$citiesID)->get();
-        //dd($filtered);
         $cityManagers=User::all();
         return view('CityManager.create',compact(['cityManagers','filtered']));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
 public function store(Request $request)
     {
-        try{
+
             $cityManagerInfo = request()->all();
             $file = $request->file('avatar_image');
             $imageName = $file->getClientOriginalName();
@@ -90,25 +76,17 @@ public function store(Request $request)
                 'city_id'=>$cityManagerInfo['city_name'],
                 'avatar_image'=>$imageName
             ]);
+            $cityManager= User::where(['id'=>$id])->first();
+
+            $cityManager->assignRole('city_manager');
 
             return redirect(route('citiesManagers.index'))->with('success','Added Successfully');
 
-        }
-        catch(\Throwable $e){
-            return redirect(route('citiesManagers.create'))->with('danger','This City Already Assigned To Another Manager');
 
-        }
 
     }
 
 
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($city_manager_id)
     {
 
