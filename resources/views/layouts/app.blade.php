@@ -251,7 +251,7 @@
                     @endrole
                     @hasanyrole('city_manager|admin')
                      <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{ route('GymManager') }}" class="nav-link">
                             <p>
                                 Gym Managers
                             </p>
