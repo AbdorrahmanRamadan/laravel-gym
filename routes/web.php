@@ -25,7 +25,7 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes(['verify'=>true]);
+//Auth::routes(['verify'=>true]);
 Route::middleware(['auth'])->group(function () {
 
     // Route::get('/admin', function () {
