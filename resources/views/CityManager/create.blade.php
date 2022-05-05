@@ -40,11 +40,11 @@
             <div class="form-group">
                 <label>Choose City </label>
                 <select class="form-control" name="city_name">
-                    @foreach ($cities as $city)
-                    <option value="{{ $city->id }}">
-                       {{ $city->name }}
-                    </option>
-                @endforeach
+                    @foreach($filtered as $city)
+                    <option value="{{ $city->id }} ">
+                        {{ $city->name }}
+                        </option>
+@endforeach
                 </select>
             </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use Illuminate\Validation\Rules\Unique;
 
 class UpdateCityManagerRequest extends FormRequest
 {
@@ -29,8 +30,8 @@ class UpdateCityManagerRequest extends FormRequest
             // 'national_id' => ['digits:14'],
             'city_id' => ['unique','exists:cities,id'],
             'avatar_image'=>['image','mimes:png,jpg'],
-            // 'email'=>[ Rule::unique((new User)->getTable())->ignore(auth()->id())],
-            // 'password'=>['min:8','max:16']
+            'email'=>['required',Rule::unique('users','email')->ignore($this->cityManager)]
+            //'password'=>['min:8','max:16']
         ];
     }
 

@@ -101,19 +101,6 @@
                 <label for="exampleInputName">Password</label>
                 <input name="password" type="password" class="form-control" id="exampleInputName" value="{{ $cityManager->user->password }}">
             </div>
-{{--
-            <div class="form-group">
-                <label>Choose City Manager</label>
-                <select class="form-control" name="city_manager">
-                    @foreach ($users as $user)
-                    @if($cityManager->user->id==$user->id)
-                        <option value="{{$user->id}}" selected>{{$user->name}}</option>
-                    @else
-                        <option value="{{$user->id}}">{{$user->name}}</option>
-                    @endif
-                @endforeach
-                </select>
-            </div>  --}}
 
 
             <div class="form-group">

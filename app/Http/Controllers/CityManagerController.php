@@ -58,9 +58,12 @@ class CityManagerController extends Controller
      */
     public function create()
     {
-        $cities =City::all();
+
+       $citiesID=DB::table('city_managers')->select('city_id')->get()->pluck('city_id');
+        $filtered=DB::table('cities')->select('id','name')->whereNotIn('id',$citiesID)->get();
+        //dd($filtered);
         $cityManagers=User::all();
-        return view('CityManager.create',compact(['cities','cityManagers']));
+        return view('CityManager.create',compact(['cityManagers','filtered']));
     }
 
     /**
@@ -69,7 +72,7 @@ class CityManagerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCityManagerRequest $request)
+public function store(Request $request)
     {
         try{
             $cityManagerInfo = request()->all();
@@ -110,9 +113,9 @@ class CityManagerController extends Controller
     {
 
         $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
-        $cities =City::all();
-        $users=User::all();
-        return view('CityManager.edit',['cityManager'=>$cityManager,'cities'=>$cities,'users'=>$users]);
+        $citiesID=DB::table('city_managers')->select('city_id')->get()->pluck('city_id');
+        $cities=DB::table('cities')->select('id','name')->whereNotIn('id',$citiesID)->get();
+        return view('CityManager.edit',['cityManager'=>$cityManager,'cities'=>$cities]);
     }
 
     /**
