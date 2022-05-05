@@ -48,11 +48,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/cities/{city}', [CityController::class, 'destroy'])->name('Cities.destroy');
 
     Route::get('/coaches', [CoachController::class, 'index'])->name('Coaches.index');
+    Route::get('/Coaches-dt', [CoachController::class, 'getCoaches'])->name('Coaches.getCoaches');
     Route::get('/coaches/create/', [CoachController::class, 'create'])->name('Coaches.create');
     Route::post('/coaches', [CoachController::class, 'store'])->name('Coaches.store');
     Route::get('/coaches/{coach}/edit',[CoachController::class, 'edit'])->name('Coaches.edit');
     Route::put('/coaches/{coach}',[CoachController::class, 'update'])->name('Coaches.update');
     Route::delete('/coaches/{coach}',[CoachController::class, 'destroy'])->name('Coaches.destroy');
+
 
     Route::get('/trainees', [TraineeController::class, 'index'])->name('Trainees.index');
     Route::get('/trainees-dt', [TraineeController::class, 'getTrainees'])->name('Trainees.getTrainees');
