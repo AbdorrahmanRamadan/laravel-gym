@@ -14,4 +14,8 @@ class TrainingPackage extends Model
         'price',
         'number_of_sessions',
     ];
+    public function bought_package()
+    {
+        return $this->hasMany(BoughtPackage::class);
+    }
 }

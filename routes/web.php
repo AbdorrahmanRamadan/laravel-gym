@@ -6,11 +6,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityManagerController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\BoughtPackageController;
 use App\Http\Controllers\TrainingPackageController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\CoachController;
+use App\Models\BoughtPackage;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 /*
@@ -87,6 +89,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('gyms/{gym}/edit', [GymController::class, 'edit'])->name('Gyms.edit');
     Route::put('gyms/{gym}', [GymController::class, 'update'])->name('Gyms.update');
     Route::get('gyms/create', [GymController::class, 'create'])->name('Gyms.create');
+
+    Route::get('/boughtpackages', [BoughtPackageController::class, 'index'])->name('Boughtpackages.index');
+    Route::get('/boughtpackages/create/',[BoughtPackageController::class, 'create'])->name('Boughtpackages.create');
+    Route::post('/boughtpackages', [BoughtPackageController::class, 'store'])->name('Boughtpackages.store');
+    Route::delete('/boughtpackages/{boughtpackages}',[BoughtPackageController::class, 'destroy'])->name('Boughtpackages.destroy');
 });
 
 
