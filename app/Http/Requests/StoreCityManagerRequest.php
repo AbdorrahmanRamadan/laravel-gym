@@ -26,8 +26,10 @@ class StoreCityManagerRequest extends FormRequest
         return [
             'national_id' => ['unique:city_managers','required','digits:14'],
             'city_id' => ['unique:cities','exists:cities,id'],
-            'city_manager_id'=>['unique:city_managers','exists:users,id'],
-            'avatar_image'=>['image','mimes:png,jpg']
+            'avatar_image'=>['required','image','mimes:png,jpg'],
+            'name'=>['required'],
+            'email'=>['required','unique:users,email','email'],
+            'password'=>['required','min:8','max:16']
         ];
     }
 
@@ -39,12 +41,15 @@ class StoreCityManagerRequest extends FormRequest
             'national_id.unique'=>'National ID Field Must Be Unique',
             'city_id.required'=>'City Field Is Required',
             'city_id.unique'=>'City Field Must Be Unique',
-            'city_manager_id.unique' => 'City Manager Must Be Unique',
-            'city_manager_id.required' => 'City Manager Is Required',
             'avatar_image.mimes' => 'Only Allowed Extensions Are png,jpg',
             'avatar_image.required' => 'Image Field Is Required',
             'city_id.exists'=>'The Selected City Not Found',
-            'city_manager_id.exists'=>'The Selected Manager Not Found',
+            'name.required' => 'Name Field Is Required',
+            'email.required' => 'Email Field Is Required',
+            'email.email'=>'Email Field Must Be a valid Email',
+            'password.required' => 'Password Field Is Required',
+            'password.min' => 'Minimum Password Field Is 8 characters',
+            'password.max' => 'Maximum Password Field Is 8 characters',
         ];
     }
 }
