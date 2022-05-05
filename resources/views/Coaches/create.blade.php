@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title') Create Coach @endsection
 
 @section('page_content')
 <form method="POST" action="{{ route('Coaches.store')}}" class="m-4" enctype="multipart/form-data">

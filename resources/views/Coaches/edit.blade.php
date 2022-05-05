@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title') Coach Update @endsection
 
 @section('page_content')
 <form method="POST" action="{{ route('Coaches.update',['coach' => $coach['coach_id']]) }}" class="m-4" enctype="multipart/form-data">
@@ -19,7 +20,7 @@
               <input name="password" type="password" class="form-control" id="exampleFormControlInput3" placeholder="">
             </div>
 
-          
+
 
             <div class="mb-3">
               <label for="exampleFormControlInput5" class="form-label">National ID</label>
