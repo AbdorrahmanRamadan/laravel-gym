@@ -315,7 +315,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="{{route('Revenue.index')}}" class="nav-link">
                             <p>
                                 Revenue
                             </p>
