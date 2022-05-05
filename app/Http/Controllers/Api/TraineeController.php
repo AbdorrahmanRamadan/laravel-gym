@@ -5,10 +5,12 @@ use App\Models\User;
 use App\Models\Trainee;
 use App\Http\Requests\StoreTraineeRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
-class TraineeController extends Controller
+use App\Models\TrainingSession;
+use App\Models\Attendance;
+class TraineeController extends Controller implements MustVerifyEmail
 {
     public function index(){
         return "success";
@@ -16,7 +18,7 @@ class TraineeController extends Controller
 
 
 
-    public function register(StoreTraineeRequest $request)
+    public function register(StoreTraineeRequest $request,$id)
     {
         $submitted_data = request()->all();
 
@@ -36,7 +38,7 @@ class TraineeController extends Controller
         }
 
         Trainee::create([
-            'trainee_id'=> $User['id'],
+            'trainee_id'=> $id,
             'birth_date'=>$submitted_data['birth_date'],
             'gender'=>$submitted_data['gender'],
             'remaining_sessions'=> 0,
@@ -49,5 +51,47 @@ class TraineeController extends Controller
         return $array;
     }
 
+    public function login(){
 
+    }
+
+    public function attend($id,$s_id){
+      $trainee=Trainee::find($id);
+      $session=TrainingSession::find($s_id);
+      $remaining_sessions=$trainee->remaining_sessions;
+      if($remaining_sessions>0){
+          TrainingSession::where('id', $s_id)->update([
+              'remaining_sessions' => $remaining_sessions -1,
+          ]);
+          Attendance::create([
+              'trainee_id'=>$id,
+              'training_session_id'=>$s_id,
+              'attendance_time'=>now(),
+          ]);
+      }
+
+
+
+    }
+
+
+    public function hasVerifiedEmail()
+    {
+        // TODO: Implement hasVerifiedEmail() method.
+    }
+
+    public function markEmailAsVerified()
+    {
+        // TODO: Implement markEmailAsVerified() method.
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        // TODO: Implement sendEmailVerificationNotification() method.
+    }
+
+    public function getEmailForVerification()
+    {
+        // TODO: Implement getEmailForVerification() method.
+    }
 }

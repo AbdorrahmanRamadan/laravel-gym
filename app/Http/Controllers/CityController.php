@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\DataTables\CityDataTable;
 use App\Models\City;
+use App\Models\User;
+use App\Notifications\Welcome;
 use Illuminate\Http\Request;
  //use DataTables;
  use Yajra\DataTables\DataTables;
@@ -11,7 +13,7 @@ use Illuminate\Http\Request;
 use Exception;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Notification;
 
 class CityController extends Controller
 {
@@ -21,6 +23,9 @@ class CityController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(){
+        $user=User::all();
+        $delay = now()->addSecond(40);
+        Notification::send($user, new Welcome(),$delay);
         return view('Admin.cities.index');
     }
     public function getCities()
