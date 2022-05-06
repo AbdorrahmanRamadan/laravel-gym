@@ -9,8 +9,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\Trainee;
 use App\Models\TrainingPackage;
+use App\Models\CityManager;
+use App\Models\GymManager;
 use Stripe;
 use Session;
+use Illuminate\Support\Facades\Auth;
+
 
 class BoughtPackageController extends Controller
 {
@@ -48,9 +52,24 @@ class BoughtPackageController extends Controller
 
     public function create()
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        $currentUserId=Auth::id();
+        $training_packages = TrainingPackage::all();
+        $trainees = Trainee::all();
+
+        if($userRole == 'admin'){
         $gyms = Gym::all();
         $training_packages = TrainingPackage::all();
         $trainees = Trainee::all();
+        }else if($userRole=='city_manager'){
+            $city_id = CityManager::where('city_manager_id',$currentUserId)->value('city_id');
+            $gyms = Gym::where('city_id',$city_id)->get();
+
+        }
+        else if($userRole=='gym_manager'){
+            $gym_id = GymManager::where('id',$currentUserId)->value('gym_id');
+            $gyms=Gym::where('id',$gym_id)->get();
+        }
         return view("Boughtpackages.create", [
             'gyms' => $gyms,
             'training_packages' => $training_packages,

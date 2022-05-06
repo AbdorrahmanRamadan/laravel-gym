@@ -24,10 +24,6 @@ class CityController extends Controller
      */
     public function index(){
 
-        $user=User::all();
-        $delay = now()->addSecond(40);
-        Notification::send($user, new Welcome(),$delay);
-        return view('Admin.cities.index');
 
         return view('Cities.index');
     }
