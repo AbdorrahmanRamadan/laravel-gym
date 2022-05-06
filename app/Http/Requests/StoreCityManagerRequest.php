@@ -25,8 +25,8 @@ class StoreCityManagerRequest extends FormRequest
     {
         return [
             'national_id' => ['unique:city_managers','required','digits:14'],
-            'city_id' => ['unique:cities','exists:cities,id'],
-            'avatar_image'=>['required','image','mimes:png,jpg'],
+            'city_id' => ['exists:cities,id'],
+            'avatar_image'=>['image','mimes:png,jpg'],
             'name'=>['required'],
             'email'=>['required','unique:users,email','email'],
             'password'=>['required','min:8','max:16']
@@ -39,10 +39,7 @@ class StoreCityManagerRequest extends FormRequest
             'national_id.required' => 'National ID Field Is Required',
             'national_id.digits' => 'ID Length is 14 Digits',
             'national_id.unique'=>'National ID Field Must Be Unique',
-            'city_id.required'=>'City Field Is Required',
-            'city_id.unique'=>'City Field Must Be Unique',
             'avatar_image.mimes' => 'Only Allowed Extensions Are png,jpg',
-            'avatar_image.required' => 'Image Field Is Required',
             'city_id.exists'=>'The Selected City Not Found',
             'name.required' => 'Name Field Is Required',
             'email.required' => 'Email Field Is Required',
