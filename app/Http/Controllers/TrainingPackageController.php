@@ -19,7 +19,9 @@ class TrainingPackageController extends Controller
     {
         $TrainingPackages = TrainingPackage::query();
         return datatables()->eloquent($TrainingPackages)->addIndexColumn()->addColumn('action', function ($TrainingPackage) {
-            return '<a href="' . route('TrainingPackages.edit', $TrainingPackage->id) . '" class="btn btn-primary">Edit</a><form class="d-inline" action="' . route('TrainingPackages.destroy',  $TrainingPackage->id) . '" method="POST">
+            return '
+            <a href="' . route('TrainingPackages.show', $TrainingPackage->id) . '" class="btn btn-primary">View</a>
+            <a href="' . route('TrainingPackages.edit', $TrainingPackage->id) . '" class="btn btn-success">Edit</a><form class="d-inline" action="' . route('TrainingPackages.destroy',  $TrainingPackage->id) . '" method="POST">
 	            ' . csrf_field() . '
 	            ' . method_field("DELETE") . '
 	            <button type="submit" class="btn btn-danger"
@@ -45,6 +47,15 @@ class TrainingPackageController extends Controller
             'number_of_sessions' => $request['number_of_sessions'],
         ]);
         return to_route('TrainingPackages.index');
+    }
+
+
+    public function show($packageId)
+    {
+        $package = TrainingPackage::find($packageId);
+        return view('TrainingPackages.show', [
+            'package' => $package,
+        ]);
     }
     public function edit($packageId)
     {

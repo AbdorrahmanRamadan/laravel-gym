@@ -21,7 +21,9 @@ class GymController extends Controller
     {
         $gyms =  Gym::with('user')->select('gyms.*');
         return datatables()->eloquent($gyms)->addIndexColumn()->addColumn('action', function($gym){
-            return '<a href="'.route('Gyms.edit', $gym->id).'" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Gyms.destroy',  $gym->id ).'" method="POST">
+            return '
+            <a href="'.route('Gyms.show', $gym->id).'" class="edit btn btn-primary btn-sm me-2">View</a>
+            <a href="'.route('Gyms.edit', $gym->id).'" class="edit btn btn-success btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Gyms.destroy',  $gym->id ).'" method="POST">
             '.csrf_field().'
             '.method_field("DELETE").'
             <button type="submit" class="btn btn-danger btn-sm me-2"
@@ -56,6 +58,15 @@ class GymController extends Controller
         ]);
 
        return redirect(route('Gyms.index'))->with('status', 'Gym is inserted successfully');
+    }
+
+    public function show($gymId){
+        $gymInfo = Gym::find($gymId);
+        $cities = City::all();
+        return view('Gyms.show', [
+            'gym' => $gymInfo,
+            'cities'=>$cities
+        ]);
     }
     public function edit($gymId){
         $gymInfo = Gym::find($gymId);
