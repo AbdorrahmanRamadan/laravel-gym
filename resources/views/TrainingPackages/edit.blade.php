@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('title') Edit Training Package @endsection
 @section('page_content')
 <form method="POST" action="{{ route('TrainingPackages.update',['package'=>$package['id']])}}" class="m-4">

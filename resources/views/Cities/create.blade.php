@@ -1,11 +1,5 @@
-
-
-
-
-
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('title')Create City @endsection
-
 @section('page_content')
 
 

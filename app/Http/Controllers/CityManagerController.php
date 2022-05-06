@@ -69,11 +69,15 @@ class CityManagerController extends Controller
      */
 public function store(StoreCityManagerRequest $request)
     {
-
-            $cityManagerInfo = request()->all();
+        $imageName=$path='';
+        if($request->file('avatar_image')){
             $file = $request->file('avatar_image');
             $imageName = $file->getClientOriginalName();
             $path = Storage::putFileAs('public/images', $request->file('avatar_image'), $imageName);
+            }
+
+            $cityManagerInfo = request()->all();
+
             $id = DB::table('users')->insertGetId([
                 'name' => request('name'),
                 'email' => request('email'),

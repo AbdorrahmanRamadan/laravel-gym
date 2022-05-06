@@ -40,6 +40,7 @@ class CityController extends Controller
             ';
         })->rawColumns(['action'])->toJson();
     }
+    //<a href="'. route("cities.destroy" .'" class="edit btn btn-danger btn-sm me-2" id="deleteCityBtn" data-id="'.$city->id.'">Delete</a>
 
     // <form class="d-inline" action="' . route('Cities.destroy',  $city->id) . '" method="POST">
     // ' . csrf_field() . '
