@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreTraineeRequest extends FormRequest
+class UpdateTraineeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,9 @@ class StoreTraineeRequest extends FormRequest
      */
     public function rules()
     {
-        //validate and error messages
         return [
             'name'=> ['required','min:3'],
-            'email'=> ['required',Rule::unique('users', 'email')->ignore($this->user),'email'],
+            'email'=> ['required','email'],//,Rule::unique('users', 'email')->ignore($this->user)
             'password'=> ['required','min:3'],
             'password_confirmation' => 'required_with:password|same:password|min:3',
             'birth_date'=> ['date'],
@@ -36,4 +35,3 @@ class StoreTraineeRequest extends FormRequest
         ];
     }
 }
-
