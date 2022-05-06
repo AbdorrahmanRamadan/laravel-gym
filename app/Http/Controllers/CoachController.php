@@ -19,7 +19,9 @@ class CoachController extends Controller
     public function getCoaches(){
         $coaches = Coach::with('user')->select('coaches.*');
         return datatables()->eloquent($coaches)->addIndexColumn()->addColumn('action', function($coach){
-            return '<a href="'.route('Coaches.edit', $coach->id).'" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Coaches.destroy',  $coach->id ).'" method="POST">
+            return '
+            <a href="'.route('Coaches.show', $coach->id).'" class="edit btn btn-primary btn-sm me-2">View</a>
+            <a href="'.route('Coaches.edit', $coach->id).'" class="edit btn btn-success btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Coaches.destroy',  $coach->id ).'" method="POST">
             '.csrf_field().'
             '.method_field("DELETE").'
             <button type="submit" class="btn btn-danger btn-sm me-2"
@@ -55,6 +57,14 @@ class CoachController extends Controller
         ]);
 
         return to_route('Coaches.index');
+    }
+
+
+    public function show($coach_id)
+    {
+       $coach = Coach::where('id', $coach_id)->first();
+
+       return view('Coaches.show',['coach'=> $coach]);
     }
 
     public function edit($coach_id)

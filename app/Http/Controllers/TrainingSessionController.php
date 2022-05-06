@@ -32,7 +32,9 @@ class TrainingSessionController extends Controller
     {
         $TrainingSessions = TrainingSession::with('gym','coaches')->select('training_sessions.*');
         return datatables()->eloquent($TrainingSessions)->addIndexColumn()->addColumn('action', function ($TrainingSession) {
-            return '<a href="' . route('TrainingSessions.edit', $TrainingSession->id) . '" class="btn btn-primary">Edit</a><form class="d-inline" action="' . route('TrainingSessions.destroy', $TrainingSession->id) . '" method="POST">
+            return '
+            <a href="' . route('TrainingSessions.show', $TrainingSession->id) . '" class="btn btn-primary">View</a>
+            <a href="' . route('TrainingSessions.edit', $TrainingSession->id) . '" class="btn btn-success">Edit</a><form class="d-inline" action="' . route('TrainingSessions.destroy', $TrainingSession->id) . '" method="POST">
 	            ' . csrf_field() . '
 	            ' . method_field("DELETE") . '
 	            <button type="submit" class="btn btn-danger"
@@ -75,6 +77,22 @@ class TrainingSessionController extends Controller
             ]);
         }
         return to_route('TrainingSessions.index');
+    }
+
+    public function show($SessionId)
+    {
+        $coaches= Coach::all();
+        $gyms = Gym::all();
+        $session=TrainingSession::find($SessionId);
+        $selectedGym=Gym::find($session['gym_id']);
+        $selectedCoaches=User::find(TrainingSession::find($SessionId)->coaches->pluck('id'));
+        return view('TrainingSessions.show',[
+            'coaches'=>$coaches,
+            'selectedCoaches' => $selectedCoaches,
+            'session' => $session,
+            'gyms' => $gyms,
+            'selectedGym' => $selectedGym,
+        ]);
     }
     public function edit($SessionId)
     {

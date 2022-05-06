@@ -34,7 +34,7 @@ class CityController extends Controller
 
         return datatables()->eloquent($cities)->addIndexColumn()->addColumn('action', function ($city) {
             return '
-            <a href="' . route("Cities.show", $city->id) . '" class="edit btn btn-primary btn-sm me-2">Edit</a>
+            <a href="' . route("Cities.show", $city->id) . '" class="edit btn btn-primary btn-sm me-2">View</a>
             <a href="' . route("Cities.edit", $city->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a>
             <a href="javascript:void(0)" class="btn btn-danger" onclick="deleteCity('.$city->id.')">Delete</a>
             ';

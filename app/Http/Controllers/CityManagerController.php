@@ -31,6 +31,7 @@ class CityManagerController extends Controller
         $cityManagers = CityManager::with('user','cities')->select('city_managers.*');;
         return datatables()->eloquent($cityManagers)->addIndexColumn()->addColumn('action', function($cityManager){
             return '
+            <a href="'. route("citiesManagers.show", $cityManager->city_manager_id) .'"  class="edit btn btn-primary btn-sm me-2">View</a>
             <a href="'. route("citiesManagers.edit", $cityManager->city_manager_id) .'"  class="edit btn btn-success btn-sm me-2">Edit</a>
             <a href="javascript:void(0)" class="btn btn-danger" onclick="deleteCityManager('.$cityManager->city_manager_id.')">Delete</a>';
 
@@ -92,6 +93,18 @@ public function store(StoreCityManagerRequest $request)
 
     }
 
+
+    public function show($city_manager_id)
+    {
+
+        $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
+        $citiesID=DB::table('city_managers')->select('city_id')->get()->pluck('city_id');
+        $cities=DB::table('cities')->select('id','name')->whereNotIn('id',$citiesID)->get();
+        $currentCityId=$cityManager->city_id;
+        $currentCity=DB::table('cities')->select('id','name')->where('id',$currentCityId)->get();
+        $mergedCities=$currentCity->merge($cities);
+        return view('CityManager.show',['cityManager'=>$cityManager,'cities'=>$mergedCities]);
+    }
 
 
     /**
