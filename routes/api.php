@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\VerificationController;
+use App\Http\Controllers\Api\RegistrationController;
 use App\Http\Controllers\Api\TraineeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,8 +45,21 @@ Route::post('/sanctum/token', function (Request $request) {
 
 Auth::routes(['verify'=>true]);
 
-Route::post('/trainees/login', [TraineeController::class, 'login'])->middleware('auth:sanctum');
-Route::get('/trainees/{s_id}/attend', [TraineeController::class, 'attend'])->middleware('auth:sanctum');
-Route::get('/test', [TraineeController::class, 'index'])->name('Admin.Trainees.store')->middleware('auth:sanctum')
-;
+Route::post('/register',[RegistrationController::class, 'registerNewUser']);
 
+Route::post('/login', [TraineeController::class, 'login'])->middleware(['auth:sanctum','verified']);
+
+Route::post('/update/{id}', [TraineeController::class, 'update']);
+
+Route::get('/remainingSessions',[TraineeController::class,'remaining'])->middleware(['auth:sanctum','verified']);
+
+
+Route::get('/history',[TraineeController::class,'history'])->middleware(['auth:sanctum','verified']);
+
+
+Route::get('/trainees/{s_id}/attend', [TraineeController::class, 'attend'])->middleware('auth:sanctum');
+Route::get('/test', [TraineeController::class, 'index'])->name('Admin.Trainees.store')->middleware('auth:sanctum');
+Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify']
+)->middleware(['signed','auth:sanctum'])->name('verification.verify');
+Route::post('/email/verification-notification', [VerificationController::class, 'resendVerification']
+)->middleware(['auth', 'throttle:6,1','auth:sanctum'])->name('verification.send');

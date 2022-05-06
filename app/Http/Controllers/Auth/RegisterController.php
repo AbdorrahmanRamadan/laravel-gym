@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTraineeRequest;
 use App\Models\Trainee;
+use App\Notifications\Welcome;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -70,60 +72,10 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
-
-// image has a problem
-//        if ($data->hasFile('avatar_image'))
-//        {
-//            $image=$data->file('avatar_image');
-//            $image_name=$image->getClientOriginalName();
-//            $destination_path='public/trainees_images';
-//            $path=$data->file('avatar_image')->storeAs($destination_path,$image_name);
-//        }
-
-
-       $user=User::create([
-           'name' => $data['name'],
-           'email' => $data['email'],
-           'password' => Hash::make($data['password']),
-       ]);
-        Trainee::create([
-            'trainee_id'=> $user->id,
-            'birth_date'=>$data['birth_date'],
-            'gender'=>$data['gender'],
-            'remaining_sessions'=> 0,
-            'avatar_image'=>$data['avatar_image'],
-        ]);
-
-        return $user;
-
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password'])]);
     }
 }
-//$User=User::create([
-//    'name'=>$data['name'],
-//    'email'=>$data['email'],
-//    'password'=>Hash::make($data['password']),
-//    //role if it will be added :trainee - city! - gym!
-//]);
-//
-//
-//
-//if ($data1->hasFile('avatar_image'))
-//{
-//    $image=$data1->file('avatar_image');
-//    $image_name=$image->getClientOriginalName();
-//    $destination_path='public/trainees_images';
-//    $path=$data1->file('avatar_image')->storeAs($destination_path,$image_name);
-//}
-//
-//Trainee::create([
-//    'trainee_id'=> $User->id,
-//    'birth_date'=>$data['birth_date'],
-//    'gender'=>$data['gender'],
-//    'remaining_sessions'=> 0,
-//    'avatar_image'=>$image_name,
-//]);
-//
-//
-//
-//
-//return "please verify your email now";
+
