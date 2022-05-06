@@ -25,13 +25,19 @@ class StoreGymRequest extends FormRequest
     public function rules()
     {
 
+<<<<<<< HEAD
             $citiesId = (array) null;
+=======
+        $citiesId = (array) null;
+>>>>>>> 3e23596902a3887f34e8e3794fcf4d1403fa32d9
         foreach (City::all('id') as $city) {
             $citiesId[] = $city['id'];
         }
         return [
             'name'=>['required', 'min:3', Rule::unique('gyms', 'name')->ignore($this->gyms)],
+            'cover_image'=>['image','mimeType:png,jpg'],
             'city_id'=>Rule::in($citiesId),
+<<<<<<< HEAD
             'cover_image'=>['image','mimes:png,jpg'],
 
         ];
@@ -47,4 +53,11 @@ class StoreGymRequest extends FormRequest
 
         ];
     }
+=======
+
+
+        ];
+    }
+
+>>>>>>> 3e23596902a3887f34e8e3794fcf4d1403fa32d9
 }
