@@ -41,8 +41,8 @@ class MissyouNotify extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->greeting('Hello!')
-                    ->line('you have not login for month we miss you!');
+                    ->greeting('We miss you!')
+                    ->line('you have not login for more than 30 days');
     }
 
     /**

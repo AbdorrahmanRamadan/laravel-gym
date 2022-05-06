@@ -15,9 +15,7 @@ use App\Http\Controllers\GymController;
 use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\RevenueController;
-
 use App\Models\BoughtPackage;
-use App\Models\GymManager;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 /*
