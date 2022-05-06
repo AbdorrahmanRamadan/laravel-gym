@@ -41,11 +41,8 @@
                 <label for="exampleFormControlTextarea1" class="form-label">City</label>
                 <select class="form-control" name="city_name">
                     @foreach ($cities as $city)
-                    @if($cityManager->cities->id==$city->id)
                         <option value="{{$city->id}}" selected>{{$city->name}}</option>
-                    @else
-                        <option value="{{$city->id}}">{{$city->name}}</option>
-                    @endif
+
                 @endforeach
                 </select>
             </div>
