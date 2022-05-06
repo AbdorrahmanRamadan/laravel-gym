@@ -41,9 +41,9 @@ class Welcome extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our Gym!');
+                    ->greeting('Hello in Laravel Gym')
+                    ->line('Are you ready')
+                    ->line('Thank you for joining our Gym');
     }
 
     /**

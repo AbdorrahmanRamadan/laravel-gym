@@ -2,7 +2,9 @@
 
 use Carbon\Carbon;
 ?>
-@extends('layouts.app')
+@extends('layouts.gym')
+@section('title')Attendance @endsection
+
 @section('page_content')
 <section class="content">
       <div class="container-fluid">

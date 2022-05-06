@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('title') Training Sessions @endsection
 @section('page_content')
 
@@ -12,6 +12,7 @@
                 <th scope="col">Starting Time</th>
                 <th scope="col">End Time</th>
                 <th scope="col">Gym</th>
+                <th scope="col">Coach</th>
                 <th scope="col">Actions</th>
               </tr>
             </thead>
@@ -35,6 +36,7 @@
                     { data: 'start_at', name: 'start_at' },
                     { data: 'end_at', name: 'end_at' },
                     { data: 'gym.name', name: 'gym.name' },
+                    { data: 'coach', name: 'coach' },
                     { data: 'action', name: 'action', orderable: false, searchable: false}
                 ]
             });

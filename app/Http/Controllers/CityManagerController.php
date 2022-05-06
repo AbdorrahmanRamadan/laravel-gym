@@ -9,6 +9,11 @@ use App\Models\City;
 use App\Models\User;
 use App\Http\Requests\StoreCityManagerRequest;
 use App\Http\Requests\UpdateCityManagerRequest;
+use Database\Factories\CityFactory;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Throwable;
+use Illuminate\Support\Facades\Auth;
 
 class CityManagerController extends Controller
 {
@@ -38,11 +43,14 @@ class CityManagerController extends Controller
 
         })->editColumn('city_id', function($cityManagers){
             return $cityManagers->cities->name;
+        })->editColumn('name', function($cityManagers){
+            return $cityManagers->user->name;
+        })->editColumn('email', function($cityManagers){
+            return $cityManagers->cities->email;
         })->rawColumns(['action'])->toJson();
     }
 
 
-    //<a href="'. route("citiesManagers.destroy", $citiesManagers->city_manager_id) .'" class="edit btn btn-danger btn-sm">Delete</a>
     /**
      * Show the form for creating a new resource.
      *
@@ -50,9 +58,12 @@ class CityManagerController extends Controller
      */
     public function create()
     {
-        $cities =City::all();
+
+       $citiesID=DB::table('city_managers')->select('city_id')->get()->pluck('city_id');
+        $filtered=DB::table('cities')->select('id','name')->whereNotIn('id',$citiesID)->get();
+        //dd($filtered);
         $cityManagers=User::all();
-        return view('CityManager.create',compact(['cities','cityManagers']));
+        return view('CityManager.create',compact(['cityManagers','filtered']));
     }
 
     /**
@@ -61,18 +72,33 @@ class CityManagerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCityManagerRequest $request)
+public function store(StoreCityManagerRequest $request)
     {
-        $cityManager = new CityManager();
-        $file = $request->file('avatar_image');
-        $imageName = $file->getClientOriginalName();
-        $path = Storage::putFileAs('public/images', $request->file('avatar_image'), $imageName);
-        $cityManager->city_manager_id=request('city_manager');
-        $cityManager->city_id=request('city_name');
-        $cityManager->avatar_image=$imageName;
-        $cityManager->national_id=request('national_id');
-        $cityManager->save();
-        return redirect(route('citiesManagers.index'))->with('success','Added Successfully');
+        $imageName=$path='';
+        if($request->file('avatar_image')){
+            $file = $request->file('avatar_image');
+            $imageName = $file->getClientOriginalName();
+            $path = Storage::putFileAs('public/images', $request->file('avatar_image'), $imageName);
+            }
+
+            $cityManagerInfo = request()->all();
+
+            $id = DB::table('users')->insertGetId([
+                'name' => request('name'),
+                'email' => request('email'),
+                'password'=>Hash::make(request('password'))
+            ]);
+            CityManager::create([
+                'national_id'=>$cityManagerInfo['national_id'],
+                'city_manager_id'=>$id,
+                'city_id'=>$cityManagerInfo['city_name'],
+                'avatar_image'=>$imageName
+            ]);
+
+            return redirect(route('citiesManagers.index'))->with('success','Added Successfully');
+
+
+
 
     }
 
@@ -88,11 +114,12 @@ class CityManagerController extends Controller
     {
 
         $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
-
-        $cities =City::all();
-        $users=User::all();
-
-        return view('CityManager.edit',['cityManager'=>$cityManager,'cities'=>$cities,'users'=>$users]);
+        $citiesID=DB::table('city_managers')->select('city_id')->get()->pluck('city_id');
+        $cities=DB::table('cities')->select('id','name')->whereNotIn('id',$citiesID)->get();
+        $currentCityId=$cityManager->city_id;
+        $currentCity=DB::table('cities')->select('id','name')->where('id',$currentCityId)->get();
+        $mergedCities=$currentCity->merge($cities);
+        return view('CityManager.edit',['cityManager'=>$cityManager,'cities'=>$mergedCities]);
     }
 
     /**
@@ -104,23 +131,37 @@ class CityManagerController extends Controller
      */
     public function update(UpdateCityManagerRequest $request, $city_manager_id)
     {
-     $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
-           $data=$request->all();
-         $imgName = $cityManager->avatar_image;
-        $coverImage = $request->file('avatar_image');
-        $name = $coverImage->getClientOriginalName();
-        unlink(storage_path('app/public/images/'.$imgName));
-        $path = Storage::putFileAs(
-            'public/images', $coverImage, $name
-        );
+        $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
+        $imgName = $cityManager->avatar_image;
+        $data=$request->all();
+    if ($request->hasFile('avatar_image')) {
 
-        CityManager::where('city_manager_id', $city_manager_id)->update([
-            'city_manager_id' => $data['city_manager'],
-            'city_id' =>$data['city_name'] ,
-            'national_id' => $data['national_id'],
-            'avatar_image'=>$name
+        if ($imgName != null) {
+            unlink(public_path('images/'.$imgName));
+        }
+        $img = $request->file('avatar_image');
+        $extension = $img->getClientOriginalExtension();
+        $img->move(public_path("images/"), $imgName);
+    }
+        $user = User::where('id', '=', $city_manager_id)->first();
+         $id=$user['id'];
+       User::where('id',$user['id'])->update([
+             'name'=>request('name'),
+             'email'=>request('email'),
+             'password'=>request('password')
         ]);
-         return redirect(route('citiesManagers.index'))->with('success','Updated Successfully');
+
+
+    CityManager::where('city_manager_id', $city_manager_id)->update([
+        'national_id'=>$data['national_id'],
+        'city_manager_id'=>$id,
+        'city_id'=>$data['city_name'],
+        'avatar_image'=>$imgName
+    ]);
+
+     return redirect(route('citiesManagers.index'))->with('success','Updated Successfully');
+
+
     }
     /**
      * Remove the specified resource from storage.

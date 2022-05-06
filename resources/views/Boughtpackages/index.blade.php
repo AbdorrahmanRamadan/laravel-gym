@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.gym')
+@section('title') All Bought Packages @endsection
 
 @section('page_content')
 <div class="text-center">
@@ -28,7 +29,7 @@
                 <form method="POST" action="{{route('Boughtpackages.destroy',['boughtpackages'=>$pack->id])}}">
                     @csrf
                     @method('delete')
- <button class="btn btn-danger"  
+ <button class="btn btn-danger"
  title="Delete" type="submit" onclick="return confirm('Are You Sure You wanttttttt')">
 Delete
 </button>

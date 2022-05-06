@@ -13,9 +13,24 @@ class CoachController extends Controller
 {
     public function index()
     {
-        $coaches = Coach::all();
+        return view('Coaches.index');
+    }
 
-        return view('Coaches.index',['coaches'=>$coaches]);
+    public function getCoaches(){
+        $coaches = Coach::with('user')->select('coaches.*');
+        return datatables()->eloquent($coaches)->addIndexColumn()->addColumn('action', function($coach){
+            return '<a href="'.route('Coaches.edit', $coach->id).'" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="'.route('Coaches.destroy',  $coach->id ).'" method="POST">
+            '.csrf_field().'
+            '.method_field("DELETE").'
+            <button type="submit" class="btn btn-danger btn-sm me-2"
+                onclick="return confirm(\'Are You Sure Want to Delete?\')"
+            ">Delete</a>
+            </form>';
+        })->editColumn('id', function($coach){
+            return $coach->user->name;
+        })->editColumn('id', function($coach){
+            return $coach->user->email;
+        })->rawColumns(['action'])->toJson();
     }
 
     public function create()
@@ -35,7 +50,7 @@ class CoachController extends Controller
         ]);
 
         Coach::create([
-            'coach_id'=> $User['id'],
+            'id'=> $User['id'],
             'national_id'=> $submitted_data['national_id'],
         ]);
 
@@ -44,7 +59,7 @@ class CoachController extends Controller
 
     public function edit($coach_id)
     {
-       $coach = Coach::where('coach_id', $coach_id)->first();
+       $coach = Coach::where('id', $coach_id)->first();
 
        return view('Coaches.edit',['coach'=> $coach]);
     }
@@ -53,7 +68,7 @@ class CoachController extends Controller
     {
         $modified_data = request()->all();
 
-        Coach::where('coach_id', $coach_id)->update([
+        Coach::where('id', $coach_id)->update([
             'national_id'=>$modified_data['national_id'],
         ]);
 
@@ -69,7 +84,7 @@ class CoachController extends Controller
 
     public function destroy($coach_id)
     {
-        Coach::where('coach_id',$coach_id)->delete();
+        Coach::where('id',$coach_id)->delete();
 
         User::find($coach_id)->delete();
 

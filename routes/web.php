@@ -7,12 +7,15 @@ use App\Http\Controllers\CityManagerController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BoughtPackageController;
+use App\Http\Controllers\GymManager;
+use App\Http\Controllers\GymManagerController;
 use App\Http\Controllers\TrainingPackageController;
 use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\CoachController;
-use App\Http\Controllers\GymManagerController;
+use App\Http\Controllers\RevenueController;
+
 use App\Models\BoughtPackage;
 use App\Models\GymManager;
 use Illuminate\Support\Facades\Notification;
@@ -27,7 +30,7 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes(['verify'=>true]);
+//Auth::routes(['verify'=>true]);
 Route::middleware(['auth'])->group(function () {
 
     // Route::get('/admin', function () {
@@ -48,11 +51,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/cities/{city}', [CityController::class, 'destroy'])->name('Cities.destroy');
 
     Route::get('/coaches', [CoachController::class, 'index'])->name('Coaches.index');
+    Route::get('/Coaches-dt', [CoachController::class, 'getCoaches'])->name('Coaches.getCoaches');
     Route::get('/coaches/create/', [CoachController::class, 'create'])->name('Coaches.create');
     Route::post('/coaches', [CoachController::class, 'store'])->name('Coaches.store');
     Route::get('/coaches/{coach}/edit',[CoachController::class, 'edit'])->name('Coaches.edit');
     Route::put('/coaches/{coach}',[CoachController::class, 'update'])->name('Coaches.update');
     Route::delete('/coaches/{coach}',[CoachController::class, 'destroy'])->name('Coaches.destroy');
+
 
     Route::get('/trainees', [TraineeController::class, 'index'])->name('Trainees.index');
     Route::get('/trainees-dt', [TraineeController::class, 'getTrainees'])->name('Trainees.getTrainees');
@@ -104,10 +109,22 @@ Route::middleware(['auth'])->group(function () {
     Route::post('gymsManagers', [GymManagerController::class, 'store'])->name('GymManager.store');
     Route::delete('gymsManagers/{gymManagerId}', [GymManagerController::class, 'destroy']);
 
+    Route::get('revenue', [RevenueController::class, 'index'])->name('Revenue.index');
+
 });
 
 
 
 
+
+Auth::routes();
+Route::get('admin/gym-managers', [GymManagerController::class, 'index'])->name('Admin.GymManagers');
+Route::get('/admin/gym-managers-dt', [GymManagerController::class, 'getGymManagers'])->name('Admin.GymManagers.index');
+Route::delete('/admin/gym-managers/{gymManagerId}', [GymManagerController::class, 'destroy'])->name('Admin.GymManagers.destroy');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
