@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('title') Create A Training Package @endsection
 @section('page_content')
 <form method="POST" action="{{ route('TrainingPackages.store')}}" class="m-4">

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('page_content')
 @section('title') Buy Package @endsection
 <div class="container">
@@ -58,7 +58,7 @@
                             </div>
                         </div>
 
-                     
+
                         <div class="form-group">
                 <label>Choose Trainee</label>
                 <select class="form-control" name="trainee">

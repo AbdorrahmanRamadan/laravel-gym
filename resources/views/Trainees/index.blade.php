@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.gym')
+@section('title') All Trainees @endsection
 
 @section('page_content')
     <div class="text-center">
