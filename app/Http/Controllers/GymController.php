@@ -44,7 +44,6 @@ class GymController extends Controller
     }
     public function store(StoreGymRequest $request){
         $gymInfo = request()->all();
-        dd($gymInfo);
         $coverImage = $request->file('cover-image');
         $name = $coverImage->getClientOriginalName();
         $path = Storage::putFileAs(
@@ -61,11 +60,9 @@ class GymController extends Controller
     }
 
     public function show($gymId){
-        $gymInfo = Gym::find($gymId);
-        $cities = City::all();
+        $gymInfo = Gym::with('city','user')->find($gymId);
         return view('Gyms.show', [
             'gym' => $gymInfo,
-            'cities'=>$cities
         ]);
     }
     public function edit($gymId){
