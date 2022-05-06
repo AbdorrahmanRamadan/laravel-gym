@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('srart:email')->daily();
+        $schedule->command('notify:users-not-logged-in-for-month')->daily();
     }
 
     /**
