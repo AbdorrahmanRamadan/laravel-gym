@@ -20,22 +20,26 @@ class IsGymManagerBanned
      */
     public function handle(Request $request, Closure $next)
     {
-        $userRole = Auth::user()->roles->pluck('name')[0];
-     
-        if($userRole == 'gym_manager'){
-            $gym_manager_Id=Auth::id();
-            $isbanned = GymManager::where('id',$gym_manager_Id)->value('isban');
+        if(Auth::check()){
 
-            if($isbanned){ 
-                $message = 'Your account has been Banned. Please contact administrator.';
+            $userRole=Auth::user()->roles->pluck('name')[0];
 
-                return redirect()->route('bannedGymManager')
-                    ->with('status',$message)
-                    ->withErrors(['email' => 'Your account has been Banned. Please contact administrator.']);
-            }else{
+            if($userRole == 'gym_manager'){ 
+
+                $gym_manager_Id=Auth::id();
+                $isbanned = GymManager::where('id',$gym_manager_Id)->value('isban');
+
+                if($isbanned){ 
+                  //  Auth::logout();
+                    return redirect()->route('bannedGymManager');
+                }
+                else{
                 return $next($request);
+                }
             }
-        }else{
+            return $next($request);
+        }
+        else{
             return $next($request);
         }  
     }
