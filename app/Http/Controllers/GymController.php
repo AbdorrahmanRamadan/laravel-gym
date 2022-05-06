@@ -42,6 +42,7 @@ class GymController extends Controller
     }
     public function store(StoreGymRequest $request){
         $gymInfo = request()->all();
+        dd($gymInfo);
         $coverImage = $request->file('cover-image');
         $name = $coverImage->getClientOriginalName();
         $path = Storage::putFileAs(
