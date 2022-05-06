@@ -7,7 +7,6 @@ use App\Http\Controllers\CityManagerController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BoughtPackageController;
-use App\Http\Controllers\GymManager;
 use App\Http\Controllers\GymManagerController;
 use App\Http\Controllers\TrainingPackageController;
 use App\Http\Controllers\TrainingSessionController;
@@ -118,10 +117,6 @@ Route::middleware(['auth'])->group(function () {
 
 
 Auth::routes();
-Route::get('admin/gym-managers', [GymManagerController::class, 'index'])->name('Admin.GymManagers');
-Route::get('/admin/gym-managers-dt', [GymManagerController::class, 'getGymManagers'])->name('Admin.GymManagers.index');
-Route::delete('/admin/gym-managers/{gymManagerId}', [GymManagerController::class, 'destroy'])->name('Admin.GymManagers.destroy');
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});
 
