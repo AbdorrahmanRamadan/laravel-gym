@@ -102,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('gymsManagers/create', [GymManagerController::class, 'create'])->name('GymManager.create');
     Route::get('gymsManagers/create/{cityId}', [GymManagerController::class, 'getGymsOfCity']);
     Route::post('gymsManagers', [GymManagerController::class, 'store'])->name('GymManager.store');
-
+    Route::delete('gymsManagers/{gymManagerId}', [GymManagerController::class, 'destroy']);
 
 });
 

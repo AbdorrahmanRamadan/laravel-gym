@@ -26,13 +26,7 @@ class GymManagerController extends Controller
     {
         $gymManagers =  GymManager::with('user', 'gym')->select('gym_managers.*');
         return datatables()->eloquent($gymManagers)->addIndexColumn()->addColumn('action', function($gymManager){
-            return '<a href="#" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="" method="POST">
-            '.csrf_field().'
-            '.method_field("DELETE").'
-            <button type="submit" class="btn btn-danger btn-sm me-2"
-                onclick="return confirm(\'Are You Sure Want to Delete?\')"
-            ">Delete</a>
-            </form>';
+            return '<a href="#" class="edit btn btn-primary btn-sm me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager('.$gymManager->id.')">Delete</a>';
         })->editColumn('name', function($gymManager){
             return $gymManager->user->name;
         })->editColumn('email', function($gymManager){
@@ -41,6 +35,8 @@ class GymManagerController extends Controller
             return Carbon::parse($gymManager->created_at)->toDateString();
         })->editColumn('gym_id', function($gymManager){
             return $gymManager->gym->name;
+        })->setRowId(function($gymManager){
+            return 'managerId'.$gymManager->id;
         })->rawColumns(['action'])->toJson();
     }
     public function create(){
@@ -72,15 +68,22 @@ class GymManagerController extends Controller
             'email' => $gymManagerInfo['email'],
             'password'=>Hash::make($gymManagerInfo['password'])
         ]);
-        GymManager::create([
+        $gymManager = GymManager::create([
             'id'=>$gymManagerId,
             'national_id'=>$gymManagerInfo['national-id'],
             'gym_id'=>$gymManagerInfo['gym'],
-            'avatar_image'=>$gymManagerInfo['profile-image']
+            'avatar_image'=>$name
         ]);
 
-        return redirect('GymManager.index')->with('success','Added Successfully');
+        return redirect('gymsManagers')->with('success','Added Successfully');
 
+    }
+    public function destroy($gymManagerId){
+        $gymManager = GymManager::find($gymManagerId);
+        $gymManager->delete();
+        $gymManager->user()->delete();
+        Storage::delete('public/gymManagers/'.$gymManager->avatar_image);
+        return response()->json(['success'=>"Gym Manager Deleted successfully."]);
     }
 
 }

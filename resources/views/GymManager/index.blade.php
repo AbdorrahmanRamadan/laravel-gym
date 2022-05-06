@@ -7,6 +7,9 @@
         {{ session('status') }}
     </div>
 @endif
+<div class="" id="deleteStatus">
+        
+</div>
 <div class="row header">
     <h2 class="col-10">All Gym Managers</h2>
     <a href="{{route('GymManager.create')}}" class="btn btn-success col-2">Add New Manager</a>
@@ -29,7 +32,8 @@
            
         </tbody>
     </table> 
-</div>
+<!--     <button class="btn btn-primary" data-toggle="confirmation" data-btn-ok-class="btn btn-sm btn-danger" data-btn-cancel-class="btn btn-sm btn-default">Confirmation</button>
+ --></div>
 @endsection
 @push('script')
 <script>
@@ -53,8 +57,53 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
-        
+                
     });
+    function deleteManager(gymManagerId){
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:'/gymsManagers/'+gymManagerId,
+                    dataType:'json',
+                    type:'DELETE',
+                   
+                    success:function(response){             
+                        location.reload();
+                    }
+                    
+                })
+            }
+        })
+            /*if(confirm('Are you sure?')){
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url:'/gymsManagers/'+gymManagerId,
+                    dataType:'json',
+                    type:'DELETE',
+                   
+                    success:function(response){
+                        $('#deleteStatus').text(response['success']);    
+                        $('#deleteStatus').addClass('alert alert-success');                
+                        location.reload();
+                    }
+                    
+                })
+            }*/
+        }
+        
     </script>
 @endpush
 

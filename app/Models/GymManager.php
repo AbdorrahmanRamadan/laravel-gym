@@ -15,7 +15,7 @@ class GymManager extends Model
         'avatar_image',
     ];
     public function gym(){
-        return $this->belongsTo(Gym::class,'gym_id');
+        return $this->belongsTo(Gym::class,'gym_id','id');
 
     }
     public function user()

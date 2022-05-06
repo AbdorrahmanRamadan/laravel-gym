@@ -49,7 +49,49 @@
                 </select>
         </div>
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Store</button>
+        </div>
+    </form>
+    @endrole
+    @role('city-manager')
+    <form id="quickForm" method="POST" action="{{route('GymManager.store')}}" enctype="multipart/form-data">
+        @csrf
+        <div class="card-body p-4">
+            <div class="form-group">
+                <label for="exampleInputName">Manager Name</label>
+                <input name="name" type="text" class="form-control" id="exampleInputName" placeholder="Gym Manager Name">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputNationalId">Manager Name ID</label>
+                <input name="national-id" type="text" class="form-control" id="exampleInputNationalId" placeholder="Gym Manager National ID">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail">Manager Email</label>
+                <input name="email" type="email" class="form-control" id="exampleInputEmail" placeholder="Gym Manager Email">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword">Password</label>
+                <input name="password" type="password" class="form-control" id="exampleInputPassword" placeholder="Gym Manager Password">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputConfirmPass">Confirm Password</label>
+                <input name="confirm-password" type="password" class="form-control" id="exampleInputConfirmPass" placeholder="Gym Manager Email">
+            </div>
+            <div class="form-group">
+                <label for="formFile" class="form-label">Profile Image</label>
+                <input name="profile-image" class="form-control" type="file" id="formFile">
+            </div>
+        </div>
+        <div class="form-group">
+                <label>Choose Gym of {{$cities->name}} city</label>
+                <select id="gyms" class="form-control" name="gym">
+                    @foreach($cities->gym as $gym)
+                        <option value="{{$gym->id}}">{{$gym->name}}</option>
+                    @endforeach
+                </select>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Store</button>
         </div>
     </form>
     @endrole
@@ -72,7 +114,7 @@
                         $('#gyms').empty();
                         $('#gyms').append('<option hidden>Choose Gym</option>'); 
                         $.each(data, function(key, gym){
-                            $('select[name="gym"]').append('<option value="'+ key +'">' + gym.name+ '</option>');
+                            $('select[name="gym"]').append('<option value="'+ gym.id +'">' + gym.name+ '</option>');
                         }); 
                     }else{
                         $('#gyms').empty();
