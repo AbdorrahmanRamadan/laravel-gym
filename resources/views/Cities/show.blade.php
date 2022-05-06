@@ -1,6 +1,6 @@
 
 
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('title')Show City @endsection
 
 

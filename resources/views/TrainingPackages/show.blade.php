@@ -4,7 +4,7 @@
 
 
 
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('page_content')
 @section('title')  Training Package Info @endsection
 

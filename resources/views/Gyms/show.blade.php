@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('page_content')
 
 <div class="card card-primary">

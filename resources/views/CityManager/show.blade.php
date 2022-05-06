@@ -1,6 +1,6 @@
 
 
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('page_content')
 @section('title')  City Manager Info @endsection
 
