@@ -33,7 +33,13 @@ class CityManagerController extends Controller
             return '
             <a href="'. route("citiesManagers.show", $cityManager->city_manager_id) .'"  class="edit btn btn-primary btn-sm me-2">View</a>
             <a href="'. route("citiesManagers.edit", $cityManager->city_manager_id) .'"  class="edit btn btn-success btn-sm me-2">Edit</a>
-            <a href="javascript:void(0)" class="btn btn-danger" onclick="deleteCityManager('.$cityManager->city_manager_id.')">Delete</a>';
+            <form class="d-inline" action="' . route('citiesManagers.destroy',  $cityManager->city_manager_id) . '" method="POST">
+            ' . csrf_field() . '
+            ' . method_field("DELETE") . '
+            <button type="submit" class="btn btn-danger btn-sm me-2"
+                onclick="return confirm(\'Are You Sure Want to Delete?\')"
+            ">Delete</a>
+            </form>';
 
 
         })->editColumn('city_id', function($cityManager){
@@ -178,12 +184,11 @@ public function store(StoreCityManagerRequest $request)
      */
     public function destroy($city_manager_id)
     {
-        //$cityManager =CityManager::where('city_manager_id',$city_manager_id)->delete();
-        $cityManager=CityManager::find($city_manager_id);
-        //dd($cityManager);
-        $cityManager->delete();
-        $cityManager->user()->delete();
-        Storage::delete('public/images/'.$cityManager->avatar_image);
+        $cityManager=CityManager::where('city_manager_id',$city_manager_id)->first();
+        Storage::disk('public')->delete('images/'.$cityManager->avatar_image);
+        CityManager::where('city_manager_id',$city_manager_id)->delete();
+        User::where('id',$city_manager_id)->delete();
+        //Storage::delete('public/images/'.$cityManager->avatar_image);
         return redirect(route('citiesManagers.index'))->with('success','Deleted Successfully');
 
     }

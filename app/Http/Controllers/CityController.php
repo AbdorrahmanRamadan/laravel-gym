@@ -36,19 +36,19 @@ class CityController extends Controller
             return '
             <a href="' . route("Cities.show", $city->id) . '" class="edit btn btn-primary btn-sm me-2">View</a>
             <a href="' . route("Cities.edit", $city->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a>
-            <a href="javascript:void(0)" class="btn btn-danger" onclick="deleteCity('.$city->id.')">Delete</a>
+            <form class="d-inline" action="' . route('Cities.destroy',  $city->id) . '" method="POST">
+            ' . csrf_field() . '
+            ' . method_field("DELETE") . '
+            <button type="submit" class="btn btn-danger btn-sm me-2"
+                onclick="return confirm(\'Are You Sure Want to Delete?\')"
+            ">Delete</a>
+            </form>
             ';
         })->rawColumns(['action'])->toJson();
     }
     //<a href="'. route("cities.destroy" .'" class="edit btn btn-danger btn-sm me-2" id="deleteCityBtn" data-id="'.$city->id.'">Delete</a>
 
-    // <form class="d-inline" action="' . route('Cities.destroy',  $city->id) . '" method="POST">
-    // ' . csrf_field() . '
-    // ' . method_field("DELETE") . '
-    // <button type="submit" class="btn btn-danger btn-sm me-2"
-    //     onclick="return confirm(\'Are You Sure Want to Delete?\')"
-    // ">Delete</a>
-    // </form>
+
     public function create()
     {
         return view('Cities.create');

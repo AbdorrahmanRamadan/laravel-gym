@@ -47,7 +47,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cities/{city}', [CityController::class, 'show'])->name('Cities.show');
     Route::get('/cities/{city}/edit', [CityController::class, 'edit'])->name('Cities.edit');
     Route::put('/cities/update/{city}', [CityController::class, 'update'])->name('Cities.update');
-    Route::delete('/cities/{city}', [CityController::class, 'destroy']);
+    Route::delete('/cities/{city}', [CityController::class, 'destroy'])->name('Cities.destroy');
 
     Route::get('/coaches', [CoachController::class, 'index'])->name('Coaches.index');
     Route::get('/Coaches-dt', [CoachController::class, 'getCoaches'])->name('Coaches.getCoaches');
@@ -90,7 +90,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/citiesManager/{cityManager}', [CityManagerController::class, 'show'])->name('citiesManagers.show');
     Route::get('/citiesManager/{cityManager}/edit', [CityManagerController::class, 'edit'])->name('citiesManagers.edit');
     Route::put('/citiesManager/{cityManager}/update', [CityManagerController::class, 'update'])->name('citiesManagers.update');
-    Route::delete('/citiesManager/{cityManager}', [CityManagerController::class, 'destroy']);
+    Route::delete('/citiesManager/{cityManager}', [CityManagerController::class, 'destroy'])->name('citiesManagers.destroy');
 
     Route::get('gyms', [GymController::class, 'index'])->name('Gyms.index');
     Route::get('gyms-dt', [GymController::class, 'getGyms'])->name('Gyms.getGyms');
