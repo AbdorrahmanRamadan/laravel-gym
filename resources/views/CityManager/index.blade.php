@@ -45,6 +45,9 @@
                 { data: 'user.email', name: 'user.email' },
                 { data: 'avatar_image', name: 'avatar_image' , orderable: false, searchable: false,
                     render: function( data, type, full, meta ) {
+                        if (!data) {
+                            return `<img src="{{asset('storage/images/default_profilepicture.png')}}" class="w-50">`;
+                        }
                         return `<img src="{{asset('storage/images/${data}')}}" class="w-50">`;
                     }
                 },
