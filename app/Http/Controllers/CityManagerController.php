@@ -95,6 +95,8 @@ public function store(StoreCityManagerRequest $request)
                 'city_id'=>$cityManagerInfo['city_name'],
                 'avatar_image'=>$imageName
             ]);
+            $user=User::where(['id'=>$id])->first();
+            $user->assignRole('city_manager');
 
             return redirect(route('citiesManagers.index'))->with('success','Added Successfully');
 

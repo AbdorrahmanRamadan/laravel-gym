@@ -7,7 +7,6 @@ use App\Http\Controllers\CityManagerController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BoughtPackageController;
-use App\Http\Controllers\GymManager;
 use App\Http\Controllers\GymManagerController;
 use App\Http\Controllers\TrainingPackageController;
 use App\Http\Controllers\TrainingSessionController;
@@ -94,13 +93,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('gyms', [GymController::class, 'index'])->name('Gyms.index');
     Route::get('gyms-dt', [GymController::class, 'getGyms'])->name('Gyms.getGyms');
+    Route::get('gyms/create', [GymController::class, 'create'])->name('Gyms.create');
     Route::post('gyms', [GymController::class, 'store'])->name('Gyms.store');
     Route::get('gyms/{gym}', [GymController::class, 'show'])->name('Gyms.show');
-
-    Route::delete('gyms/{gym}', [GymController::class, 'destroy'])->name('Gyms.destroy');
     Route::get('gyms/{gym}/edit', [GymController::class, 'edit'])->name('Gyms.edit');
     Route::put('gyms/{gym}', [GymController::class, 'update'])->name('Gyms.update');
-    Route::get('gyms/create', [GymController::class, 'create'])->name('Gyms.create');
+    Route::delete('gyms/{gym}', [GymController::class, 'destroy'])->name('Gyms.destroy');
 
     Route::get('/boughtpackages', [BoughtPackageController::class, 'index'])->name('Boughtpackages.index');
     Route::get('/boughtpackages/create/',[BoughtPackageController::class, 'create'])->name('Boughtpackages.create');
@@ -123,13 +121,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 Auth::routes();
-Route::get('admin/gym-managers', [GymManagerController::class, 'index'])->name('Admin.GymManagers');
-Route::get('/admin/gym-managers-dt', [GymManagerController::class, 'getGymManagers'])->name('Admin.GymManagers.index');
-Route::delete('/admin/gym-managers/{gymManagerId}', [GymManagerController::class, 'destroy'])->name('Admin.GymManagers.destroy');
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

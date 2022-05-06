@@ -37,13 +37,14 @@ class generateUserData extends Command
     {
         $email = $this->option('email');
         $pass = $this->option('password');
-       
-        User::create(
+
+       $user= User::create(
             [
                 'name'=>'Admin',
                 'email'=>$email,
                 'password'=>bcrypt($pass),
             ]
         );
+        $user->assignRole('admin');
     }
 }
