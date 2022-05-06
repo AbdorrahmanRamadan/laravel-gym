@@ -1,5 +1,5 @@
 
-@extends('layouts.app')
+@extends('layouts.gym')
 
 @section('page_content')
 
@@ -9,7 +9,7 @@
     </div>
 @endif
 <div class="" id="deleteStatus">
-        
+
 </div>
 <div class="row header">
     <h2 class="col-10">All Gym Managers</h2>
@@ -30,9 +30,9 @@
             </tr>
         </thead>
         <tbody>
-           
+
         </tbody>
-    </table> 
+    </table>
 <!--     <button class="btn btn-primary" data-toggle="confirmation" data-btn-ok-class="btn btn-sm btn-danger" data-btn-cancel-class="btn btn-sm btn-default">Confirmation</button>
  --></div>
 @endsection
@@ -58,7 +58,7 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
-                
+
     });
     function deleteManager(gymManagerId){
         Swal.fire({
@@ -78,15 +78,15 @@
                     url:'/gymsManagers/'+gymManagerId,
                     dataType:'json',
                     type:'DELETE',
-                   
-                    success:function(response){             
+
+                    success:function(response){
                         location.reload();
                     }
-                    
+
                 })
             }
         })
         }
-        
+
     </script>
 @endpush
