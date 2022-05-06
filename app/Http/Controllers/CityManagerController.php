@@ -112,7 +112,10 @@ public function store(StoreCityManagerRequest $request)
         $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
         $citiesID=DB::table('city_managers')->select('city_id')->get()->pluck('city_id');
         $cities=DB::table('cities')->select('id','name')->whereNotIn('id',$citiesID)->get();
-        return view('CityManager.edit',['cityManager'=>$cityManager,'cities'=>$cities]);
+        $currentCityId=$cityManager->city_id;
+        $currentCity=DB::table('cities')->select('id','name')->where('id',$currentCityId)->get();
+        $mergedCities=$currentCity->merge($cities);
+        return view('CityManager.edit',['cityManager'=>$cityManager,'cities'=>$mergedCities]);
     }
 
     /**
@@ -127,7 +130,6 @@ public function store(StoreCityManagerRequest $request)
         $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
         $imgName = $cityManager->avatar_image;
         $data=$request->all();
-        //dd($data);
     if ($request->hasFile('avatar_image')) {
 
         if ($imgName != null) {

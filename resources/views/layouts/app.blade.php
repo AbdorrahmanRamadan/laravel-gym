@@ -18,22 +18,22 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <link href="{{ asset('css/style.css') }}" type="text/css" rel="stylesheet">
 </head>
-
-<body class="hold-transition sidebar-mini">
 @if (Session::has('danger'))
-    <div class="alert alert-danger" role="alert">
-        {{ Session::get('danger') }}
-    </div>
+<div class="alert alert-danger" role="alert">
+    {{ Session::get('danger') }}
+</div>
 @endif
 
 
 @if (Session::has('success'))
-    <div class="alert alert-success" role="alert">
-        {{ Session::get('success') }}
-    </div>
+<div class="alert alert-success" role="alert">
+    {{ Session::get('success') }}
+</div>
 @endif
+<body class="hold-transition sidebar-mini">
 <div class="wrapper">
     <div id="app">
+
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <ul class="navbar-nav ml-auto">
                 @guest
