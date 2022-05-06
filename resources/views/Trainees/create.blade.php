@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.gym')
+@section('title') Create Trainee @endsection
 
 @section('page_content')
 

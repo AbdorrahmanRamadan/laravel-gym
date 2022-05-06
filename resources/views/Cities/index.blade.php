@@ -1,7 +1,7 @@
 
 
-@extends('layouts.app')
-@section('title')Cities @endsection
+@extends('layouts.gym')
+@section('title') All Cities @endsection
 
 @section('page_content')
 

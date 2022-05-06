@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.gym')
+@section('title') Create Gym @endsection
+
 @section('page_content')
 
 <div class="card card-primary">

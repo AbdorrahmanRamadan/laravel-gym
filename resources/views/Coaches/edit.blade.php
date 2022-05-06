@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('title') Coach Update @endsection
 
 @section('page_content')

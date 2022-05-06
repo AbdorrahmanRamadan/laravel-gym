@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('title')City Managers @endsection
 
 @section('page_content')
