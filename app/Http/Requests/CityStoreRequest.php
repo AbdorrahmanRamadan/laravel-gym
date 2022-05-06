@@ -24,14 +24,14 @@ class CityStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
+            'city_name' => ['required'],
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'City Field Is Required',
+            'city_name.required' => 'City Field Is Required',
 
         ];
     }
