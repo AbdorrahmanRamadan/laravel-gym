@@ -8,7 +8,15 @@ use App\Models\User;
 use App\Models\Trainee;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreTraineeRequest;
+use App\Models\BoughtPackage;
+use App\Models\CityManager;
+use App\Models\GymManager;
+use App\Models\Gym;
+
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class TraineeController extends Controller
 {
@@ -18,7 +26,25 @@ class TraineeController extends Controller
     }
 
     public function getTrainees(){
-        $trainees = Trainee::with('user')->select('trainees.*');
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        $currentUserId=Auth::id();
+        $trainees='';
+if($userRole=='admin'){
+    $trainees = Trainee::with('user')->select('trainees.*');
+
+}else if($userRole=='city_manager'){
+    $cityId =CityManager::select('city_id')->where('city_manager_id',$currentUserId)->get()->pluck('city_id')[0];
+    $gymsId=Gym::select('*')->where('city_id',$cityId)->get()->pluck('id');
+    $users=DB::table('bought_packages')->select('*')->whereIn('gym_id',$gymsId)->get()->pluck('trainee_id');
+    $trainees =  Trainee::with('user')->select('*')->whereIn('trainee_id',$users);
+
+
+}else if($userRole=='gym_manager'){
+    $gymId =CityManager::select('gym_id')->where('id',$currentUserId)->get()->pluck('gym_id')[0];
+    $users=DB::table('bought_packages')->select('*')->where('gym_id',$gymId)->get()->pluck('trainee_id');
+    $trainees =  Trainee::with('user')->select('*')->whereIn('trainee_id',$users);
+
+}
         return datatables()->eloquent($trainees)->addIndexColumn()->addColumn('action', function($trainee){
             return '<form class="d-inline" action="'.route('Trainees.destroy',  $trainee->trainee_id ).'" method="POST">
             '.csrf_field().'

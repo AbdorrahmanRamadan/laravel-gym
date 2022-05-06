@@ -88,6 +88,13 @@ class GymController extends Controller
 
        return redirect(route('Gyms.index'))->with('status', 'Gym is inserted successfully');
     }
+
+    public function show($gymId){
+        $gymInfo = Gym::with('city','user')->find($gymId);
+        return view('Gyms.show', [
+            'gym' => $gymInfo,
+        ]);
+    }
     public function edit($gymId){
         $userRole = Auth::user()->roles->pluck('name')[0];
         if($userRole == 'admin'){

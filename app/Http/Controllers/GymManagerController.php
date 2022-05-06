@@ -74,6 +74,9 @@ class GymManagerController extends Controller
             'gym_id'=>$gymManagerInfo['gym'],
             'avatar_image'=>$name
         ]);
+        $user=User::where(['id'=>$gymManagerId])->first();
+        $user->assignRole('gym_manager');
+
 
         return redirect('gymsManagers')->with('success','Added Successfully');
 
