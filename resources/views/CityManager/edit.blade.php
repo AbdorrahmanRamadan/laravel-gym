@@ -66,7 +66,7 @@
 
 
 
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('page_content')
 @section('title') Edit City Manager @endsection
 
@@ -99,7 +99,7 @@
 
             <div class="form-group">
                 <label for="exampleInputName">Password</label>
-                <input name="password" type="password" class="form-control" id="exampleInputName" value="{{ $cityManager->user->password }}">
+                <input name="password" type="password" class="form-control" id="exampleInputName" value="" required>
             </div>
 
 

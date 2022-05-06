@@ -24,17 +24,33 @@ class StoreGymRequest extends FormRequest
      */
     public function rules()
     {
-        
+
             $citiesId = (array) null;
+        $citiesId = (array) null;
         foreach (City::all('id') as $city) {
             $citiesId[] = $city['id'];
         }
         return [
             'name'=>['required', 'min:3', Rule::unique('gyms', 'name')->ignore($this->gyms)],
+            'cover_image'=>['image','mimeType:png,jpg'],
             'city_id'=>Rule::in($citiesId),
-            'cover_image'=>'mimetypes:image/jpeg,image/jpg',
-        
+            'cover_image'=>['image','mimes:png,jpg'],
+
         ];
     }
-    
+
+    public function messages()
+    {
+
+
+        return [
+
+            'cover_image.image'=>' Gym image must be an image.',
+
+        ];
+    }
+
+
+
+
 }

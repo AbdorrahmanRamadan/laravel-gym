@@ -14,9 +14,7 @@ use App\Http\Controllers\GymController;
 use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\RevenueController;
-
 use App\Models\BoughtPackage;
-use App\Models\GymManager;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 /*
@@ -45,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cities-dt', [CityController::class, 'getCities'])->name('Cities.getCities');
     Route::get('/cities/create/', [CityController::class, 'create'])->name('Cities.create');
     Route::post('/cities', [CityController::class, 'store'])->name('Cities.store');
+    Route::get('/cities/{city}', [CityController::class, 'show'])->name('Cities.show');
     Route::get('/cities/{city}/edit', [CityController::class, 'edit'])->name('Cities.edit');
     Route::put('/cities/update/{city}', [CityController::class, 'update'])->name('Cities.update');
     Route::delete('/cities/{city}', [CityController::class, 'destroy'])->name('Cities.destroy');
@@ -53,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Coaches-dt', [CoachController::class, 'getCoaches'])->name('Coaches.getCoaches');
     Route::get('/coaches/create/', [CoachController::class, 'create'])->name('Coaches.create');
     Route::post('/coaches', [CoachController::class, 'store'])->name('Coaches.store');
+    Route::get('/coaches/{coach}', [CoachController::class, 'show'])->name('Coaches.show');
     Route::get('/coaches/{coach}/edit',[CoachController::class, 'edit'])->name('Coaches.edit');
     Route::put('/coaches/{coach}',[CoachController::class, 'update'])->name('Coaches.update');
     Route::delete('/coaches/{coach}',[CoachController::class, 'destroy'])->name('Coaches.destroy');
@@ -68,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/packages-dt', [TrainingPackageController::class, 'getTrainingPackages'])->name('TrainingPackages.getTrainingPackages');
     Route::get('/packages/create', [TrainingPackageController::class, 'create'])->name('TrainingPackages.create');
     Route::post('/packages', [TrainingPackageController::class, 'store'])->name('TrainingPackages.store');
+    Route::get('/packages/{package}', [TrainingPackageController::class, 'show'])->name('TrainingPackages.show');
     Route::get('/packages/{package}/edit', [TrainingPackageController::class, 'edit'])->name('TrainingPackages.edit');
     Route::put('/packages/{package}', [TrainingPackageController::class, 'update'])->name('TrainingPackages.update');
     Route::delete('/packages/{package}', [TrainingPackageController::class, 'destroy'])->name('TrainingPackages.destroy');
@@ -76,6 +77,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sessions-dt', [TrainingSessionController::class, 'getTrainingSessions'])->name('TrainingSessions.getTrainingSessions');
     Route::get('/sessions/create', [TrainingSessionController::class, 'create'])->name('TrainingSessions.create');
     Route::post('/sessions', [TrainingSessionController::class, 'store'])->name('TrainingSessions.store');
+    Route::get('/sessions/{session}', [TrainingSessionController::class, 'show'])->name('TrainingSessions.show');
     Route::get('/sessions/{session}/edit', [TrainingSessionController::class, 'edit'])->name('TrainingSessions.edit');
     Route::put('/sessions/{session}', [TrainingSessionController::class, 'update'])->name('TrainingSessions.update');
     Route::delete('/sessions/{session}', [TrainingSessionController::class, 'destroy'])->name('TrainingSessions.destroy');
@@ -84,13 +86,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cities-Managers-list', [CityManagerController::class, 'getCitiesManagers'])->name('cities-Managers-list');
     Route::get('/citiesManager/create/', [CityManagerController::class, 'create'])->name('citiesManagers.create');
     Route::post('/citiesManager', [CityManagerController::class, 'store'])->name('citiesManagers.store');
-    Route::delete('/citiesManager/{cityManager}', [CityManagerController::class, 'destroy'])->name('citiesManagers.destroy');
+    Route::get('/citiesManager/{cityManager}', [CityManagerController::class, 'show'])->name('citiesManagers.show');
     Route::get('/citiesManager/{cityManager}/edit', [CityManagerController::class, 'edit'])->name('citiesManagers.edit');
     Route::put('/citiesManager/{cityManager}/update', [CityManagerController::class, 'update'])->name('citiesManagers.update');
+    Route::delete('/citiesManager/{cityManager}', [CityManagerController::class, 'destroy'])->name('citiesManagers.destroy');
 
     Route::get('gyms', [GymController::class, 'index'])->name('Gyms.index');
     Route::get('gyms-dt', [GymController::class, 'getGyms'])->name('Gyms.getGyms');
     Route::post('gyms', [GymController::class, 'store'])->name('Gyms.store');
+    Route::get('gyms/{gym}', [GymController::class, 'show'])->name('Gyms.show');
+
     Route::delete('gyms/{gym}', [GymController::class, 'destroy'])->name('Gyms.destroy');
     Route::get('gyms/{gym}/edit', [GymController::class, 'edit'])->name('Gyms.edit');
     Route::put('gyms/{gym}', [GymController::class, 'update'])->name('Gyms.update');

@@ -52,23 +52,23 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+{{--                            <li class="nav-item dropdown">--}}
+{{--                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>--}}
+{{--                                    {{ Auth::user()->name }}--}}
+{{--                                </a>--}}
 
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+{{--                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">--}}
+{{--                                    <a class="dropdown-item" href="{{ route('logout') }}"--}}
+{{--                                       onclick="event.preventDefault();--}}
+{{--                                                     document.getElementById('logout-form').submit();">--}}
+{{--                                        {{ __('Logout') }}--}}
+{{--                                    </a>--}}
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
+{{--                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">--}}
+{{--                                        @csrf--}}
+{{--                                    </form>--}}
+{{--                                </div>--}}
+{{--                            </li>--}}
                         @endguest
                     </ul>
                 </div>
@@ -81,8 +81,7 @@
     </div>
     <aside class="control-sidebar control-sidebar-dark">
         <div class="p-3">
-            <h5>Title</h5>
-            <p>Sidebar content</p>
+
         </div>
     </aside>
     </div>
@@ -98,6 +97,10 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @stack('script')
 </body>

@@ -15,7 +15,7 @@ class MissyouEmail extends Command
      *
      * @var string
      */
-    protected $signature = 'srart:email';
+    protected $signature = 'notify:users-not-logged-in-for-month';
 
     /**
      * The console command description.
@@ -33,7 +33,8 @@ class MissyouEmail extends Command
     {
         $missedUsers = User::where('last_login','<',\Carbon\Carbon::today()->subDays(30))->get();
         foreach ($missedUsers as $missedUser){
-            Mail::to($missedUser)->send(new WeMissYou($missedUser));
+          //  Mail::to($missedUser)->send(new WeMissYou($missedUser));
+            Notification::send($missedUser, new MissyouNotify());
         }
     }
 }
