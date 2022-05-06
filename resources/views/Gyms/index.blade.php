@@ -9,14 +9,29 @@
 <div class="mt-4 gyms-content">
     <table id="admin-gyms" class="table table-striped" style="width:100%">
         <thead>
+        @role('city_manager')
             <tr>
                 <th class="gym-id">ID</th>
                 <th class="gym-name">Name</th>
                 <th class="created-at">Created At</th>
                 <th class="cover-image">Cover Image</th>
+                <th class="city-manager no-sort">Created_by</th>
+                <th class="actions no-sort">Action</th>
+
+            </tr>
+        @endrole
+        @role('admin')
+            <tr>
+                <th class="gym-id">ID</th>
+                <th class="gym-name">Name</th>
+                <th class="created-at">Created At</th>
+                <th class="cover-image">Cover Image</th>
+                <th class="city-manager no-sort">Created_by</th>
                 <th class="city-manager no-sort">City Manager Name</th>
                 <th class="actions no-sort">Action</th>
             </tr>
+        @endrole
+
         </thead>
         <tbody>
 
@@ -25,26 +40,59 @@
 </div>
 @endsection
 @push('script')
-<script>
-    $(function() {
-        $('#admin-gyms').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{{ route('Gyms.getGyms') }}",
-            columns: [
-                { data: 'id', name: 'id' },
-                { data: 'name', name: 'name' },
-                { data: 'created_at', name: 'created_at' },
-                { data: 'cover_image', name: 'cover_image' , orderable: false, searchable: false,
-                    render: function( data, type, full, meta ) {
-                        return `<img src="{{asset('storage/gymImages/${data}')}}" class="w-50">`;
-                    }
-                },
-                { data: 'user.name', name:'user.name',  orderable: true, searchable: true},
-                {data: 'action', name: 'action', orderable: false, searchable: false}
-            ]
-        });
+    @role('admin')
+    <script>
+        $(function() {
+            $('#admin-gyms').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('Gyms.getGyms') }}",
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'name', name: 'name' },
+                    { data: 'created_at', name: 'created_at' },
+                    { data: 'cover_image', name: 'cover_image' , orderable: false, searchable: false,
+                        render: function( data, type, full, meta ) {
+                            if (!data) {
+                                return `<img src="{{asset('storage/images/default_profilepicture.png')}}" class="w-50">`;
+                            }
+                            return `<img src="{{asset('storage/gymImages/${data}')}}" class="w-50">`;
+                        }
+                    },
+                    { data: 'user.name', name:'user.name',  orderable: true, searchable: true},
+                    { data: 'city_manager', name:'city_manager',  orderable: true, searchable: true},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
 
-    });
+        });
     </script>
+    @endrole
+    @role('city_manager')
+    <script>
+        $(function() {
+            $('#admin-gyms').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('Gyms.getGyms') }}",
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'name', name: 'name' },
+                    { data: 'created_at', name: 'created_at' },
+                    { data: 'cover_image', name: 'cover_image' , orderable: false, searchable: false,
+                        render: function( data, type, full, meta ) {
+                            if (!data) {
+                                return `<img src="{{asset('storage/images/default_profilepicture.png')}}" class="w-50">`;
+                            }
+                            return `<img src="{{asset('storage/gymImages/${data}')}}" class="w-50">`;
+                        }
+                    },
+                    { data: 'user.name', name:'user.name',  orderable: true, searchable: true},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ]
+            });
+
+        });
+    </script>
+    @endrole
 @endpush
