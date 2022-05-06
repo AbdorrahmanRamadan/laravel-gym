@@ -34,19 +34,20 @@ class CityController extends Controller
 
         return datatables()->eloquent($cities)->addIndexColumn()->addColumn('action', function ($city) {
             return '
+            <a href="' . route("Cities.show", $city->id) . '" class="edit btn btn-primary btn-sm me-2">Edit</a>
             <a href="' . route("Cities.edit", $city->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a>
-            <form class="d-inline" action="' . route('Cities.destroy',  $city->id) . '" method="POST">
-            ' . csrf_field() . '
-            ' . method_field("DELETE") . '
-            <button type="submit" class="btn btn-danger btn-sm me-2"
-                onclick="return confirm(\'Are You Sure Want to Delete?\')"
-            ">Delete</a>
-            </form>
+            <a href="javascript:void(0)" class="btn btn-danger" onclick="deleteCity('.$city->id.')">Delete</a>
             ';
         })->rawColumns(['action'])->toJson();
     }
 
-
+    // <form class="d-inline" action="' . route('Cities.destroy',  $city->id) . '" method="POST">
+    // ' . csrf_field() . '
+    // ' . method_field("DELETE") . '
+    // <button type="submit" class="btn btn-danger btn-sm me-2"
+    //     onclick="return confirm(\'Are You Sure Want to Delete?\')"
+    // ">Delete</a>
+    // </form>
     public function create()
     {
         return view('Cities.create');
@@ -115,7 +116,6 @@ class CityController extends Controller
             $city->delete();
             return redirect(route('Cities.index'))->with('success', 'Deleted Successfully');
         } catch (\Throwable $e) {
-
             return redirect(route('Cities.index'))->with('danger', 'This City Cannot Be Deleted It Assigned To City Manager ');
         }
     }
