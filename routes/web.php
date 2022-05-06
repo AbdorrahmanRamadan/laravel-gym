@@ -17,7 +17,6 @@ use App\Http\Controllers\CoachController;
 use App\Http\Controllers\RevenueController;
 
 use App\Models\BoughtPackage;
-use App\Models\GymManager;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 /*
@@ -109,15 +108,11 @@ Route::middleware(['auth','banned'])->group(function () {
     Route::post('gymsManagers', [GymManagerController::class, 'store'])->name('GymManager.store');
     Route::delete('gymsManagers/{gymManagerId}', [GymManagerController::class, 'destroy']);
 
+
     Route::get('revenue', [RevenueController::class, 'index'])->name('Revenue.index');
 
-    Route::get('admin/gym-managers', [GymManagerController::class, 'index'])->name('Admin.GymManagers');
-Route::get('/admin/gym-managers-dt', [GymManagerController::class, 'getGymManagers'])->name('Admin.GymManagers.index');
-Route::delete('/admin/gym-managers/{gymManagerId}', [GymManagerController::class, 'destroy'])->name('Admin.GymManagers.destroy');
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-  
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 });
 
@@ -125,6 +120,7 @@ Route::get('/bannedGymManager', function () {
     return view('bannedGymManager');
 })->name('bannedGymManager');
 
+Route::get('gymsManagers/{gymManagerId}', [GymManagerController::class, 'ban'])->name('GymManager.ban');
 
 
 Auth::routes();

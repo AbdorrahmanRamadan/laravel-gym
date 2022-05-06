@@ -14,10 +14,6 @@ class GymManager extends Model
         'gym_id',
         'avatar_image',
         'isban',
-<<<<<<< HEAD
-=======
-
->>>>>>> a9d60b1d9ed0f0e93c487e245382c8cc7700a84d
     ];
     public function gym(){
         return $this->belongsTo(Gym::class,'gym_id','id');
