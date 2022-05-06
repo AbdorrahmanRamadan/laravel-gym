@@ -13,6 +13,7 @@ use Database\Factories\CityFactory;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
+use Illuminate\Support\Facades\Auth;
 
 class CityManagerController extends Controller
 {
@@ -50,7 +51,6 @@ class CityManagerController extends Controller
     }
 
 
-    //<a href="'. route("citiesManagers.destroy", $citiesManagers->city_manager_id) .'" class="edit btn btn-danger btn-sm">Delete</a>
     /**
      * Show the form for creating a new resource.
      *
@@ -72,9 +72,9 @@ class CityManagerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-public function store(Request $request)
+public function store(StoreCityManagerRequest $request)
     {
-        try{
+
             $cityManagerInfo = request()->all();
             $file = $request->file('avatar_image');
             $imageName = $file->getClientOriginalName();
@@ -93,11 +93,8 @@ public function store(Request $request)
 
             return redirect(route('citiesManagers.index'))->with('success','Added Successfully');
 
-        }
-        catch(\Throwable $e){
-            return redirect(route('citiesManagers.create'))->with('danger','This City Already Assigned To Another Manager');
 
-        }
+
 
     }
 
@@ -115,7 +112,10 @@ public function store(Request $request)
         $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
         $citiesID=DB::table('city_managers')->select('city_id')->get()->pluck('city_id');
         $cities=DB::table('cities')->select('id','name')->whereNotIn('id',$citiesID)->get();
-        return view('CityManager.edit',['cityManager'=>$cityManager,'cities'=>$cities]);
+        $currentCityId=$cityManager->city_id;
+        $currentCity=DB::table('cities')->select('id','name')->where('id',$currentCityId)->get();
+        $mergedCities=$currentCity->merge($cities);
+        return view('CityManager.edit',['cityManager'=>$cityManager,'cities'=>$mergedCities]);
     }
 
     /**
@@ -130,7 +130,6 @@ public function store(Request $request)
         $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
         $imgName = $cityManager->avatar_image;
         $data=$request->all();
-        //dd($data);
     if ($request->hasFile('avatar_image')) {
 
         if ($imgName != null) {
@@ -140,9 +139,9 @@ public function store(Request $request)
         $extension = $img->getClientOriginalExtension();
         $img->move(public_path("images/"), $imgName);
     }
-        $user = User::where('name', '=', $data['name'])->where('email',$data['email'])->first();
-        $id=$user->id;
-       User::where('id',$id)->update([
+        $user = User::where('id', '=', $city_manager_id)->first();
+         $id=$user['id'];
+       User::where('id',$user['id'])->update([
              'name'=>request('name'),
              'email'=>request('email'),
              'password'=>request('password')
