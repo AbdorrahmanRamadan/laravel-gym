@@ -45,7 +45,6 @@
         <div class="form-group">
                 <label>Choose Gyms</label>
                 <select id="gyms" class="form-control" name="gym">
-
                 </select>
         </div>
         <div class="card-footer">
@@ -127,5 +126,4 @@
         });
     });
 </script>
-
 @endpush

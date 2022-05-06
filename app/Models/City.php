@@ -9,8 +9,8 @@ class City extends Model
 {
     use HasFactory;
     protected $guarded=[];
-    public function user()
+    public function city_manager()
     {
-       return $this->belongsTo(User::class);
+       return $this->belongsTo(CityManager::class,'id','city_id');
     }
 }
