@@ -27,7 +27,7 @@ class UpdateTraineeRequest extends FormRequest
         return [
             'name'=> ['required','min:3'],
             'email'=> ['required','email'],//,Rule::unique('users', 'email')->ignore($this->user)
-            'password'=> ['required','min:3'],
+            'password'=> ['required','min:8'],
             'password_confirmation' => 'required_with:password|same:password|min:3',
             'birth_date'=> ['date'],
             'gender'=> 'in:Male,Female',

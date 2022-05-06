@@ -27,11 +27,11 @@ class UpdateCityManagerRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'national_id' => ['digits:14'],
+            'national_id' => ['digits:14'],
             'city_id' => ['unique','exists:cities,id'],
             'avatar_image'=>['image','mimes:png,jpg'],
-            'email'=>['required',Rule::unique('users','email')->ignore($this->cityManager)]
-            //'password'=>['min:8','max:16']
+            'email'=>['required',Rule::unique('users','email')->ignore($this->cityManager)],
+            'password'=>['min:8','max:16']
         ];
     }
 
@@ -48,7 +48,7 @@ class UpdateCityManagerRequest extends FormRequest
             'email.email'=>'Email Field Must Be a valid Email',
             'password.required' => 'Password Field Is Required',
             'password.min' => 'Minimum Password Field Is 8 characters',
-            'password.max' => 'Maximum Password Field Is 8 characters',
+            'password.max' => 'Maximum Password Field Is 16 characters',
         ];
     }
 }

@@ -32,7 +32,7 @@ class StoreGymRequest extends FormRequest
         return [
             'name'=>['required', 'min:3', Rule::unique('gyms', 'name')->ignore($this->gyms)],
             'city_id'=>Rule::in($citiesId),
-            'cover_image'=>['image','mimes:png,jpg'],
+            'cover_image'=>['image'],
 
         ];
     }
