@@ -2,7 +2,7 @@
 @section('title') Coach Update @endsection
 
 @section('page_content')
-<form method="POST" action="{{ route('Coaches.update',['coach' => $coach['coach_id']]) }}" class="m-4" enctype="multipart/form-data">
+<form method="POST" action="{{ route('Coaches.update',['coach' => $coach['id']]) }}" class="m-4" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="mb-3">

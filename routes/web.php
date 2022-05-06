@@ -14,6 +14,8 @@ use App\Http\Controllers\TrainingSessionController;
 use App\Http\Controllers\GymController;
 use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\CoachController;
+use App\Http\Controllers\RevenueController;
+
 use App\Models\BoughtPackage;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
@@ -98,6 +100,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/boughtpackages/create/',[BoughtPackageController::class, 'create'])->name('Boughtpackages.create');
     Route::post('/boughtpackages', [BoughtPackageController::class, 'store'])->name('Boughtpackages.store');
     Route::delete('/boughtpackages/{boughtpackages}',[BoughtPackageController::class, 'destroy'])->name('Boughtpackages.destroy');
+
+    Route::get('revenue', [RevenueController::class, 'index'])->name('Revenue.index');
+
 });
 
 

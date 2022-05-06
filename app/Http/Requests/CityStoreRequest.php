@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTrainingSessionRequest extends FormRequest
+class CityStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,15 @@ class UpdateTrainingSessionRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|min:3',
-            'start_at'=>'required|date',
-            'end_at'=>'required|date|after:start_at',
-            'gym_id'=>'required|exists:gyms,id',
+            'city_name' => ['required'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'city_name.required' => 'City Field Is Required',
+
         ];
     }
 }
