@@ -27,14 +27,13 @@ use App\Models\User;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//Auth::routes(['verify'=>true]);
-Route::middleware(['auth','banned'])->group(function () {
 
-    // Route::get('/admin', function () {
-    //     Notification::send(User::all(),new \App\Notifications\Welcome());
-    //     return view('Admin.index');
-    // });
-    Route::get('/admin', function () {return view('welcome');});
+Route::middleware(['auth', 'banned'])->group(function () {
+
+
+    Route::get('/admin', function () {
+        return view('welcome');
+    });
 
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('Attendance.index');
     Route::get('/attendance-dt', [AttendanceController::class, 'getAttendance'])->name('Attendance.getAttendance');
@@ -53,9 +52,9 @@ Route::middleware(['auth','banned'])->group(function () {
     Route::get('/coaches/create/', [CoachController::class, 'create'])->name('Coaches.create');
     Route::post('/coaches', [CoachController::class, 'store'])->name('Coaches.store');
     Route::get('/coaches/{coach}', [CoachController::class, 'show'])->name('Coaches.show');
-    Route::get('/coaches/{coach}/edit',[CoachController::class, 'edit'])->name('Coaches.edit');
-    Route::put('/coaches/{coach}',[CoachController::class, 'update'])->name('Coaches.update');
-    Route::delete('/coaches/{coach}',[CoachController::class, 'destroy'])->name('Coaches.destroy');
+    Route::get('/coaches/{coach}/edit', [CoachController::class, 'edit'])->name('Coaches.edit');
+    Route::put('/coaches/{coach}', [CoachController::class, 'update'])->name('Coaches.update');
+    Route::delete('/coaches/{coach}', [CoachController::class, 'destroy'])->name('Coaches.destroy');
 
 
     Route::get('/trainees', [TraineeController::class, 'index'])->name('Trainees.index');
@@ -63,7 +62,7 @@ Route::middleware(['auth','banned'])->group(function () {
     Route::get('/trainees/create/', [TraineeController::class, 'create'])->name('Trainees.create');
     Route::post('/trainees', [TraineeController::class, 'store'])->name('Trainees.store');
     Route::get('/trainees/{trainee}', [TraineeController::class, 'show'])->name('Trainees.show');
-    Route::delete('/trainees/{trainee}',[TraineeController::class, 'destroy'])->name('Trainees.destroy');
+    Route::delete('/trainees/{trainee}', [TraineeController::class, 'destroy'])->name('Trainees.destroy');
 
     Route::get('/packages', [TrainingPackageController::class, 'index'])->name('TrainingPackages.index');
     Route::get('/packages-dt', [TrainingPackageController::class, 'getTrainingPackages'])->name('TrainingPackages.getTrainingPackages');
@@ -102,9 +101,9 @@ Route::middleware(['auth','banned'])->group(function () {
     Route::delete('gyms/{gym}', [GymController::class, 'destroy'])->name('Gyms.destroy');
 
     Route::get('/boughtpackages', [BoughtPackageController::class, 'index'])->name('Boughtpackages.index');
-    Route::get('/boughtpackages/create/',[BoughtPackageController::class, 'create'])->name('Boughtpackages.create');
+    Route::get('/boughtpackages/create/', [BoughtPackageController::class, 'create'])->name('Boughtpackages.create');
     Route::post('/boughtpackages', [BoughtPackageController::class, 'store'])->name('Boughtpackages.store');
-    Route::delete('/boughtpackages/{boughtpackages}',[BoughtPackageController::class, 'destroy'])->name('Boughtpackages.destroy');
+    Route::delete('/boughtpackages/{boughtpackages}', [BoughtPackageController::class, 'destroy'])->name('Boughtpackages.destroy');
 
     Route::get('gymsManagers', [GymManagerController::class, 'index'])->name('GymManager');
     Route::get('gym-Managers-list', [GymManagerController::class, 'getGymManagers'])->name('GymManager.index');
@@ -137,6 +136,3 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-
-
-

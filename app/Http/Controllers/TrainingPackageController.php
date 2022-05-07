@@ -7,36 +7,52 @@ use App\Http\Requests\UpdateTrainingPackageRequest;
 use App\Models\TrainingPackage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class TrainingPackageController extends Controller
 {
     public function index()
     {
-        return view('TrainingPackages.index');
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole == 'admin') {
+            return view('TrainingPackages.index');
+        } else {
+            return view('403');
+        }
     }
 
     public function getTrainingPackages()
     {
-        $TrainingPackages = TrainingPackage::query();
-        return datatables()->eloquent($TrainingPackages)->addIndexColumn()->addColumn('action', function ($TrainingPackage) {
-            return '
-            <a href="' . route('TrainingPackages.show', $TrainingPackage->id) . '" class="btn btn-primary">View</a>
-            <a href="' . route('TrainingPackages.edit', $TrainingPackage->id) . '" class="btn btn-success">Edit</a><form class="d-inline" action="' . route('TrainingPackages.destroy',  $TrainingPackage->id) . '" method="POST">
-	            ' . csrf_field() . '
-	            ' . method_field("DELETE") . '
-	            <button type="submit" class="btn btn-danger"
-	                onclick="return confirm(\'Are You Sure Want to Delete?\')"
-	            ">Delete</a>
-	            </form>';
-        })->editColumn('price', function ($TrainingPackage) {
-            return $TrainingPackage->price / 100;
-        })->rawColumns(['action'])->toJson();
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole == 'admin') {
+            $TrainingPackages = TrainingPackage::query();
+            return datatables()->eloquent($TrainingPackages)->addIndexColumn()->addColumn('action', function ($TrainingPackage) {
+                return '
+                <a href="' . route('TrainingPackages.show', $TrainingPackage->id) . '" class="btn btn-primary">View</a>
+                <a href="' . route('TrainingPackages.edit', $TrainingPackage->id) . '" class="btn btn-success">Edit</a><form class="d-inline" action="' . route('TrainingPackages.destroy',  $TrainingPackage->id) . '" method="POST">
+                    ' . csrf_field() . '
+                    ' . method_field("DELETE") . '
+                    <button type="submit" class="btn btn-danger"
+                        onclick="return confirm(\'Are You Sure Want to Delete?\')"
+                    ">Delete</a>
+                    </form>';
+            })->editColumn('price', function ($TrainingPackage) {
+                return $TrainingPackage->price / 100;
+            })->rawColumns(['action'])->toJson();
+        } else {
+            return view('403');
+        }
     }
 
 
     public function create()
     {
-        return view('TrainingPackages.create');
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole == 'admin') {
+            return view('TrainingPackages.create');
+        } else {
+            return view('403');
+        }
     }
 
     public function store(StoreTrainingPackageRequest  $request)
@@ -52,17 +68,27 @@ class TrainingPackageController extends Controller
 
     public function show($packageId)
     {
-        $package = TrainingPackage::find($packageId);
-        return view('TrainingPackages.show', [
-            'package' => $package,
-        ]);
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole == 'admin') {
+            $package = TrainingPackage::find($packageId);
+            return view('TrainingPackages.show', [
+                'package' => $package,
+            ]);
+        } else {
+            return view('403');
+        }
     }
     public function edit($packageId)
     {
-        $package = TrainingPackage::find($packageId);
-        return view('TrainingPackages.edit', [
-            'package' => $package,
-        ]);
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole == 'admin') {
+            $package = TrainingPackage::find($packageId);
+            return view('TrainingPackages.edit', [
+                'package' => $package,
+            ]);
+        } else {
+            return view('403');
+        }
     }
 
     public function update(UpdateTrainingPackageRequest $request, $packageId)
@@ -78,7 +104,13 @@ class TrainingPackageController extends Controller
 
     public function destroy($packageId)
     {
-        TrainingPackage::find($packageId)->delete();
-        return to_route('TrainingPackages.index');
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole == 'admin') {
+            TrainingPackage::find($packageId)->delete();
+            return to_route('TrainingPackages.index');
+        } else {
+            return view('403');
+        }
+
     }
 }
