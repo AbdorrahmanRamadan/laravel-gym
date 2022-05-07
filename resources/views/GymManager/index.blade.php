@@ -9,7 +9,7 @@
     </div>
 @endif
 <div class="" id="deleteStatus">
-        
+
 </div>
 <div class="row header">
     <h2 class="col-10">All Gym Managers</h2>
@@ -30,10 +30,11 @@
             </tr>
         </thead>
         <tbody>
-           
+
         </tbody>
-    </table> 
+    </table>
 </div>
+
 @endsection
 @push('script')
 <script>
@@ -57,7 +58,7 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
         });
-                
+
     });
     function deleteManager(gymManagerId){
         Swal.fire({
@@ -77,15 +78,15 @@
                     url:'/gymsManagers/'+gymManagerId,
                     dataType:'json',
                     type:'DELETE',
-                   
-                    success:function(response){             
+
+                    success:function(response){
                         location.reload();
                     }
-                    
+
                 })
             }
         })
         }
-        
+
     </script>
 @endpush

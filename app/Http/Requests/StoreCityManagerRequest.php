@@ -40,13 +40,14 @@ class StoreCityManagerRequest extends FormRequest
             'national_id.digits' => 'ID Length is 14 Digits',
             'national_id.unique'=>'National ID Field Must Be Unique',
             'avatar_image.mimes' => 'Only Allowed Extensions Are png,jpg',
+            'avatar_image.image' => ' City Manager image must be an image.',
             'city_id.exists'=>'The Selected City Not Found',
             'name.required' => 'Name Field Is Required',
             'email.required' => 'Email Field Is Required',
             'email.email'=>'Email Field Must Be a valid Email',
             'password.required' => 'Password Field Is Required',
             'password.min' => 'Minimum Password Field Is 8 characters',
-            'password.max' => 'Maximum Password Field Is 8 characters',
+            'password.max' => 'Maximum Password Field Is 16 characters',
         ];
     }
 }

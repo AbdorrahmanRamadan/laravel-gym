@@ -114,10 +114,10 @@
                     {
                         if(data){
                         $('#gyms').empty();
-                        $('#gyms').append('<option hidden>Choose Gym</option>'); 
+                        $('#gyms').append('<option hidden>Choose Gym</option>');
                         $.each(data, function(key, gym){
                             $('select[name="gym"]').append('<option value="'+ gym.id +'">' + gym.name+ '</option>');
-                        }); 
+                        });
                     }else{
                         $('#gyms').empty();
                     }
@@ -129,5 +129,4 @@
         });
     });
 </script>
-
 @endpush

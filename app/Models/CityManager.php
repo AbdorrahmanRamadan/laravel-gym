@@ -11,7 +11,6 @@ class CityManager extends Model
     protected $guarded=[];
     public function cities(){
         return $this->belongsTo(City::class,'city_id');
-
     }
 
     public function user()
