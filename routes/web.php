@@ -62,6 +62,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/trainees-dt', [TraineeController::class, 'getTrainees'])->name('Trainees.getTrainees');
     Route::get('/trainees/create/', [TraineeController::class, 'create'])->name('Trainees.create');
     Route::post('/trainees', [TraineeController::class, 'store'])->name('Trainees.store');
+    Route::get('/trainees/{trainee}', [TraineeController::class, 'show'])->name('Trainees.show');
     Route::delete('/trainees/{trainee}',[TraineeController::class, 'destroy'])->name('Trainees.destroy');
 
     Route::get('/packages', [TrainingPackageController::class, 'index'])->name('TrainingPackages.index');
