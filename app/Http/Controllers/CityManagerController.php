@@ -147,17 +147,16 @@ public function store(StoreCityManagerRequest $request)
     public function update(UpdateCityManagerRequest $request, $city_manager_id)
     {
         $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
-        $imgName = $cityManager->avatar_image;
+        $imageName = $cityManager->avatar_image;
         $data=$request->all();
-    if ($request->hasFile('avatar_image')) {
 
-        if ($imgName != null) {
-            unlink(public_path('images/'.$imgName));
-        }
-        $img = $request->file('avatar_image');
-        $extension = $img->getClientOriginalExtension();
-        $img->move(public_path("images/"), $imgName);
-    }
+      $profileImage=$request->file('avatar_image');
+      if($profileImage!=null){
+          Storage::delete('public/images/'.$imageName);
+          $imageName=$profileImage->getClientOriginalName();
+          $path=Storage::putFileAs('public/images',$profileImage,$imageName);
+      }
+
         $user = User::where('id', '=', $city_manager_id)->first();
          $id=$user['id'];
        User::where('id',$user['id'])->update([
@@ -171,7 +170,7 @@ public function store(StoreCityManagerRequest $request)
         'national_id'=>$data['national_id'],
         'city_manager_id'=>$id,
         'city_id'=>$data['city_name'],
-        'avatar_image'=>$imgName
+        'avatar_image'=>$imageName
     ]);
 
      return redirect(route('citiesManagers.index'))->with('success','Updated Successfully');
