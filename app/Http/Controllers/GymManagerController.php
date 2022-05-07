@@ -16,17 +16,27 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use GuzzleHttp\Psr7\Response;
+use Yajra\DataTables\Html\Editor\Fields\Select;
 
 class GymManagerController extends Controller
 {
     public function index(){
-        return view("GymManager.index");
+         return view("GymManager.index");
     }
     public function getGymManagers()
 
     {
-        $gymManagers =  GymManager::with('user', 'gym')->select('gym_managers.*');
-        return datatables()->eloquent($gymManagers)->addIndexColumn()->addColumn('action', function($gymManager){
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        $gymManagers = '';
+        if($userRole == 'admin'){
+            $gymManagers =  GymManager::with('user', 'gym')->select('gym_managers.*');
+        }else if($userRole == 'city_manager'){
+            $gymManagers = '';
+            $cityOfCityManager = CityManager::where('city_manager_id', Auth::id())->first()->cities->id;
+            $gyms = Gym::where('city_id', $cityOfCityManager)->get();
+            $gymManagers = GymManager::whereIn('gym_id', $gyms->pluck('id'))->with('user', 'gym')->get();
+        }
+        return datatables()->of($gymManagers)->addIndexColumn()->addColumn('action', function($gymManager){
             return '<a href="'.route('GymManager.edit', $gymManager).'" class="edit btn btn-primary me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager('.$gymManager->id.')">Delete</a>';
         })->editColumn('name', function($gymManager){
             return $gymManager->user->name;
@@ -48,7 +58,7 @@ class GymManagerController extends Controller
         if($userRole == 'admin'){
             $cities = City::all();
         }else if($userRole == 'city_manager'){
-            $cities = CityManager::find(Auth::id())->cities->id;
+            $cities = CityManager::where('city_manager_id',Auth::id())->first()->cities->id;
         }
         return view('GymManager.create', [
             'cities'=>$cities,
