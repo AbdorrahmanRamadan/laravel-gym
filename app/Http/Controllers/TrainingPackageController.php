@@ -29,13 +29,7 @@ class TrainingPackageController extends Controller
             return datatables()->eloquent($TrainingPackages)->addIndexColumn()->addColumn('action', function ($TrainingPackage) {
                 return '
                 <a href="' . route('TrainingPackages.show', $TrainingPackage->id) . '" class="btn btn-primary">View</a>
-                <a href="' . route('TrainingPackages.edit', $TrainingPackage->id) . '" class="btn btn-success">Edit</a><form class="d-inline" action="' . route('TrainingPackages.destroy',  $TrainingPackage->id) . '" method="POST">
-                    ' . csrf_field() . '
-                    ' . method_field("DELETE") . '
-                    <button type="submit" class="btn btn-danger"
-                        onclick="return confirm(\'Are You Sure Want to Delete?\')"
-                    ">Delete</a>
-                    </form>';
+                <a href="' . route('TrainingPackages.edit', $TrainingPackage->id) . '" class="btn btn-success">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteTrainingPackage(' . $TrainingPackage->id . ')">Delete</a>';
             })->editColumn('price', function ($TrainingPackage) {
                 return $TrainingPackage->price / 100;
             })->rawColumns(['action'])->toJson();
@@ -108,9 +102,13 @@ class TrainingPackageController extends Controller
         if ($userRole == 'admin') {
            try{
             TrainingPackage::find($packageId)->delete();
-            return to_route('TrainingPackages.index');}
+            //return to_route('TrainingPackages.index');
+            return response()->json(['success' => "Training Package Deleted successfully."]);
+        }
             catch(\throwable $th){
-                return redirect(route('TrainingPackages.index'))->with('danger', 'This Package Cannot Be Deleted It Assigned To Bought Package ');
+               // return redirect(route('TrainingPackages.index'))->with('danger', 'This Package Cannot Be Deleted It Assigned To Bought Package ');
+               return response()->json(['danger' => "This Training Package Cannot Be Deleted It Purchased"]);
+
 
             }
         } else {

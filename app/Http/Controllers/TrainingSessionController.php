@@ -40,13 +40,7 @@ class TrainingSessionController extends Controller
         return datatables()->eloquent($TrainingSessions)->addIndexColumn()->addColumn('action', function ($TrainingSession) {
             return '
             <a href="' . route('TrainingSessions.show', $TrainingSession->id) . '" class="btn btn-primary">View</a>
-            <a href="' . route('TrainingSessions.edit', $TrainingSession->id) . '" class="btn btn-success">Edit</a><form class="d-inline" action="' . route('TrainingSessions.destroy', $TrainingSession->id) . '" method="POST">
-	            ' . csrf_field() . '
-	            ' . method_field("DELETE") . '
-	            <button type="submit" class="btn btn-danger"
-	                onclick="return confirm(\'Are You Sure Want to Delete?\')"
-	            ">Delete</a>
-	            </form>';
+            <a href="' . route('TrainingSessions.edit', $TrainingSession->id) . '" class="btn btn-success">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteTrainingSessions(' . $TrainingSession->id . ')">Delete</a>';
         })->editColumn('gym_id', function ($TrainingSession) {
             return $TrainingSession->gym->name;
         })->editColumn('coach', function ($TrainingSession) {
@@ -163,6 +157,6 @@ class TrainingSessionController extends Controller
     {
         CoachSession::where('training_session_id', $SessionId)->delete();
         TrainingSession::find($SessionId)->delete();
-        return to_route('TrainingSessions.index');
+        return response()->json(['success' => "Sessions Deleted successfully."]);
     }
 }

@@ -1,7 +1,9 @@
 @extends('layouts.gym')
 @section('title') Training Sessions @endsection
 @section('page_content')
+<div class="" id="deleteStatus">
 
+</div>
     <div class="text-center">
             <a href="{{ route('TrainingSessions.create') }}" class="mt-4 btn btn-success">Create A New Session</a>
         </div>
@@ -41,5 +43,34 @@
                 ]
             });
         });
+        function deleteTrainingSessions(trainingSessionsId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: '/sessions/' + trainingSessionsId,
+                    dataType: 'json',
+                    type: 'DELETE',
+
+                    success: function(response) {
+                        $('#deleteStatus').text(response['success']);
+                        $('#deleteStatus').addClass('alert alert-success')
+                        location.reload();
+                    }
+
+                })
+            }
+        })
+    }
     </script>
 @endpush
