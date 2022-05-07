@@ -40,7 +40,7 @@ if($userRole=='admin'){
 
 
 }else if($userRole=='gym_manager'){
-    $gymId =CityManager::select('gym_id')->where('id',$currentUserId)->get()->pluck('gym_id')[0];
+    $gymId =GymManager::select('gym_id')->where('id',$currentUserId)->get()->pluck('gym_id')[0];
     $users=DB::table('bought_packages')->select('*')->where('gym_id',$gymId)->get()->pluck('trainee_id');
     $trainees =  Trainee::with('user')->select('*')->whereIn('trainee_id',$users);
 

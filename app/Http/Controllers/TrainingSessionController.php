@@ -7,8 +7,12 @@ use App\Models\Coach;
 use App\Models\CoachSession;
 use App\Models\Gym;
 use App\Models\TrainingSession;
+use App\Models\CityManager;
+use App\Models\GymManager;
+
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TrainingSessionController extends Controller
 {
@@ -30,7 +34,22 @@ class TrainingSessionController extends Controller
 
     public function getTrainingSessions()
     {
-        $TrainingSessions = TrainingSession::with('gym','coaches')->select('training_sessions.*');
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        $currentUserId=Auth::id();
+
+        if($userRole == 'admin'){
+            $TrainingSessions = TrainingSession::with('gym','coaches')->select('training_sessions.*');
+        }else if($userRole == 'city_manager'){
+           $city_id = CityManager::where('city_manager_id',$currentUserId)->value('city_id');
+           $gymsId = Gym::where('city_id',$city_id)->get()->pluck('id');
+            $TrainingSessions=TrainingSession::with('gym','coaches')->select('*')->whereIn('gym_id',$gymsId);
+
+         }
+         else if($userRole == 'gym_manager'){
+            $gymId =GymManager::select('gym_id')->where('id',$currentUserId)->get()->pluck('gym_id')[0];
+            $TrainingSessions=TrainingSession::select('*')->where('gym_id',$gymId);
+
+        }
         return datatables()->eloquent($TrainingSessions)->addIndexColumn()->addColumn('action', function ($TrainingSession) {
             return '
             <a href="' . route('TrainingSessions.show', $TrainingSession->id) . '" class="btn btn-primary">View</a>
@@ -54,7 +73,18 @@ class TrainingSessionController extends Controller
 
     public function create()
     {
-        $gyms = Gym::all();
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        $currentUserId=Auth::id();
+        if($userRole=='admin'){
+            $gyms = Gym::all();
+        }else if($userRole=='city_manager'){
+            $currentId=Auth::id();
+            $cityId=CityManager::where('city_manager_id',$currentId)->value('city_id');
+            $gyms=Gym::select('*')->where('city_id', $cityId);
+        }else if($userRole=='gym_manager'){
+            $gymId =GymManager::select('gym_id')->where('id',$currentUserId)->get()->pluck('gym_id')[0];
+            $gyms=Gym::where('id',$gymId)->get();
+        }
         $coaches= Coach::all();
         return view('TrainingSessions.create',[
             'coaches'=>$coaches,
@@ -96,9 +126,22 @@ class TrainingSessionController extends Controller
     }
     public function edit($SessionId)
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        $currentUserId=Auth::id();
         $coaches= Coach::all();
-        $gyms = Gym::all();
         $session=TrainingSession::find($SessionId);
+        $gymId=$session->gym_id;
+        if($userRole == 'admin'){
+            $gyms = Gym::all();
+        }else if($userRole == 'city_manager'){
+           $city_id = CityManager::where('city_manager_id',$currentUserId)->value('city_id');
+           $gyms = Gym::where('city_id',$city_id)->get();
+
+         }
+         else if($userRole == 'gym_manager'){
+            $gyms=Gym::where('id',$gymId)->get();
+        }
+
         $selectedGym=Gym::find($session['gym_id']);
         $selectedCoaches=User::find(TrainingSession::find($SessionId)->coaches->pluck('id'));
         return view('TrainingSessions.edit',[
