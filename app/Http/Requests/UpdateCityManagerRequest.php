@@ -27,11 +27,11 @@ class UpdateCityManagerRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'national_id' => ['digits:14'],
+            'national_id' => ['digits:14'],
             'city_id' => ['unique','exists:cities,id'],
             'avatar_image'=>['image','mimes:png,jpg'],
-            'email'=>['required',Rule::unique('users','email')->ignore($this->cityManager)]
-            //'password'=>['min:8','max:16']
+            'email'=>['required',Rule::unique('users','email')->ignore($this->cityManager)],
+            'password'=>['min:8','max:16']
         ];
     }
 

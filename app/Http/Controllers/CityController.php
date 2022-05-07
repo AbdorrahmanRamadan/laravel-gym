@@ -146,7 +146,7 @@ class CityController extends Controller
                 $city->delete();
                 return redirect(route('Cities.index'))->with('success', 'Deleted Successfully');
             } catch (\Throwable $e) {
-                return redirect(route('Cities.index'))->with('danger', 'This City Cannot Be Deleted It Assigned To City Manager ');
+                return redirect(route('Cities.index'))->with('danger', 'This City Cannot Be Deleted It Assigned To City Manager or Gym ');
             }
         } else {
             return view('403');
