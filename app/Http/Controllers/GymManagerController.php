@@ -27,20 +27,7 @@ class GymManagerController extends Controller
     {
         $gymManagers =  GymManager::with('user', 'gym')->select('gym_managers.*');
         return datatables()->eloquent($gymManagers)->addIndexColumn()->addColumn('action', function($gymManager){
-
-            return '<a href="#" class="edit btn btn-primary mx-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager('.$gymManager->id.')">Delete</a>';
-        })->addColumn('ban', function($gymManager){
-        if ($gymManager->isban == 0){
-            return ' <a href="' . route("GymManager.ban", $gymManager->id) . '" class="btn btn-danger w-100"  id="ban" >ban</a>';
-        }
-        else {
-            return ' <a href="' . route("GymManager.ban", $gymManager->id) . '" class="btn btn-primary w-100" id="ban" >unban</a>';
-        }
-
-            return '
-            <a href="'.route('GymManager.show', $gymManager).'" class="edit btn btn-primary me-2">View</a>
-            <a href="'.route('GymManager.edit', $gymManager).'" class="edit btn btn-success me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager('.$gymManager->id.')">Delete</a>';
-
+            return '<a href="'.route('GymManager.edit', $gymManager).'" class="edit btn btn-primary me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager('.$gymManager->id.')">Delete</a>';
         })->editColumn('name', function($gymManager){
             return $gymManager->user->name;
         })->editColumn('email', function($gymManager){
@@ -51,9 +38,8 @@ class GymManagerController extends Controller
             return $gymManager->gym->name;
         })->setRowId(function($gymManager){
             return 'managerId'.$gymManager->id;
-        })->rawColumns(['action','ban'])->toJson();
+        })->rawColumns(['action'])->toJson();
     }
-
     public function create(){
         $userRole = Auth::user()->roles->pluck('name')[0];
         $cities = '';
@@ -62,35 +48,21 @@ class GymManagerController extends Controller
         if($userRole == 'admin'){
             $cities = City::all();
         }else if($userRole == 'city_manager'){
-            $cities = CityManager::find(Auth::id())->cities->id;
+            $currentId=Auth::id();
+            $cityid = CityManager::select('*')->where('city_manager_id',$currentId )->get()->pluck('city_id')[0];
+            $cities=City::where('id',$cityid)->select('*')->first();
+            $gyms=Gym::where('city_id',$cityid)->get();
         }
         return view('GymManager.create', [
             'cities'=>$cities,
-            'defaultCityGyms'=>$defaultCityGyms
+            'defaultCityGyms'=>$defaultCityGyms,
+            'gyms'=>$gyms,
         ]);
 
     }
-
     public function getGymsOfCity($cityId){
         $gyms = Gym::where('city_id', $cityId)->get();
         return response()->json($gyms);
-    }
-
-    public function ban($id){
-        $gymmanager = GymManager::where('id', $id)->first();
-       
-        if ( $gymmanager->isban==1){
-            GymManager::where('id', $id)->update([
-                'isban'=> 0,
-            ]);
-        }
-        else{
-            GymManager::where('id', $id)->update([
-                'isban'=> 1,
-            ]);
-        }
-
-        return view("GymManager.index");
     }
 
     public function store(StoreGymManagerRequest $request){
@@ -122,23 +94,7 @@ class GymManagerController extends Controller
 
     }
 
-    public function show($gymManagerId){
-        $userRole = Auth::user()->roles->pluck('name')[0];
-        $gymManagerInfo = GymManager::find($gymManagerId);
-        $cities = '';
-        $cityGyms = Gym::where('city_id', $gymManagerInfo->gym->city->id)->get();
-        if($userRole == 'admin'){
-            $cities = City::all();
-        }else if($userRole == 'city_manager'){
-            $cities = CityManager::find(Auth::id())->cities->id;
-        }
-        return view('GymManager.show', [
-            'cities'=>$cities,
-            'gymManagerInfo'=>$gymManagerInfo,
-            'cityGyms'=>$cityGyms
-        ]);
 
-    }
     public function edit($gymManagerId){
         $userRole = Auth::user()->roles->pluck('name')[0];
         $gymManagerInfo = GymManager::find($gymManagerId);
