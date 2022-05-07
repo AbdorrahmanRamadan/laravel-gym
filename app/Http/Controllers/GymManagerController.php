@@ -26,9 +26,14 @@ class GymManagerController extends Controller
     {
         $gymManagers =  GymManager::with('user', 'gym')->select('gym_managers.*');
         return datatables()->eloquent($gymManagers)->addIndexColumn()->addColumn('action', function($gymManager){
-            return '<a href="#" class="edit btn btn-primary btn-sm me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager('.$gymManager->id.')">Delete</a>';
+            return '<a href="#" class="edit btn btn-primary mx-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager('.$gymManager->id.')">Delete</a>';
         })->addColumn('ban', function($gymManager){
-            return ' <a href="' . route("GymManager.ban", $gymManager->id) . '" class="edit btn btn-primary btn-sm me-2" id="ban" >ban</a>';
+        if ($gymManager->isban == 0){
+            return ' <a href="' . route("GymManager.ban", $gymManager->id) . '" class="btn btn-danger w-100"  id="ban" >ban</a>';
+        }
+        else {
+            return ' <a href="' . route("GymManager.ban", $gymManager->id) . '" class="btn btn-primary w-100" id="ban" >unban</a>';
+        }
         })->editColumn('name', function($gymManager){
             return $gymManager->user->name;
         })->editColumn('email', function($gymManager){
@@ -41,6 +46,7 @@ class GymManagerController extends Controller
             return 'managerId'.$gymManager->id;
         })->rawColumns(['action','ban'])->toJson();
     }
+
     public function create(){
         $userRole = Auth::user()->roles->pluck('name')[0];
         $cities = '';
@@ -53,6 +59,7 @@ class GymManagerController extends Controller
             'cities'=>$cities,
         ]);
     }
+
     public function getGymsOfCity($cityId){
         $gyms = Gym::where('city_id', $cityId)->get();
         return response()->json($gyms);
@@ -62,20 +69,17 @@ class GymManagerController extends Controller
         $gymmanager = GymManager::where('id', $id)->first();
        
         if ( $gymmanager->isban==1){
-
             GymManager::where('id', $id)->update([
                 'isban'=> 0,
             ]);
         }
         else{
-
             GymManager::where('id', $id)->update([
                 'isban'=> 1,
             ]);
-
         }
-        return view("GymManager.index");
 
+        return view("GymManager.index");
     }
 
     public function store(StoreGymManagerRequest $request){

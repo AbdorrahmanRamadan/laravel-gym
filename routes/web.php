@@ -113,14 +113,14 @@ Route::middleware(['auth','banned'])->group(function () {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-
+   
+    Route::get('gymsManagers/{gymManagerId}', [GymManagerController::class, 'ban'])->name('GymManager.ban');
 });
 
 Route::get('/bannedGymManager', function () {
     return view('bannedGymManager');
 })->name('bannedGymManager');
 
-Route::get('gymsManagers/{gymManagerId}', [GymManagerController::class, 'ban'])->name('GymManager.ban');
 
 
 Auth::routes();
