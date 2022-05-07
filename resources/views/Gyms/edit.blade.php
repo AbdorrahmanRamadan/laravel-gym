@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label for="formFile" class="form-label">Gym Cover Image</label>
-                <input name="cover-image"  class="form-control" type="file" id="formFile">
+                <input name="cover_image"  class="form-control" type="file" id="formFile">
             </div>
         </div>
         <div class="card-footer">

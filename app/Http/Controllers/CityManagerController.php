@@ -29,24 +29,25 @@ class CityManagerController extends Controller
 
     {
         $cityManagers = CityManager::with('user','cities')->select('city_managers.*');;
-        return datatables()->eloquent($cityManagers)->addIndexColumn()->addColumn('action', function($cityManagers){
+        return datatables()->eloquent($cityManagers)->addIndexColumn()->addColumn('action', function($cityManager){
             return '
-            <a href="'. route("citiesManagers.edit", $cityManagers->city_manager_id) .'"  class="edit btn btn-success btn-sm me-2">Edit</a>
-            <form class="d-inline" action="'.route('citiesManagers.destroy',  $cityManagers->city_manager_id).'" method="POST">
-            '.csrf_field().'
-            '.method_field("DELETE").'
+            <a href="'. route("citiesManagers.show", $cityManager->city_manager_id) .'"  class="edit btn btn-primary btn-sm me-2">View</a>
+            <a href="'. route("citiesManagers.edit", $cityManager->city_manager_id) .'"  class="edit btn btn-success btn-sm me-2">Edit</a>
+            <form class="d-inline" action="' . route('citiesManagers.destroy',  $cityManager->city_manager_id) . '" method="POST">
+            ' . csrf_field() . '
+            ' . method_field("DELETE") . '
             <button type="submit" class="btn btn-danger btn-sm me-2"
                 onclick="return confirm(\'Are You Sure Want to Delete?\')"
             ">Delete</a>
             </form>';
 
 
-        })->editColumn('city_id', function($cityManagers){
-            return $cityManagers->cities->name;
-        })->editColumn('name', function($cityManagers){
-            return $cityManagers->user->name;
-        })->editColumn('email', function($cityManagers){
-            return $cityManagers->cities->email;
+        })->editColumn('city_id', function($cityManager){
+            return $cityManager->cities->name;
+        })->editColumn('name', function($cityManager){
+            return $cityManager->user->name;
+        })->editColumn('email', function($cityManager){
+            return $cityManager->cities->email;
         })->rawColumns(['action'])->toJson();
     }
 
@@ -94,6 +95,8 @@ public function store(StoreCityManagerRequest $request)
                 'city_id'=>$cityManagerInfo['city_name'],
                 'avatar_image'=>$imageName
             ]);
+            $user=User::where(['id'=>$id])->first();
+            $user->assignRole('city_manager');
 
             return redirect(route('citiesManagers.index'))->with('success','Added Successfully');
 
@@ -102,6 +105,18 @@ public function store(StoreCityManagerRequest $request)
 
     }
 
+
+    public function show($city_manager_id)
+    {
+
+        $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
+        $citiesID=DB::table('city_managers')->select('city_id')->get()->pluck('city_id');
+        $cities=DB::table('cities')->select('id','name')->whereNotIn('id',$citiesID)->get();
+        $currentCityId=$cityManager->city_id;
+        $currentCity=DB::table('cities')->select('id','name')->where('id',$currentCityId)->get();
+        $mergedCities=$currentCity->merge($cities);
+        return view('CityManager.show',['cityManager'=>$cityManager,'cities'=>$mergedCities]);
+    }
 
 
     /**
@@ -132,23 +147,22 @@ public function store(StoreCityManagerRequest $request)
     public function update(UpdateCityManagerRequest $request, $city_manager_id)
     {
         $cityManager =CityManager::where('city_manager_id',$city_manager_id)->first();
-        $imgName = $cityManager->avatar_image;
+        $imageName = $cityManager->avatar_image;
         $data=$request->all();
-    if ($request->hasFile('avatar_image')) {
 
-        if ($imgName != null) {
-            unlink(public_path('images/'.$imgName));
-        }
-        $img = $request->file('avatar_image');
-        $extension = $img->getClientOriginalExtension();
-        $img->move(public_path("images/"), $imgName);
-    }
+      $profileImage=$request->file('avatar_image');
+      if($profileImage!=null){
+          Storage::delete('public/images/'.$imageName);
+          $imageName=$profileImage->getClientOriginalName();
+          $path=Storage::putFileAs('public/images',$profileImage,$imageName);
+      }
+
         $user = User::where('id', '=', $city_manager_id)->first();
          $id=$user['id'];
        User::where('id',$user['id'])->update([
              'name'=>request('name'),
              'email'=>request('email'),
-             'password'=>request('password')
+             'password'=>Hash::make(request('password'))
         ]);
 
 
@@ -156,7 +170,7 @@ public function store(StoreCityManagerRequest $request)
         'national_id'=>$data['national_id'],
         'city_manager_id'=>$id,
         'city_id'=>$data['city_name'],
-        'avatar_image'=>$imgName
+        'avatar_image'=>$imageName
     ]);
 
      return redirect(route('citiesManagers.index'))->with('success','Updated Successfully');
@@ -171,7 +185,11 @@ public function store(StoreCityManagerRequest $request)
      */
     public function destroy($city_manager_id)
     {
-        $cityManager =CityManager::where('city_manager_id',$city_manager_id)->delete();
+        $cityManager=CityManager::where('city_manager_id',$city_manager_id)->first();
+        Storage::disk('public')->delete('images/'.$cityManager->avatar_image);
+        CityManager::where('city_manager_id',$city_manager_id)->delete();
+        User::where('id',$city_manager_id)->delete();
+        //Storage::delete('public/images/'.$cityManager->avatar_image);
         return redirect(route('citiesManagers.index'))->with('success','Deleted Successfully');
 
     }

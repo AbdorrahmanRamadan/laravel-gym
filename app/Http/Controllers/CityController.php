@@ -34,6 +34,7 @@ class CityController extends Controller
 
         return datatables()->eloquent($cities)->addIndexColumn()->addColumn('action', function ($city) {
             return '
+            <a href="' . route("Cities.show", $city->id) . '" class="edit btn btn-primary btn-sm me-2">View</a>
             <a href="' . route("Cities.edit", $city->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a>
             <form class="d-inline" action="' . route('Cities.destroy',  $city->id) . '" method="POST">
             ' . csrf_field() . '
@@ -116,7 +117,6 @@ class CityController extends Controller
             $city->delete();
             return redirect(route('Cities.index'))->with('success', 'Deleted Successfully');
         } catch (\Throwable $e) {
-
             return redirect(route('Cities.index'))->with('danger', 'This City Cannot Be Deleted It Assigned To City Manager ');
         }
     }
