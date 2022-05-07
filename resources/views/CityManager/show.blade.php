@@ -10,41 +10,36 @@
     </div>
 
     <form id="quickForm" >
-
         <div class="card-body">
 
             <div class="form-group">
-                <label for="exampleInputName">National ID</label>
-                <input name="national_id" type="text" class="form-control" id="exampleInputName" value="{{ $cityManager->national_id }}">
+                <label for="exampleInputName">National ID:  </label>
+                {{ $cityManager->national_id }}
             </div>
 
             <div class="form-group">
-                <label for="exampleInputName"> Name</label>
-                <input name="name" type="text" class="form-control" id="exampleInputName" value="{{ $cityManager->user->name }}">
+                <label for="exampleInputName">City Manager Name:  </label>
+        {{ $cityManager->user->name }}
+
             </div>
 
             <div class="form-group">
-                <label for="exampleInputName">Email Address</label>
-                <input name="email" type="email" class="form-control" id="exampleInputName" value="{{ $cityManager->user->email }}">
+                <label for="exampleInputName">Email Address: </label>
+        {{ $cityManager->user->email }}
             </div>
 
             <div class="form-group">
-                <label for="exampleInputName">Password</label>
-                <input name="password" type="password" class="form-control" id="exampleInputName" value="{{ $cityManager->user->password }}">
+                <label for="exampleInputName">Password:  </label>
+          {{ $cityManager->user->password }}
             </div>
 
 
             <div class="form-group">
-                <label>Choose City </label>
-                <select class="form-control" name="city_name">
-                    @foreach ($cities as $city)
-                    @if($cityManager->cities->id==$city->id)
-                        <option value="{{$city->id}}" selected>{{$city->name}}</option>
-                    @else
-                        <option value="{{$city->id}}">{{$city->name}}</option>
-                    @endif
+                <label> City Name:  </label>
+                @foreach ($cities as $city)
+                {{ $city->name }}
                 @endforeach
-                </select>
+
             </div>
 
             <div class="form-group">
