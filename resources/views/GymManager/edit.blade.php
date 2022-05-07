@@ -63,9 +63,10 @@
         </div>
     </form>
     @endrole
-    @role('city-manager')
+    @role('city_manager')
     <form id="quickForm" method="POST" action="{{route('GymManager.update', $gymManagerInfo->id)}}" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="card-body p-4">
             <div class="form-group">
                 <label for="exampleInputName">Manager Name</label>
@@ -96,7 +97,7 @@
         <div class="form-group">
                 <label>Choose Gym of {{$cities->name}} city</label>
                 <select id="gyms" class="form-control" name="gym">
-                    @foreach($cities->gym as $gym)
+                    @foreach($gyms as $gym)
                         @if($gym->id == $gymManagerInfo->gym->id)
                         <option value="{{$gym->id}}" selected>{{$gym->name}}</option>
                         @endif

@@ -15,6 +15,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\CityStoreRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CityController extends Controller
 {
@@ -25,11 +26,19 @@ class CityController extends Controller
      */
     public function index()
     {
-        return view('Cities.index');
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole=='admin'){
+        return view('Cities.index');}
+        else{
+            return view('403');
+        }
     }
     public function getCities()
 
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        $currentUserId=Auth::id();
+        if ($userRole=='admin'){
         $cities = City::select(['id', 'name', 'created_at', 'updated_at']);
 
         return datatables()->eloquent($cities)->addIndexColumn()->addColumn('action', function ($city) {
@@ -46,9 +55,20 @@ class CityController extends Controller
             ';
         })->rawColumns(['action'])->toJson();
     }
+
+    }
+
+
+
+
     public function create()
     {
-        return view('Cities.create');
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole=='admin'){
+            return view('Cities.create');}
+            else{
+            return view('403');
+        }
     }
 
 
@@ -68,8 +88,14 @@ class CityController extends Controller
      */
     public function show($id)
     {
-        $city = City::findorFail($id);
-        return view('Cities.show', compact('city'));
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole=='admin'){
+            $city = City::findorFail($id);
+            return view('Cities.show', compact('city'));        }
+            else{
+            return view('403');
+        }
+
     }
 
     /**
@@ -80,10 +106,17 @@ class CityController extends Controller
      */
     public function edit($id)
     {
-        $city = City::findOrFail($id);
+
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole=='admin'){
+            $city = City::findOrFail($id);
+            return view('Cities.edit', compact('city'));
+             }
+            else{
+            return view('403');
+        }
 
 
-        return view('Cities.edit', compact('city'));
     }
 
     /**
@@ -95,26 +128,35 @@ class CityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $city = City::findOrFail($id);
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole=='admin'){
+            $city = City::findOrFail($id);
         $city->name = request('city_name');
         $city->save();
         return redirect(route('Cities.index'))->with('success', 'Updated Successfully');
+        }else{
+            return view('403');
+        }
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function destroy($id)
     {
-        try {
-            $city = City::findOrFail($id);
-            $city->delete();
-            return redirect(route('Cities.index'))->with('success', 'Deleted Successfully');
-        } catch (\Throwable $e) {
-            return redirect(route('Cities.index'))->with('danger', 'This City Cannot Be Deleted It Assigned To City Manager ');
+
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if ($userRole=='admin'){
+            try {
+                $city = City::findOrFail($id);
+                $city->delete();
+                return redirect(route('Cities.index'))->with('success', 'Deleted Successfully');
+            } catch (\Throwable $e) {
+                return redirect(route('Cities.index'))->with('danger', 'This City Cannot Be Deleted It Assigned To City Manager ');
+            }}
+            else{
+            return view('403');
         }
+
     }
 }

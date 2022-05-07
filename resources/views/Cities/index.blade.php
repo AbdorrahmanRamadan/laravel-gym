@@ -1,10 +1,10 @@
 
+@role('admin')
 
 @extends('layouts.gym')
 @section('title') All Cities @endsection
 
 @section('page_content')
-
 <div class="row header">
     <h2 class="col-10">All Cities</h2>
     <a href="{{ route('Cities.create') }}" class="btn btn-success col-2" style="width:120px;">Create City</a>
@@ -45,8 +45,10 @@
 
 </script>
 
-@endpush
 
+@endpush
+@else
+@endrole
 
 
 

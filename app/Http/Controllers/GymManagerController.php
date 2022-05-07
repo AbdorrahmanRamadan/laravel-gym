@@ -113,12 +113,16 @@ class GymManagerController extends Controller
         if($userRole == 'admin'){
             $cities = City::all();
         }else if($userRole == 'city_manager'){
-            $cities = CityManager::find(Auth::id())->cities->id;
+            $currentId=Auth::id();
+            $cityid = CityManager::select('*')->where('city_manager_id',$currentId )->get()->pluck('city_id')[0];
+            $cities=City::where('id',$cityid)->select('*')->first();
+            $gyms=Gym::where('city_id',$cityid)->get();
         }
         return view('GymManager.edit', [
             'cities'=>$cities,
             'gymManagerInfo'=>$gymManagerInfo,
-            'cityGyms'=>$cityGyms
+            'cityGyms'=>$cityGyms,
+            'gyms'=>$gyms,
         ]);
 
     }
