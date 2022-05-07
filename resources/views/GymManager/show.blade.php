@@ -13,19 +13,19 @@
         <div class="card-body">
 
             <div class="form-group">
-                <label for="exampleInputName">National ID:  </label>
-                {{ $cityManager->national_id }}
+                <label for="exampleInputName">Manager Name:  </label>
+                {{$gymManagerInfo->user->name}}
             </div>
 
             <div class="form-group">
-                <label for="exampleInputName">City Manager Name:  </label>
-        {{ $cityManager->user->name }}
+                <label for="exampleInputName">Manager ID:  </label>
+                {{$gymManagerInfo->national_id}}
 
             </div>
 
             <div class="form-group">
                 <label for="exampleInputName">Email Address: </label>
-        {{ $cityManager->user->email }}
+                {{$gymManagerInfo->user->email}}
             </div>
 
 
@@ -39,8 +39,8 @@
             </div>
 
             <div class="form-group">
-                <label for="formFile" class="form-label">City Manager Image</label>
-                <img id="original" src="{{asset('/storage/images/'.$cityManager->avatar_image)}}" height="70px" width="70px">
+                <label for="formFile" class="form-label">City Manager Image:</label>
+                <img id="original" src="{{asset('/storage/gymManagers/'.$gymManagerInfo->avatar_image)}}" height="70px" width="70px">
 
             </div>
         </div>

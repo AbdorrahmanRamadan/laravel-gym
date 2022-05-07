@@ -13,6 +13,7 @@ class GymManager extends Model
         'id',
         'gym_id',
         'avatar_image',
+        'isban',
     ];
     public function gym(){
         return $this->belongsTo(Gym::class,'gym_id','id');
@@ -22,4 +23,5 @@ class GymManager extends Model
     {
        return $this->belongsTo(User::class,'id');
     }
+    
 }

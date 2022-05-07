@@ -28,7 +28,7 @@ use App\Models\User;
 |
 */
 //Auth::routes(['verify'=>true]);
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','banned'])->group(function () {
 
     // Route::get('/admin', function () {
     //     Notification::send(User::all(),new \App\Notifications\Welcome());
@@ -111,20 +111,32 @@ Route::middleware(['auth'])->group(function () {
     Route::get('gymsManagers/create', [GymManagerController::class, 'create'])->name('GymManager.create');
     Route::get('gymsManagers/create/{cityId}', [GymManagerController::class, 'getGymsOfCity']);
     Route::post('gymsManagers', [GymManagerController::class, 'store'])->name('GymManager.store');
+    Route::get('gymsManagers/show/{gymManagerId}', [GymManagerController::class, 'show'])->name('GymManager.show');
+
+
     Route::delete('gymsManagers/{gymManagerId}', [GymManagerController::class, 'destroy']);
     Route::get('gymsManagers/edit/{gymManagerId}', [GymManagerController::class, 'edit'])->name('GymManager.edit');
     Route::get('gymsManagers/edit/{cityId}', [GymManagerController::class, 'getGymsOfCity']);
     Route::put('gymsManagers/{gymManagerId}', [GymManagerController::class, 'update'])->name('GymManager.update');
+
     Route::get('revenue', [RevenueController::class, 'index'])->name('Revenue.index');
 
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
+   
+    Route::get('gymsManagers/{gymManagerId}', [GymManagerController::class, 'ban'])->name('GymManager.ban');
 });
 
-
+Route::get('/bannedGymManager', function () {
+    return view('bannedGymManager');
+})->name('bannedGymManager');
 
 
 
 Auth::routes();
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/', function () {return view('auth.login');});
+
 
 

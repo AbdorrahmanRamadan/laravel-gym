@@ -162,7 +162,7 @@ public function store(StoreCityManagerRequest $request)
        User::where('id',$user['id'])->update([
              'name'=>request('name'),
              'email'=>request('email'),
-             'password'=>request('password')
+             'password'=>Hash::make(request('password'))
         ]);
 
 

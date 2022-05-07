@@ -15,7 +15,7 @@
                 <input value="{{$gymManagerInfo->user->name}}" name="name" type="text" class="form-control" id="exampleInputName" placeholder="Gym Manager Name">
             </div>
             <div class="form-group">
-                <label for="exampleInputNationalId">Manager Name ID</label>
+                <label for="exampleInputNationalId">Manager  ID</label>
                 <input value="{{$gymManagerInfo->national_id}}" name="national-id" type="text" class="form-control" id="exampleInputNationalId" placeholder="Gym Manager National ID">
             </div>
             <div class="form-group">
@@ -126,10 +126,10 @@
                     {
                         if(data){
                         $('#gyms').empty();
-                        $('#gyms').append('<option hidden>Choose Gym</option>'); 
+                        $('#gyms').append('<option hidden>Choose Gym</option>');
                         $.each(data, function(key, gym){
                             $('select[name="gym"]').append('<option value="'+ gym.id +'">' + gym.name+ '</option>');
-                        }); 
+                        });
                     }else{
                         $('#gyms').empty();
                     }

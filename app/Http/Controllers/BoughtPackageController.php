@@ -9,46 +9,46 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use App\Models\Trainee;
 use App\Models\TrainingPackage;
+use App\Models\CityManager;
 use Stripe;
 use Session;
+use Illuminate\Support\Facades\Auth;
+
 
 class BoughtPackageController extends Controller
 {
     public function index()
     {
-        $packages = BoughtPackage::all();
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        $currentUserId=Auth::id();
+        if($userRole == 'admin'){
+            $packages = BoughtPackage::all();
+        }else if($userRole == 'city_manager'){
+           $city_id = CityManager::where('city_manager_id',$currentUserId)->value('city_id');
+           $gymsId = Gym::where('city_id',$city_id)->get()->pluck('id');
+           $packages=DB::table('bought_packages')->select('*')->whereIn('gym_id',$gymsId)->get();
+         }
+         else if($userRole == 'gym_manager'){
+            $gymId=Gym::where('id',$currentUserId)->value('city_id');
+            $packages=DB::table('bought_packages')->select('*')->where('gym_id',$gymId)->get();
+        }
+
         return view('Boughtpackages.index', ['packages' => $packages]);
     }
 
-    // public function getBoughtPackages(){
-
-    //     $packages = BoughtPackage::with('user','gym','training_package')->select('bought_packages.*');
-    //     return datatables()->eloquent($packages)->addIndexColumn()
-    //     ->addColumn('action', function($pack){
-    //         return '<form class="d-inline" action="'.route('Boughtpackages.destroy',  $pack->id ).'" method="POST">
-    //         '.csrf_field().'
-    //         '.method_field("DELETE").'
-    //         <button type="submit" class="btn btn-danger btn-sm me-2"
-    //             onclick="return confirm(\'Are You Sure Want to Delete?\')"
-    //         ">Delete</a>
-    //         </form>';
-
-    //     })
-    //     ->editColumn('trainee_id', function($pack){
-    //         return $pack->user->name;
-    //    })
-    //     ->editColumn('gym_id', function($pack){
-    //         return $pack->gym->name;
-    //    })
-    //     ->editColumn('training_package_id', function($pack){
-    //         return $pack->training_package->name;
-    //    })
-    //     ->toJson();
-    // }
-
     public function create()
     {
-        $gyms = Gym::all();
+
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        $currentUserId=Auth::id();
+        if($userRole == 'admin'){
+            $gyms = Gym::all();
+        } else if ($userRole=='city_manager'){
+            $city_id = CityManager::where('city_manager_id',$currentUserId)->value('city_id');
+           $gyms = Gym::where('city_id',$city_id)->get();
+        }else if($userRole=='gym_manager'){
+            $gyms=Gym::where('id',$currentUserId)->get();
+        }
         $training_packages = TrainingPackage::all();
         $trainees = Trainee::all();
         return view("Boughtpackages.create", [
@@ -94,4 +94,31 @@ class BoughtPackageController extends Controller
         $package->delete();
         return redirect(route('Boughtpackages.index'))->with('status', 'Bought Package is deleted successfully');
     }
+
+
+     // public function getBoughtPackages(){
+
+    //     $packages = BoughtPackage::with('user','gym','training_package')->select('bought_packages.*');
+    //     return datatables()->eloquent($packages)->addIndexColumn()
+    //     ->addColumn('action', function($pack){
+    //         return '<form class="d-inline" action="'.route('Boughtpackages.destroy',  $pack->id ).'" method="POST">
+    //         '.csrf_field().'
+    //         '.method_field("DELETE").'
+    //         <button type="submit" class="btn btn-danger btn-sm me-2"
+    //             onclick="return confirm(\'Are You Sure Want to Delete?\')"
+    //         ">Delete</a>
+    //         </form>';
+
+    //     })
+    //     ->editColumn('trainee_id', function($pack){
+    //         return $pack->user->name;
+    //    })
+    //     ->editColumn('gym_id', function($pack){
+    //         return $pack->gym->name;
+    //    })
+    //     ->editColumn('training_package_id', function($pack){
+    //         return $pack->training_package->name;
+    //    })
+    //     ->toJson();
+    // }
 }
