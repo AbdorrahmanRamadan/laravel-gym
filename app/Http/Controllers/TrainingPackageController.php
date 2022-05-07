@@ -106,8 +106,13 @@ class TrainingPackageController extends Controller
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
         if ($userRole == 'admin') {
+           try{
             TrainingPackage::find($packageId)->delete();
-            return to_route('TrainingPackages.index');
+            return to_route('TrainingPackages.index');}
+            catch(\throwable $th){
+                return redirect(route('TrainingPackages.index'))->with('danger', 'This Package Cannot Be Deleted It Assigned To Bought Package ');
+
+            }
         } else {
             return view('403');
         }
