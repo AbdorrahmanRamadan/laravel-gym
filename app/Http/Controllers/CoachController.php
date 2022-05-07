@@ -95,10 +95,15 @@ class CoachController extends Controller
 
     public function destroy($coach_id)
     {
+        try{
         Coach::where('id', $coach_id)->delete();
 
         User::find($coach_id)->delete();
 
         return to_route('Coaches.index');
+    }catch(\throwable $th){
+        return redirect('Coashes.index');
+
+    }
     }
 }

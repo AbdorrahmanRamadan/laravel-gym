@@ -26,7 +26,7 @@ class BoughtPackageController extends Controller
         } else if ($userRole == 'city_manager') {
             $city_id = CityManager::where('city_manager_id', $currentUserId)->value('city_id');
             $gymsId = Gym::where('city_id', $city_id)->get()->pluck('id');
-            $packages = DB::table('bought_packages')->select('*')->whereIn('gym_id', $gymsId)->get();
+            $packages =BoughtPackage::with('user')->select('*')->whereIn('gym_id', $gymsId)->get();
         } else if ($userRole == 'gym_manager') {
             $gymId = Gym::where('id', $currentUserId)->value('city_id');
             $packages = DB::table('bought_packages')->select('*')->where('gym_id', $gymId)->get();

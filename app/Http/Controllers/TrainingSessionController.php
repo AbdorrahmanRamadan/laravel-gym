@@ -77,7 +77,7 @@ class TrainingSessionController extends Controller
         } else if ($userRole == 'city_manager') {
             $currentId = Auth::id();
             $cityId = CityManager::where('city_manager_id', $currentId)->value('city_id');
-            $gyms = Gym::select('*')->where('city_id', $cityId);
+            $gyms = Gym::where('city_id', $cityId)->get();
         } else if ($userRole == 'gym_manager') {
             $gymId = GymManager::select('gym_id')->where('id', $currentUserId)->get()->pluck('gym_id')[0];
             $gyms = Gym::where('id', $gymId)->get();
@@ -133,6 +133,7 @@ class TrainingSessionController extends Controller
         } else if ($userRole == 'city_manager') {
             $city_id = CityManager::where('city_manager_id', $currentUserId)->value('city_id');
             $gyms = Gym::where('city_id', $city_id)->get();
+
         } else if ($userRole == 'gym_manager') {
             $gyms = Gym::where('id', $gymId)->get();
         }
