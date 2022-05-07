@@ -5,6 +5,9 @@
 @section('title') All Cities @endsection
 
 @section('page_content')
+<div class="" id="deleteStatus">
+
+</div>
 <div class="row header">
     <h2 class="col-10">All Cities</h2>
     <a href="{{ route('Cities.create') }}" class="btn btn-success col-2" style="width:120px;">Create City</a>
@@ -39,6 +42,40 @@
         });
 
     });
+    function deleteCity(cityId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: '/cities/' + cityId,
+                    dataType: 'json',
+                    type: 'DELETE',
+
+                    success: function(response) {
+                        $('#deleteStatus').text(response['success']);
+                        $('#deleteStatus').addClass('alert alert-success')
+                        location.reload();
+                    },
+                    error: function(){
+                        location.reload();
+                        $('#deleteStatus').text(response['danager']);
+                        $('#deleteStatus').addClass('alert alert-danger')
+                    }
+
+                })
+            }
+        })
+    }
 
 
 

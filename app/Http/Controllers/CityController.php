@@ -45,13 +45,7 @@ class CityController extends Controller
                 return '
             <a href="' . route("Cities.show", $city->id) . '" class="edit btn btn-primary btn-sm me-2">View</a>
             <a href="' . route("Cities.edit", $city->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a>
-            <form class="d-inline" action="' . route('Cities.destroy',  $city->id) . '" method="POST">
-            ' . csrf_field() . '
-            ' . method_field("DELETE") . '
-            <button type="submit" class="btn btn-danger btn-sm me-2"
-                onclick="return confirm(\'Are You Sure Want to Delete?\')"
-            ">Delete</a>
-            </form>
+            <a href="javascript:void(0)" class="btn btn-danger" onclick="deleteCity(' . $city->id . ')">Delete</a>
             ';
             })->rawColumns(['action'])->toJson();
         }
@@ -144,9 +138,11 @@ class CityController extends Controller
             try {
                 $city = City::findOrFail($id);
                 $city->delete();
-                return redirect(route('Cities.index'))->with('success', 'Deleted Successfully');
+                //return redirect(route('Cities.index'))->with('success', 'Deleted Successfully');
+                return response()->json(['success' => "City Deleted successfully."]);
             } catch (\Throwable $e) {
                 return redirect(route('Cities.index'))->with('danger', 'This City Cannot Be Deleted It Assigned To City Manager or Gym ');
+
             }
         } else {
             return view('403');

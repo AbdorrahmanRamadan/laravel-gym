@@ -36,13 +36,7 @@ class GymController extends Controller
             return datatables()->eloquent($gyms)->addIndexColumn()->addColumn('action', function ($gym) {
                 return '
                 <a href="' . route('Gyms.show', $gym->id) . '" class="edit btn btn-primary btn-sm me-2">View</a>
-                <a href="' . route('Gyms.edit', $gym->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a><form class="d-inline" action="' . route('Gyms.destroy',  $gym->id) . '" method="POST">
-            ' . csrf_field() . '
-            ' . method_field("DELETE") . '
-            <button type="submit" class="btn btn-danger btn-sm me-2"
-                onclick="return confirm(\'Are You Sure Want to Delete?\')"
-            ">Delete</a>
-            </form>';
+                <a href="' . route('Gyms.edit', $gym->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteGym(' . $gym->id . ')">Delete</a>';
             })->editColumn('created_at', function ($gym) {
                 return Carbon::parse($gym->created_at)->toDateString();
             })->editColumn('created_by', function ($gym) {
@@ -57,13 +51,7 @@ class GymController extends Controller
             $cityId = CityManager::where('city_manager_id', $currentId)->value('city_id');
             $gyms = Gym::with('user')->select('*')->where('city_id', $cityId);
             return datatables()->eloquent($gyms)->addIndexColumn()->addColumn('action', function ($gym) {
-                return '<a href="' . route('Gyms.edit', $gym->id) . '" class="edit btn btn-primary btn-sm me-2">Edit</a><form class="d-inline" action="' . route('Gyms.destroy',  $gym->id) . '" method="POST">
-            ' . csrf_field() . '
-            ' . method_field("DELETE") . '
-            <button type="submit" class="btn btn-danger btn-sm me-2"
-                onclick="return confirm(\'Are You Sure Want to Delete?\')"
-            ">Delete</a>
-            </form>';
+                return '<a href="' . route('Gyms.edit', $gym->id) . '" class="edit btn btn-primary btn-sm me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteGym(' . $gym->id . ')">Delete</a>';
             })->editColumn('created_at', function ($gym) {
                 return Carbon::parse($gym->created_at)->toDateString();
             })->editColumn('created_by', function ($gym) {
@@ -191,11 +179,12 @@ if($userRole=='admin'|| $userRole=='city_manager'){
         $gym = Gym::find($gymId);
         $gym->delete();
         Storage::delete('public/gymImages/' . $gym->cover_image);
-        return redirect(route('Gyms.index'))->with('status', 'Gym is deleted successfully');}
-        //return response()->json(['success' => "Gym Deleted successfully."]);}
+        //return redirect(route('Gyms.index'))->with('status', 'Gym is deleted successfully');}
+        return response()->json(['success' => "Gym Deleted successfully."]);}
         catch(\throwable $th){
-            return redirect(route('Gyms.index'))->with('danger', 'This Gym Cannot Be Deleted It Assigned To Bought Package Or Gym Manager');
-            //return response()->json(['danger' => "This City Cannot Be Deleted It Assigned To City Manager"]);}
+            //return redirect(route('Gyms.index'))->with('danger', 'This Gym Cannot Be Deleted It Assigned To Bought Package Or Gym Manager');
+            return response()->json(['danger' => "This City Cannot Be Deleted It Assigned To City Manager"]);
+        }
         }
         else {
             return view('403');

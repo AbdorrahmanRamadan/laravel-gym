@@ -22,13 +22,7 @@ class CoachController extends Controller
         return datatables()->eloquent($coaches)->addIndexColumn()->addColumn('action', function ($coach) {
             return '
             <a href="' . route('Coaches.show', $coach->id) . '" class="edit btn btn-primary btn-sm me-2">View</a>
-            <a href="' . route('Coaches.edit', $coach->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a><form class="d-inline" action="' . route('Coaches.destroy',  $coach->id) . '" method="POST">
-            ' . csrf_field() . '
-            ' . method_field("DELETE") . '
-            <button type="submit" class="btn btn-danger btn-sm me-2"
-                onclick="return confirm(\'Are You Sure Want to Delete?\')"
-            ">Delete</a>
-            </form>';
+            <a href="' . route('Coaches.edit', $coach->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteCoach(' . $coach->id . ')">Delete</a>';
         })->editColumn('id', function ($coach) {
             return $coach->user->name;
         })->editColumn('id', function ($coach) {
@@ -100,9 +94,11 @@ class CoachController extends Controller
 
         User::find($coach_id)->delete();
 
-        return to_route('Coaches.index');
+       // return to_route('Coaches.index');
+       return response()->json(['success' => "Coach Deleted successfully."]);
     }catch(\throwable $th){
-        return redirect('Coashes.index');
+       // return redirect('Coashes.index');
+       //return response()->json(['danger' => "This Coach Cannot Be Deleted It Assigned To City Manager"]);
 
     }
     }

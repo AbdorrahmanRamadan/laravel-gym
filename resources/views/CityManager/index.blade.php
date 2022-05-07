@@ -2,7 +2,9 @@
 @section('title')City Managers @endsection
 
 @section('page_content')
+<div class="" id="deleteStatus">
 
+</div>
 <div class="row header">
     <h2 class="col-10">City Managers</h2>
     <a href="{{ route('citiesManagers.create') }}" class="btn btn-success col-2" style="width:150px;">Add  Manager</a>
@@ -56,6 +58,35 @@
         });
 
     });
+    function deleteCityManager(cityManagerId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: '/citiesManager/' + cityManagerId,
+                    dataType: 'json',
+                    type: 'DELETE',
+
+                    success: function(response) {
+                        $('#deleteStatus').text(response['success']);
+                        $('#deleteStatus').addClass('alert alert-success')
+                        location.reload();
+                    }
+
+                })
+            }
+        })
+    }
 
 
 

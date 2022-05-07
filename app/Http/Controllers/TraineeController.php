@@ -46,13 +46,7 @@ class TraineeController extends Controller
             return '
             <a href="' . route('Trainees.show',  $trainee->trainee_id) . '"  class="edit btn btn-primary btn-sm me-2">View</a>
 
-            <form class="d-inline" action="' . route('Trainees.destroy',  $trainee->trainee_id) . '" method="POST">
-            ' . csrf_field() . '
-            ' . method_field("DELETE") . '
-            <button type="submit" class="btn btn-danger btn-sm me-2"
-                onclick="return confirm(\'Are You Sure Want to Delete?\')"
-            ">Delete</a>
-            </form>';
+            <a href="javascript:void(0)" class="btn btn-danger" onclick="deleteTrainee(' . $trainee->trainee_id . ')">Delete</a>';
         })->editColumn('trainee_id', function ($trainee) {
             return $trainee->user->name;
         })->editColumn('trainee_id', function ($trainee) {
@@ -109,7 +103,8 @@ class TraineeController extends Controller
         Trainee::where('trainee_id', $trainee_id)->delete();
 
         User::find($trainee_id)->delete();
+        return response()->json(['success' => "Trainee Deleted successfully."]);
 
-        return to_route('Trainees.index');
+        //return to_route('Trainees.index');
     }
 }

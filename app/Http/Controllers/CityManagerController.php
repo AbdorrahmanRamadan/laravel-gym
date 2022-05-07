@@ -41,13 +41,7 @@ class CityManagerController extends Controller
                 return '
                 <a href="' . route("citiesManagers.show", $cityManager->city_manager_id) . '"  class="edit btn btn-primary btn-sm me-2">View</a>
                 <a href="' . route("citiesManagers.edit", $cityManager->city_manager_id) . '"  class="edit btn btn-success btn-sm me-2">Edit</a>
-                <form class="d-inline" action="' . route('citiesManagers.destroy',  $cityManager->city_manager_id) . '" method="POST">
-                ' . csrf_field() . '
-                ' . method_field("DELETE") . '
-                <button type="submit" class="btn btn-danger btn-sm me-2"
-                    onclick="return confirm(\'Are You Sure Want to Delete?\')"
-                ">Delete</a>
-                </form>';
+                <a href="javascript:void(0)" class="btn btn-danger" onclick="deleteCityManager(' . $cityManager->city_manager_id . ')">Delete</a>';
             })->editColumn('city_id', function ($cityManager) {
                 return $cityManager->cities->name;
             })->editColumn('name', function ($cityManager) {
@@ -183,7 +177,8 @@ class CityManagerController extends Controller
         Storage::disk('public')->delete('images/' . $cityManager->avatar_image);
         CityManager::where('city_manager_id', $city_manager_id)->delete();
         User::where('id', $city_manager_id)->delete();
+        return response()->json(['success' => "City Manager Deleted successfully."]);
         //Storage::delete('public/images/'.$cityManager->avatar_image);
-        return redirect(route('citiesManagers.index'))->with('success', 'Deleted Successfully');
+        //return redirect(route('citiesManagers.index'))->with('success', 'Deleted Successfully');
     }
 }
