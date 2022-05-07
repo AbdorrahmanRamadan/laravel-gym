@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('training_session_id');
             $table->dateTime('attendance_time');
             $table->timestamps();
-            $table->foreign('trainee_id')->references('id')->on('users');
+            $table->foreign('trainee_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('training_session_id')->references('id')->on('training_sessions');
         });
     }

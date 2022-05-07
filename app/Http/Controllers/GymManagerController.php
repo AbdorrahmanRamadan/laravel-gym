@@ -39,7 +39,7 @@ class GymManagerController extends Controller
         }
         return datatables()->eloquent($gymManagers)->addIndexColumn()->addColumn('action', function ($gymManager) {
 
-            return '<a href="' . route("GymManager.edit", $gymManager->id) . '" class="edit btn btn-primary btn-sm me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager(' . $gymManager->id . ')">Delete</a>';
+            return '<a href="' . route("GymManager.show", $gymManager->id) . '" class="edit btn btn-success btn-sm me-2">Show</a><a href="' . route("GymManager.edit", $gymManager->id) . '" class="edit btn btn-primary btn-sm me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger me-2" onclick="deleteManager(' . $gymManager->id . ')">Remove</a>';
         })->addColumn('ban', function ($gymManager) {
             if ($gymManager->isban == 0) {
                 return ' <a href="' . route("GymManager.ban", $gymManager->id) . '" class="btn btn-danger w-100"  id="ban" >ban</a>';
@@ -62,11 +62,19 @@ class GymManagerController extends Controller
             return 'managerId' . $gymManager->id;
         })->rawColumns(['action', 'ban'])->toJson();
     }
+    public function show($gymId)
+    {
+        $gymManagerInfo = GymManager::with('gym', 'user')->find($gymId);
+        return view('GymManager.show', [
+            'gymManagerInfo' => $gymManagerInfo,
+        ]);
+    }
     public function create()
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
-        $cities = '';
+        $cities = $gyms='';
         $defaultCity = City::first();
+
         $defaultCityGyms = Gym::where('city_id', $defaultCity->id)->get();
         if ($userRole == 'admin') {
             $cities = City::all();
@@ -100,6 +108,7 @@ class GymManagerController extends Controller
                 'isban' => 1,
             ]);
         }
+        return redirect('gymsManagers');
     }
     public function store(StoreGymManagerRequest $request)
     {

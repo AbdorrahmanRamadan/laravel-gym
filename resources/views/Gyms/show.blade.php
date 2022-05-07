@@ -36,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label for="formFile" class="form-label">Gym Cover Image: </label> <br>
-                <img id="original" src="{{asset('/storage/gymImages/'.$gym->cover_image )}}" height="70px" width="70px">
+                <img id="original" src="{{asset('/storage/gymImages/'.$gym->cover_image )}}" height="270px" width="270px">
             </div>
         </div>
 
