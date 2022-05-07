@@ -111,7 +111,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('gymsManagers/create/{cityId}', [GymManagerController::class, 'getGymsOfCity']);
     Route::post('gymsManagers', [GymManagerController::class, 'store'])->name('GymManager.store');
     Route::delete('gymsManagers/{gymManagerId}', [GymManagerController::class, 'destroy']);
-
+    Route::get('gymsManagers/edit/{gymManagerId}', [GymManagerController::class, 'edit'])->name('GymManager.edit');
+    Route::get('gymsManagers/edit/{cityId}', [GymManagerController::class, 'getGymsOfCity']);
+    Route::put('gymsManagers/{gymManagerId}', [GymManagerController::class, 'update'])->name('GymManager.update');
     Route::get('revenue', [RevenueController::class, 'index'])->name('Revenue.index');
 
 });
