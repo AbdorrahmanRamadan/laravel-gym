@@ -152,7 +152,7 @@ class GymController extends Controller
         Storage::delete('public/gymImages/' . $gym->cover_image);
         return redirect(route('Gyms.index'))->with('status', 'Gym is deleted successfully');}
         catch(\throwable $th){
-            return redirect(route('Gyms.index'))->with('danger', 'This Gym Cannot Be Deleted It Assigned To Bought Package ');
+            return redirect(route('Gyms.index'))->with('danger', 'This Gym Cannot Be Deleted It Assigned To Bought Package Or Gym Manager');
 
         }
     }

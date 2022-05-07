@@ -29,14 +29,16 @@ class GymManagerController extends Controller
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
         $gymManagers = '';
+        $currentUserId = Auth::id();
         if ($userRole == 'admin') {
             $gymManagers =  GymManager::with('user', 'gym')->select('gym_managers.*');
         } else if ($userRole == 'city_manager') {
-            $gymManagers = '';
-            $cityOfCityManager = CityManager::where('city_manager_id', Auth::id())->first()->cities->id;
-            $gyms = Gym::where('city_id', $cityOfCityManager)->get();
-            $gymManagers = GymManager::whereIn('gym_id', $gyms->pluck('id'))->with('user', 'gym')->get();
+            $cityId = CityManager::select('city_id')->where('city_manager_id', $currentUserId)->get()->pluck('city_id')[0];
+            $gyms = Gym::where('city_id', $cityId)->get()->pluck('id');
+            $gymManagers = GymManager::with('user', 'gym')->select('*')->whereIn('gym_id',$gyms);
+
         }
+
         return datatables()->eloquent($gymManagers)->addIndexColumn()->addColumn('action', function ($gymManager) {
 
             return '<a href="' . route("GymManager.edit", $gymManager->id) . '" class="edit btn btn-primary btn-sm me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager(' . $gymManager->id . ')">Delete</a>';
@@ -100,6 +102,8 @@ class GymManagerController extends Controller
                 'isban' => 1,
             ]);
         }
+        return redirect('gymsManagers');
+
     }
     public function store(StoreGymManagerRequest $request)
     {
