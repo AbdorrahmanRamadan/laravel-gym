@@ -46,9 +46,6 @@ class CityController extends Controller
             ';
         })->rawColumns(['action'])->toJson();
     }
-    //<a href="'. route("cities.destroy" .'" class="edit btn btn-danger btn-sm me-2" id="deleteCityBtn" data-id="'.$city->id.'">Delete</a>
-
-
     public function create()
     {
         return view('Cities.create');
