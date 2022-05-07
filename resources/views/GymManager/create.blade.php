@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('page_content')
 
 <div class="card card-primary">
@@ -45,7 +45,9 @@
         <div class="form-group">
                 <label>Choose Gyms</label>
                 <select id="gyms" class="form-control" name="gym">
-                    
+                    @foreach($defaultCityGyms as $gym)
+                        <option value="{{$gym->id}}">{{$gym->name}}</option>
+                    @endforeach
                 </select>
         </div>
         <div class="card-footer">

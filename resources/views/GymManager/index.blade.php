@@ -1,5 +1,5 @@
 
-@extends('layouts.app')
+@extends('layouts.gym')
 
 @section('page_content')
 
@@ -33,8 +33,7 @@
            
         </tbody>
     </table> 
-<!--     <button class="btn btn-primary" data-toggle="confirmation" data-btn-ok-class="btn btn-sm btn-danger" data-btn-cancel-class="btn btn-sm btn-default">Confirmation</button>
- --></div>
+</div>
 @endsection
 @push('script')
 <script>

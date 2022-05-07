@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreGymManagerRequest extends FormRequest
+class UpdateGymManagerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class StoreGymManagerRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -25,11 +25,8 @@ class StoreGymManagerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=> ['required','min:3'], 
-            'email'=> ['required',Rule::unique('users', 'email'),'email:rfc,dns'], 
-            'password'=> ['required','min:8'],
-            'confirm-password' => 'required_with:password|same:password|min:8',
-            'profile-image'=> ['image'],
+            'avatar_image'=>['image','mimes:png,jpg'],
+            'email'=>['required',Rule::unique('users','email')->ignore($this->gymManagerId)]
         ];
     }
 }
