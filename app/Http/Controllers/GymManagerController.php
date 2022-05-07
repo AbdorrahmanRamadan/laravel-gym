@@ -27,7 +27,9 @@ class GymManagerController extends Controller
     {
         $gymManagers =  GymManager::with('user', 'gym')->select('gym_managers.*');
         return datatables()->eloquent($gymManagers)->addIndexColumn()->addColumn('action', function($gymManager){
-            return '<a href="'.route('GymManager.edit', $gymManager).'" class="edit btn btn-primary me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager('.$gymManager->id.')">Delete</a>';
+            return '
+            <a href="'.route('GymManager.show', $gymManager).'" class="edit btn btn-primary me-2">View</a>
+            <a href="'.route('GymManager.edit', $gymManager).'" class="edit btn btn-success me-2">Edit</a><a href="javascript:void(0)" class="btn btn-danger" onclick="deleteManager('.$gymManager->id.')">Delete</a>';
         })->editColumn('name', function($gymManager){
             return $gymManager->user->name;
         })->editColumn('email', function($gymManager){
@@ -90,7 +92,23 @@ class GymManagerController extends Controller
 
     }
 
+    public function show($gymManagerId){
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        $gymManagerInfo = GymManager::find($gymManagerId);
+        $cities = '';
+        $cityGyms = Gym::where('city_id', $gymManagerInfo->gym->city->id)->get();
+        if($userRole == 'admin'){
+            $cities = City::all();
+        }else if($userRole == 'city_manager'){
+            $cities = CityManager::find(Auth::id())->cities->id;
+        }
+        return view('GymManager.show', [
+            'cities'=>$cities,
+            'gymManagerInfo'=>$gymManagerInfo,
+            'cityGyms'=>$cityGyms
+        ]);
 
+    }
     public function edit($gymManagerId){
         $userRole = Auth::user()->roles->pluck('name')[0];
         $gymManagerInfo = GymManager::find($gymManagerId);
