@@ -46,7 +46,10 @@ if($userRole=='admin'){
 
 }
         return datatables()->eloquent($trainees)->addIndexColumn()->addColumn('action', function($trainee){
-            return '<form class="d-inline" action="'.route('Trainees.destroy',  $trainee->trainee_id ).'" method="POST">
+            return '
+            <a href="'. route('Trainees.show',  $trainee->trainee_id ).'"  class="edit btn btn-primary btn-sm me-2">View</a>
+
+            <form class="d-inline" action="'.route('Trainees.destroy',  $trainee->trainee_id ).'" method="POST">
             '.csrf_field().'
             '.method_field("DELETE").'
             <button type="submit" class="btn btn-danger btn-sm me-2"
@@ -93,6 +96,13 @@ if($userRole=='admin'){
         ]);
 
         return to_route('Trainees.index');
+    }
+
+    public function show($trainee_id)
+    {
+        $trainee=Trainee::where('trainee_id',$trainee_id)->first();
+        //User::find($trainee_id);
+        return view('Trainees.show',compact('trainee'));
     }
 
     public function destroy($trainee_id)

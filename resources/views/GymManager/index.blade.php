@@ -26,6 +26,7 @@
                 <th class="national-id">National ID</th>
                 <th class="gym-name">Gym Name</th>
                 <th class="created-at">Created At</th>
+                <th class="ban no-sort">Ban</th>
                 <th class="actions no-sort">Action</th>
             </tr>
         </thead>
@@ -33,11 +34,12 @@
 
         </tbody>
     </table>
-<!--     <button class="btn btn-primary" data-toggle="confirmation" data-btn-ok-class="btn btn-sm btn-danger" data-btn-cancel-class="btn btn-sm btn-default">Confirmation</button>
- --></div>
+</div>
+
 @endsection
 @push('script')
 <script>
+    
     $(function() {
         $('#admin-gym-managers').DataTable({
             processing: true,
@@ -55,7 +57,8 @@
                 { data: 'national_id', name: 'national_id' },
                 { data: 'gym.name', name:'gym.name',  orderable: true, searchable: true},
                 { data: 'created_at', name: 'created_at' },
-                {data: 'action', name: 'action', orderable: false, searchable: false}
+                {data: 'ban', name: 'ban', orderable: false, searchable: false},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
         });
 

@@ -16,8 +16,10 @@
         <div class="card-body">
 
             <div class="form-group">
-                <label for="exampleInputName">City Name</label>
-                <input  type="text" name="city_name" class="form-control" id="exampleInputName"  value="{{ $city->name }}">
+                <label for="exampleInputName">City Name: </label>
+
+                {{ $city->name }}
+
             </div>
 
 
