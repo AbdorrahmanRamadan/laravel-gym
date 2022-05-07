@@ -45,9 +45,11 @@
         <div class="form-group">
                 <label>Choose Gyms</label>
                 <select id="gyms" class="form-control" name="gym">
+
                     @foreach($defaultCityGyms as $gym)
                         <option value="{{$gym->id}}">{{$gym->name}}</option>
                     @endforeach
+
                 </select>
         </div>
         <div class="card-footer">
@@ -114,10 +116,12 @@
                     {
                         if(data){
                         $('#gyms').empty();
+
                         $('#gyms').append('<option hidden>Choose Gym</option>');
                         $.each(data, function(key, gym){
                             $('select[name="gym"]').append('<option value="'+ gym.id +'">' + gym.name+ '</option>');
                         });
+
                     }else{
                         $('#gyms').empty();
                     }
@@ -129,4 +133,6 @@
         });
     });
 </script>
+
 @endpush
+
