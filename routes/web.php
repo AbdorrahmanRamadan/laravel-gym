@@ -108,8 +108,6 @@ Route::middleware(['auth', 'banned'])->group(function () {
     Route::get('gymsManagers/create/{cityId}', [GymManagerController::class, 'getGymsOfCity']);
     Route::post('gymsManagers', [GymManagerController::class, 'store'])->name('GymManager.store');
     Route::get('gymsManagers/show/{gymManagerId}', [GymManagerController::class, 'show'])->name('GymManager.show');
-
-
     Route::delete('gymsManagers/{gymManagerId}', [GymManagerController::class, 'destroy']);
     Route::get('gymsManagers/edit/{gymManagerId}', [GymManagerController::class, 'edit'])->name('GymManager.edit');
     Route::get('gymsManagers/edit/{cityId}', [GymManagerController::class, 'getGymsOfCity']);
