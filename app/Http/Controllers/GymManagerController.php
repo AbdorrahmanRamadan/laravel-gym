@@ -22,12 +22,21 @@ class GymManagerController extends Controller
 {
     public function index()
     {
-        return view("GymManager.index");
+        $userRole = Auth::user()->roles->pluck('name')[0];
+
+        if ($userRole=='admin' || $userRole=='city_manager'){
+            return view("GymManager.index");
+
+        }else{
+            return view('403');
+        }
     }
     public function getGymManagers()
 
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
+
+        if ($userRole=='admin' || $userRole=='city_manager'){
         $gymManagers = '';
         $currentUserId = Auth::id();
         if ($userRole == 'admin') {
@@ -62,17 +71,29 @@ class GymManagerController extends Controller
             return $gymManager->gym->name;
         })->setRowId(function ($gymManager) {
             return 'managerId' . $gymManager->id;
-        })->rawColumns(['action', 'ban'])->toJson();
+        })->rawColumns(['action', 'ban'])->toJson();}
+        else{
+            return view('403');
+        }
     }
     public function show($gymId)
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+
+        if ($userRole=='admin' || $userRole=='city_manager'){
         $gymManagerInfo = GymManager::with('gym', 'user')->find($gymId);
         return view('GymManager.show', [
             'gymManagerInfo' => $gymManagerInfo,
         ]);
+    }else{
+        return view('403');
+    }
     }
     public function create()
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+
+        if ($userRole=='admin' || $userRole=='city_manager'){
         $userRole = Auth::user()->roles->pluck('name')[0];
         $cities = $gyms='';
         $defaultCity = City::first();
@@ -91,6 +112,9 @@ class GymManagerController extends Controller
             'defaultCityGyms' => $defaultCityGyms,
             'gyms' => $gyms,
         ]);
+    }else{
+        return view('403');
+    }
     }
     public function getGymsOfCity($cityId)
     {
@@ -99,6 +123,9 @@ class GymManagerController extends Controller
     }
     public function ban($id)
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+
+        if ($userRole=='admin' || $userRole=='city_manager'){
         $gymmanager = GymManager::where('id', $id)->first();
 
         if ($gymmanager->isban == 1) {
@@ -110,10 +137,16 @@ class GymManagerController extends Controller
                 'isban' => 1,
             ]);
         }
-        return redirect('gymsManagers');
+        return redirect('gymsManagers');}
+        else {
+            return view('403');
+        }
     }
     public function store(StoreGymManagerRequest $request)
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+
+        if ($userRole=='admin' || $userRole=='city_manager'){
         $gymManagerInfo = request()->all();
         $profileImage = $request->file('profile-image');
         $name = 'default_profilepicture.jpg';
@@ -141,13 +174,17 @@ class GymManagerController extends Controller
 
 
         return redirect('gymsManagers')->with('success', 'Added Successfully');
+    }else{
+        return view('403');
+    }
     }
 
 
     public function edit($gymManagerId)
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
-        $gymManagerInfo = GymManager::find($gymManagerId);
+
+        if ($userRole=='admin' || $userRole=='city_manager'){        $gymManagerInfo = GymManager::find($gymManagerId);
         $cities = $gyms = '';
         $cityGyms = Gym::where('city_id', $gymManagerInfo->gym->city->id)->get();
         if ($userRole == 'admin') {
@@ -165,9 +202,16 @@ class GymManagerController extends Controller
             'gyms' => $gyms,
         ]);
     }
+    else {
+        return view('403');
+    }
+    }
 
     public function update(UpdateGymManagerRequest $request, $gymManagerId)
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+
+        if ($userRole=='admin' || $userRole=='city_manager'){
         $gymManagerInfo = request()->all();
         $imageName = GymManager::find($gymManagerId)->avatar_image;
         $profileImage = $request->file('avatar_image');
@@ -189,16 +233,26 @@ class GymManagerController extends Controller
             'gym_id' => $gymManagerInfo['gym'],
             'avatar_image' => $imageName
         ]);
-        return redirect(route('GymManager'))->with('status', 'Gym Manager Data is updated successfully');
+        return redirect(route('GymManager'))->with('status', 'Gym Manager Data is updated successfully');}
+        else{
+            return view('403');
+        }
     }
 
 
     public function destroy($gymManagerId)
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+
+        if ($userRole=='admin' || $userRole=='city_manager'){
         $gymManager = GymManager::find($gymManagerId);
         $gymManager->delete();
         $gymManager->user()->delete();
         Storage::delete('public/gymManagers/' . $gymManager->avatar_image);
-        return response()->json(['success' => "Gym Manager Deleted successfully."]);
+        return response()->json(['success' => "Gym Manager Deleted successfully."]);}
+        else {
+            return view('403');
+        }
+
     }
 }

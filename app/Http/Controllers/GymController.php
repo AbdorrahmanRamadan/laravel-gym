@@ -19,7 +19,14 @@ class GymController extends Controller
 {
     public function index()
     {
-        return view("Gyms.index");
+        $userRole = Auth::user()->roles->pluck('name')[0];
+
+        if ($userRole=='admin' || $userRole=='city_manager'){
+            return view("Gyms.index");
+
+        }else{
+            return view('403');
+        }
     }
     public function getGyms()
     {
@@ -62,6 +69,8 @@ class GymController extends Controller
             })->editColumn('created_by', function ($gym) {
                 return $gym->user->name;
             })->rawColumns(['action', 'created_by'])->toJson();
+        }else {
+            return view('403');
         }
     }
     public function create()
@@ -69,17 +78,25 @@ class GymController extends Controller
         $userRole = Auth::user()->roles->pluck('name')[0];
         if ($userRole == 'admin') {
             $cities = City::all();
+            return view("Gyms.create", [
+                'cities' => $cities,
+            ]);
         } else if ($userRole == 'city_manager') {
             $currentId = Auth::id();
             $cityId = CityManager::where('city_manager_id', $currentId)->value('city_id');
             $cities = City::where('id', $cityId)->get();
+            return view("Gyms.create", [
+                'cities' => $cities,
+            ]);
+        }else{
+            return view('403');
         }
-        return view("Gyms.create", [
-            'cities' => $cities,
-        ]);
+
     }
     public function store(StoreGymRequest $request)
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+if($userRole=='admin'|| $userRole=='city_manager'){
         $coverImage = $path = $name = '';
         if ($request->file('cover_image')) {
             $coverImage = $request->file('cover_image');
@@ -94,21 +111,31 @@ class GymController extends Controller
             'city_id' => $gymInfo['city'],
         ]);
 
-        return redirect(route('Gyms.index'))->with('status', 'Gym is inserted successfully');
+        return redirect(route('Gyms.index'))->with('status', 'Gym is inserted successfully');}
+        else{
+            return view('403');
+        }
     }
 
     public function show($gymId)
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if($userRole=='admin'|| $userRole=='city_manager'){
+
         $gymInfo = Gym::with('city', 'user')->find($gymId);
         $manager=GymManager::with('user')->where('gym_id',$gymId)->first();
         return view('Gyms.show', [
             'gym' => $gymInfo,
             'manager'=>$manager,
-        ]);
+        ]);}else {
+            return view('403');
+        }
     }
     public function edit($gymId)
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
+        if($userRole=='admin'|| $userRole=='city_manager'){
+
         if ($userRole == 'admin') {
             $cities = City::all();
         } else if ($userRole == 'city_manager') {
@@ -120,11 +147,17 @@ class GymController extends Controller
         return view('Gyms.edit', [
             'gym' => $gymInfo,
             'cities' => $cities,
-        ]);
+        ]);}
+        else {
+            return view('403');
+        }
     }
 
     public function update(StoreGymRequest $request, $gymId)
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if($userRole=='admin'|| $userRole=='city_manager'){
+
         $gym = Gym::where('id', $gymId)->first();
         $coverImage = $request->file('cover_image');
         $imageName = $gym->cover_image;
@@ -143,17 +176,29 @@ class GymController extends Controller
         ]);
         return redirect(route('Gyms.index'))->with('status', 'Gym Data is updated successfully');
     }
+    else {
+        return view('403');
+    }
+
+    }
 
     public function destroy($gymId)
     {
+        $userRole = Auth::user()->roles->pluck('name')[0];
+        if($userRole=='admin'|| $userRole=='city_manager'){
+
         try{
         $gym = Gym::find($gymId);
         $gym->delete();
         Storage::delete('public/gymImages/' . $gym->cover_image);
         return redirect(route('Gyms.index'))->with('status', 'Gym is deleted successfully');}
+        //return response()->json(['success' => "Gym Deleted successfully."]);}
         catch(\throwable $th){
             return redirect(route('Gyms.index'))->with('danger', 'This Gym Cannot Be Deleted It Assigned To Bought Package Or Gym Manager');
-
+            //return response()->json(['danger' => "This City Cannot Be Deleted It Assigned To City Manager"]);}
+        }
+        else {
+            return view('403');
         }
     }
 }

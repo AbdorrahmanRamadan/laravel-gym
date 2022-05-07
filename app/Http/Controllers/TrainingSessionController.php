@@ -18,17 +18,7 @@ class TrainingSessionController extends Controller
 {
     public function index()
     {
-        //Coach::all()->sessions->pluck('name');
-        /* $arr = array();
-        foreach (Coach::all() as $coach){
-           $arr[] = $coach->sessions->pluck('name');
-        }
-        dd($arr);*/
-        /*$arr = array();
-        foreach (TrainingSession::all() as $coach){
-            $arr[] = User::find($coach->coaches->pluck('id'))->pluck('name');
-        }
-        dd($arr);*/
+
         return view('TrainingSessions.index');
     }
 
@@ -45,7 +35,7 @@ class TrainingSessionController extends Controller
             $TrainingSessions = TrainingSession::with('gym', 'coaches')->select('*')->whereIn('gym_id', $gymsId);
         } else if ($userRole == 'gym_manager') {
             $gymId = GymManager::select('gym_id')->where('id', $currentUserId)->get()->pluck('gym_id')[0];
-            $TrainingSessions = TrainingSession::select('*')->where('gym_id', $gymId);
+            $TrainingSessions = TrainingSession::with('gym', 'coaches')->select('*')->where('gym_id', $gymId);
         }
         return datatables()->eloquent($TrainingSessions)->addIndexColumn()->addColumn('action', function ($TrainingSession) {
             return '
