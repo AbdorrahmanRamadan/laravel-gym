@@ -20,17 +20,16 @@ class BoughtPackageController extends Controller
     public function index()
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
-        $currentUserId=Auth::id();
-        if($userRole == 'admin'){
+        $currentUserId = Auth::id();
+        if ($userRole == 'admin') {
             $packages = BoughtPackage::all();
-        }else if($userRole == 'city_manager'){
-           $city_id = CityManager::where('city_manager_id',$currentUserId)->value('city_id');
-           $gymsId = Gym::where('city_id',$city_id)->get()->pluck('id');
-           $packages=DB::table('bought_packages')->select('*')->whereIn('gym_id',$gymsId)->get();
-         }
-         else if($userRole == 'gym_manager'){
-            $gymId=Gym::where('id',$currentUserId)->value('city_id');
-            $packages=DB::table('bought_packages')->select('*')->where('gym_id',$gymId)->get();
+        } else if ($userRole == 'city_manager') {
+            $city_id = CityManager::where('city_manager_id', $currentUserId)->value('city_id');
+            $gymsId = Gym::where('city_id', $city_id)->get()->pluck('id');
+            $packages = DB::table('bought_packages')->select('*')->whereIn('gym_id', $gymsId)->get();
+        } else if ($userRole == 'gym_manager') {
+            $gymId = Gym::where('id', $currentUserId)->value('city_id');
+            $packages = DB::table('bought_packages')->select('*')->where('gym_id', $gymId)->get();
         }
 
         return view('Boughtpackages.index', ['packages' => $packages]);
@@ -40,14 +39,14 @@ class BoughtPackageController extends Controller
     {
 
         $userRole = Auth::user()->roles->pluck('name')[0];
-        $currentUserId=Auth::id();
-        if($userRole == 'admin'){
+        $currentUserId = Auth::id();
+        if ($userRole == 'admin') {
             $gyms = Gym::all();
-        } else if ($userRole=='city_manager'){
-            $city_id = CityManager::where('city_manager_id',$currentUserId)->value('city_id');
-           $gyms = Gym::where('city_id',$city_id)->get();
-        }else if($userRole=='gym_manager'){
-            $gyms=Gym::where('id',$currentUserId)->get();
+        } else if ($userRole == 'city_manager') {
+            $city_id = CityManager::where('city_manager_id', $currentUserId)->value('city_id');
+            $gyms = Gym::where('city_id', $city_id)->get();
+        } else if ($userRole == 'gym_manager') {
+            $gyms = Gym::where('id', $currentUserId)->get();
         }
         $training_packages = TrainingPackage::all();
         $trainees = Trainee::all();
@@ -96,7 +95,7 @@ class BoughtPackageController extends Controller
     }
 
 
-     // public function getBoughtPackages(){
+    // public function getBoughtPackages(){
 
     //     $packages = BoughtPackage::with('user','gym','training_package')->select('bought_packages.*');
     //     return datatables()->eloquent($packages)->addIndexColumn()

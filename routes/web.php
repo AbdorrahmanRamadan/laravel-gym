@@ -31,9 +31,6 @@ use App\Models\User;
 Route::middleware(['auth', 'banned'])->group(function () {
 
 
-    Route::get('/admin', function () {
-        return view('welcome');
-    });
 
     Route::get('/attendance', [AttendanceController::class, 'index'])->name('Attendance.index');
     Route::get('/attendance-dt', [AttendanceController::class, 'getAttendance'])->name('Attendance.getAttendance');

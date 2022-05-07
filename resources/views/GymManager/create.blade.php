@@ -1,4 +1,6 @@
 @extends('layouts.gym')
+@section('title') Create Gym Manager @endsection
+
 @section('page_content')
 
 <div class="card card-primary">
@@ -35,20 +37,20 @@
             </div>
         </div>
         <div class="form-group">
-                <label>Choose City</label>
-                <select id="cities" class="form-control" name="city">
-                    @foreach($cities as $city)
-                        <option value="{{$city->id}}">{{$city->name}}</option>
-                    @endforeach
-                </select>
+            <label>Choose City</label>
+            <select id="cities" class="form-control" name="city">
+                @foreach($cities as $city)
+                <option value="{{$city->id}}">{{$city->name}}</option>
+                @endforeach
+            </select>
         </div>
         <div class="form-group">
-                <label>Choose Gyms</label>
-                <select id="gyms" class="form-control" name="gym">
-                    @foreach($defaultCityGyms as $gym)
-                        <option value="{{$gym->id}}">{{$gym->name}}</option>
-                    @endforeach
-                </select>
+            <label>Choose Gyms</label>
+            <select id="gyms" class="form-control" name="gym">
+                @foreach($defaultCityGyms as $gym)
+                <option value="{{$gym->id}}">{{$gym->name}}</option>
+                @endforeach
+            </select>
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">Store</button>
@@ -85,12 +87,12 @@
             </div>
         </div>
         <div class="form-group">
-                <label>Choose Gym of {{$cities->name}} city</label>
-                <select id="gyms" class="form-control" name="gym">
-                    @foreach($gyms as $gym)
-                        <option value="{{$gym->id}}">{{$gym->name}}</option>
-                    @endforeach
-                </select>
+            <label>Choose Gym of {{$cities->name}} city</label>
+            <select id="gyms" class="form-control" name="gym">
+                @foreach($gyms as $gym)
+                <option value="{{$gym->id}}">{{$gym->name}}</option>
+                @endforeach
+            </select>
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">Store</button>
@@ -105,25 +107,24 @@
     $(function() {
         $('#cities').on('change', function() {
             var cityId = $(this).val();
-            if(cityId) {
+            if (cityId) {
                 $.ajax({
-                    url: '/gymsManagers/create/'+cityId,
+                    url: '/gymsManagers/create/' + cityId,
                     type: "GET",
                     dataType: "json",
-                    success:function(data)
-                    {
-                        if(data){
-                        $('#gyms').empty();
-                        $('#gyms').append('<option hidden>Choose Gym</option>');
-                        $.each(data, function(key, gym){
-                            $('select[name="gym"]').append('<option value="'+ gym.id +'">' + gym.name+ '</option>');
-                        });
-                    }else{
-                        $('#gyms').empty();
-                    }
+                    success: function(data) {
+                        if (data) {
+                            $('#gyms').empty();
+                            $('#gyms').append('<option hidden>Choose Gym</option>');
+                            $.each(data, function(key, gym) {
+                                $('select[name="gym"]').append('<option value="' + gym.id + '">' + gym.name + '</option>');
+                            });
+                        } else {
+                            $('#gyms').empty();
+                        }
                     }
                 });
-            }else{
+            } else {
                 $('#gyms').empty();
             }
         });

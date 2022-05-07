@@ -25,7 +25,7 @@
 
 
 
-@extends('layouts.app')
+@extends('layouts.gym')
 @section('title')Edit City @endsection
 
 @section('page_content')

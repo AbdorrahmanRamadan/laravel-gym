@@ -1,4 +1,5 @@
 @extends('layouts.gym')
+@section('title') Update Gym Manager @endsection
 @section('page_content')
 
 <div class="card card-primary">
@@ -15,7 +16,7 @@
                 <input value="{{$gymManagerInfo->user->name}}" name="name" type="text" class="form-control" id="exampleInputName" placeholder="Gym Manager Name">
             </div>
             <div class="form-group">
-                <label for="exampleInputNationalId">Manager  ID</label>
+                <label for="exampleInputNationalId">Manager ID</label>
                 <input value="{{$gymManagerInfo->national_id}}" name="national-id" type="text" class="form-control" id="exampleInputNationalId" placeholder="Gym Manager National ID">
             </div>
             <div class="form-group">
@@ -31,32 +32,32 @@
                 <input name="confirm-password" type="password" class="form-control" id="exampleInputConfirmPass" placeholder="Confirm Password">
             </div>
             <div class="form-group">
-                <img  id="original" src="{{asset('/storage/gymManagers/'.$gymManagerInfo->avatar_image)}}" height="60" width="60">
+                <img id="original" src="{{asset('/storage/gymManagers/'.$gymManagerInfo->avatar_image)}}" height="60" width="60">
                 <input class="form-control" type="file" name="avatar_image" value="{{ $gymManagerInfo->avatar_image }}" />
-                <input type="hidden" name="profile-image" value="{{ $gymManagerInfo->avatar_image }}"/>
-             </div>
+                <input type="hidden" name="profile-image" value="{{ $gymManagerInfo->avatar_image }}" />
+            </div>
         </div>
         <div class="form-group">
-                <label>Choose City</label>
-                <select id="cities" class="form-control" name="city">
-                    @foreach($cities as $city)
-                        @if($city->id == $gymManagerInfo->gym->city->id)
-                        <option value="{{$city->id}}" selected>{{$city->name}}</option>
-                        @endif
-                        <option value="{{$city->id}}">{{$city->name}}</option>
-                    @endforeach
-                </select>
+            <label>Choose City</label>
+            <select id="cities" class="form-control" name="city">
+                @foreach($cities as $city)
+                @if($city->id == $gymManagerInfo->gym->city->id)
+                <option value="{{$city->id}}" selected>{{$city->name}}</option>
+                @endif
+                <option value="{{$city->id}}">{{$city->name}}</option>
+                @endforeach
+            </select>
         </div>
         <div class="form-group">
-                <label>Choose Gyms</label>
-                <select id="gyms" class="form-control" name="gym">
-                    @foreach($cityGyms as $gym)
-                        @if($gym->id == $gymManagerInfo->gym->id)
-                        <option value="{{$gym->id}}" selected>{{$gym->name}}</option>
-                        @endif
-                        <option value="{{$gym->id}}">{{$gym->name}}</option>
-                    @endforeach
-                </select>
+            <label>Choose Gyms</label>
+            <select id="gyms" class="form-control" name="gym">
+                @foreach($cityGyms as $gym)
+                @if($gym->id == $gymManagerInfo->gym->id)
+                <option value="{{$gym->id}}" selected>{{$gym->name}}</option>
+                @endif
+                <option value="{{$gym->id}}">{{$gym->name}}</option>
+                @endforeach
+            </select>
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">Update</button>
@@ -84,26 +85,23 @@
                 <label for="exampleInputPassword">Password</label>
                 <input name="password" type="password" class="form-control" id="exampleInputPassword" placeholder="Gym Manager Password">
             </div>
+
             <div class="form-group">
-                <label for="exampleInputConfirmPass">Confirm Password</label>
-                <input name="confirm-password" type="password" class="form-control" id="exampleInputConfirmPass" placeholder="Gym Manager Email">
-            </div>
-            <div class="form-group">
-                <img  id="original" src="{{asset('/storage/gymManagers/'.$gymManagerInfo->avatar_image)}}" height="60" width="60">
+                <img id="original" src="{{asset('/storage/gymManagers/'.$gymManagerInfo->avatar_image)}}" height="60" width="60">
                 <input class="form-control" type="file" name="avatar_image" value="{{ $gymManagerInfo->avatar_image }}" />
-                <input type="hidden" name="profile-image" value="{{ $gymManagerInfo->avatar_image }}"/>
-             </div>
+                <input type="hidden" name="profile-image" value="{{ $gymManagerInfo->avatar_image }}" />
+            </div>
         </div>
         <div class="form-group">
-                <label>Choose Gym of {{$cities->name}} city</label>
-                <select id="gyms" class="form-control" name="gym">
-                    @foreach($gyms as $gym)
-                        @if($gym->id == $gymManagerInfo->gym->id)
-                        <option value="{{$gym->id}}" selected>{{$gym->name}}</option>
-                        @endif
-                        <option value="{{$gym->id}}">{{$gym->name}}</option>
-                    @endforeach
-                </select>
+            <label>Choose Gym of {{$cities->name}} city</label>
+            <select id="gyms" class="form-control" name="gym">
+                @foreach($gyms as $gym)
+                @if($gym->id == $gymManagerInfo->gym->id)
+                <option value="{{$gym->id}}" selected>{{$gym->name}}</option>
+                @endif
+                <option value="{{$gym->id}}">{{$gym->name}}</option>
+                @endforeach
+            </select>
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">Update</button>
@@ -118,25 +116,24 @@
     $(function() {
         $('#cities').on('change', function() {
             var cityId = $(this).val();
-            if(cityId) {
+            if (cityId) {
                 $.ajax({
-                    url: '/gymsManagers/create/'+cityId,
+                    url: '/gymsManagers/create/' + cityId,
                     type: "GET",
                     dataType: "json",
-                    success:function(data)
-                    {
-                        if(data){
-                        $('#gyms').empty();
-                        $('#gyms').append('<option hidden>Choose Gym</option>');
-                        $.each(data, function(key, gym){
-                            $('select[name="gym"]').append('<option value="'+ gym.id +'">' + gym.name+ '</option>');
-                        });
-                    }else{
-                        $('#gyms').empty();
-                    }
+                    success: function(data) {
+                        if (data) {
+                            $('#gyms').empty();
+                            $('#gyms').append('<option hidden>Choose Gym</option>');
+                            $.each(data, function(key, gym) {
+                                $('select[name="gym"]').append('<option value="' + gym.id + '">' + gym.name + '</option>');
+                            });
+                        } else {
+                            $('#gyms').empty();
+                        }
                     }
                 });
-            }else{
+            } else {
                 $('#gyms').empty();
             }
         });

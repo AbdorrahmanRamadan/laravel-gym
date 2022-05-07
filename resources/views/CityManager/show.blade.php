@@ -39,8 +39,8 @@
             </div>
 
             <div class="form-group">
-                <label for="formFile" class="form-label">City Manager Image</label>
-                <img id="original" src="{{asset('/storage/images/'.$cityManager->avatar_image)}}" height="70px" width="70px">
+                <label for="formFile" class="form-label">City Manager Image</label><br>
+                <img id="original" src="{{asset('/storage/images/'.$cityManager->avatar_image)}}" height="220px" width="270px">
 
             </div>
         </div>

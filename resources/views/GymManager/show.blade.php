@@ -1,24 +1,23 @@
-
-
 @extends('layouts.gym')
+@section('title') Show Gym Manager @endsection
 @section('page_content')
-@section('title')  City Manager Info @endsection
+@section('title') City Manager Info @endsection
 
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title"> City Manager Info</h3>
     </div>
 
-    <form id="quickForm" >
+    <form id="quickForm">
         <div class="card-body">
 
             <div class="form-group">
-                <label for="exampleInputName">Manager Name:  </label>
+                <label for="exampleInputName">Manager Name: </label>
                 {{$gymManagerInfo->user->name}}
             </div>
 
             <div class="form-group">
-                <label for="exampleInputName">Manager ID:  </label>
+                <label for="exampleInputName">Manager ID: </label>
                 {{$gymManagerInfo->national_id}}
 
             </div>
@@ -31,7 +30,7 @@
 
 
             <div class="form-group">
-                <label> City Name:  </label>
+                <label> City Name: </label>
                 @foreach ($cities as $city)
                 {{ $city->name }}
                 @endforeach
@@ -50,5 +49,3 @@
 
 
 @endsection
-
-

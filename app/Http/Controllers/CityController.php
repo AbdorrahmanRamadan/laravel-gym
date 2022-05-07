@@ -27,9 +27,9 @@ class CityController extends Controller
     public function index()
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
-        if ($userRole=='admin'){
-        return view('Cities.index');}
-        else{
+        if ($userRole == 'admin') {
+            return view('Cities.index');
+        } else {
             return view('403');
         }
     }
@@ -37,12 +37,12 @@ class CityController extends Controller
 
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
-        $currentUserId=Auth::id();
-        if ($userRole=='admin'){
-        $cities = City::select(['id', 'name', 'created_at', 'updated_at']);
+        $currentUserId = Auth::id();
+        if ($userRole == 'admin') {
+            $cities = City::select(['id', 'name', 'created_at', 'updated_at']);
 
-        return datatables()->eloquent($cities)->addIndexColumn()->addColumn('action', function ($city) {
-            return '
+            return datatables()->eloquent($cities)->addIndexColumn()->addColumn('action', function ($city) {
+                return '
             <a href="' . route("Cities.show", $city->id) . '" class="edit btn btn-primary btn-sm me-2">View</a>
             <a href="' . route("Cities.edit", $city->id) . '" class="edit btn btn-success btn-sm me-2">Edit</a>
             <form class="d-inline" action="' . route('Cities.destroy',  $city->id) . '" method="POST">
@@ -53,9 +53,8 @@ class CityController extends Controller
             ">Delete</a>
             </form>
             ';
-        })->rawColumns(['action'])->toJson();
-    }
-
+            })->rawColumns(['action'])->toJson();
+        }
     }
 
 
@@ -64,9 +63,9 @@ class CityController extends Controller
     public function create()
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
-        if ($userRole=='admin'){
-            return view('Cities.create');}
-            else{
+        if ($userRole == 'admin') {
+            return view('Cities.create');
+        } else {
             return view('403');
         }
     }
@@ -89,13 +88,12 @@ class CityController extends Controller
     public function show($id)
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
-        if ($userRole=='admin'){
+        if ($userRole == 'admin') {
             $city = City::findorFail($id);
-            return view('Cities.show', compact('city'));        }
-            else{
+            return view('Cities.show', compact('city'));
+        } else {
             return view('403');
         }
-
     }
 
     /**
@@ -108,15 +106,12 @@ class CityController extends Controller
     {
 
         $userRole = Auth::user()->roles->pluck('name')[0];
-        if ($userRole=='admin'){
+        if ($userRole == 'admin') {
             $city = City::findOrFail($id);
             return view('Cities.edit', compact('city'));
-             }
-            else{
+        } else {
             return view('403');
         }
-
-
     }
 
     /**
@@ -129,15 +124,14 @@ class CityController extends Controller
     public function update(Request $request, $id)
     {
         $userRole = Auth::user()->roles->pluck('name')[0];
-        if ($userRole=='admin'){
+        if ($userRole == 'admin') {
             $city = City::findOrFail($id);
-        $city->name = request('city_name');
-        $city->save();
-        return redirect(route('Cities.index'))->with('success', 'Updated Successfully');
-        }else{
+            $city->name = request('city_name');
+            $city->save();
+            return redirect(route('Cities.index'))->with('success', 'Updated Successfully');
+        } else {
             return view('403');
         }
-
     }
 
 
@@ -146,17 +140,16 @@ class CityController extends Controller
     {
 
         $userRole = Auth::user()->roles->pluck('name')[0];
-        if ($userRole=='admin'){
+        if ($userRole == 'admin') {
             try {
                 $city = City::findOrFail($id);
                 $city->delete();
                 return redirect(route('Cities.index'))->with('success', 'Deleted Successfully');
             } catch (\Throwable $e) {
                 return redirect(route('Cities.index'))->with('danger', 'This City Cannot Be Deleted It Assigned To City Manager ');
-            }}
-            else{
+            }
+        } else {
             return view('403');
         }
-
     }
 }

@@ -111,6 +111,5 @@ class TrainingPackageController extends Controller
         } else {
             return view('403');
         }
-
     }
 }
